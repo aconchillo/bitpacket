@@ -35,11 +35,11 @@ __doc__ = '''
 
     INTRODUCTION
 
-    This class represents an structure of bit fields to be used to
-    build packets. BitStructure and BitVariableStructure are BitField
-    themselves and all of them can be used together. That is, we can
-    add any BitField subclass into a BitStructure or
-    BitVariableStructure.
+    These classes represent structures and variable structures of bit
+    fields which might be used to construct packets. BitStructure and
+    BitVariableStructure are BitField themselves and all of them can
+    be used together. That is, we can add any BitField subclass into a
+    BitStructure or BitVariableStructure.
 
     Note that some of the code found in this documentation might not
     be self-contained, it may depend on code explained in previous
