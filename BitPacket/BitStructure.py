@@ -259,10 +259,11 @@ __doc__ = '''
 
     In order to unpack a variable structure, the BitVariableStructure
     class needs to know the type of the multiple structures (all of
-    the same type) that might contain. This is done by assigning this
-    type into the 'base_field' parameter of the BitVariableStructure
-    constructor. So, taking the last example defined in the 'VARIABLE
-    STRUCTURES' section we could do the following:
+    the same type) that might contain. This is done by assigning an
+    instance of the desired type into the 'base_field' parameter of
+    the BitVariableStructure constructor. So, taking the last example
+    defined in the 'VARIABLE STRUCTURES' section, we could do the
+    following:
 
     >>> addr = BitField('address', Common.INTEGER_SIZE)
     >>> adds = BitVariableStructure('addresses', Common.BYTE_SIZE,
@@ -295,6 +296,10 @@ __doc__ = '''
              (address0 = 0x10203040)
              (address1 = 0x40506080))))
 
+     As we can see, the BitVariableStructure class dynamically creates
+     copies of the 'base_field' parameter in order to reconstruct the
+     whole structure.
+
 '''
 
 import array
@@ -306,6 +311,13 @@ from BitField import BitField
 from BitVector import BitVector
 
 class BitStructure(BitField):
+    '''
+    This class represents an structure of bit fields to be used to
+    build packets. BitStructure and BitVariableStructure are BitField
+    themselves and all of them can be used together. That is, we can
+    add any BitField subclass into a BitStructure or
+    BitVariableStructure.
+    '''
 
     def __init__(self, name):
         '''
@@ -430,8 +442,22 @@ class BitStructure(BitField):
 
 
 class BitVariableStructure(BitStructure):
+    '''
+    This class represents a variable structure of bit fields to be
+    used to build packets. BitStructure and BitVariableStructure are
+    BitField themselves and all of them can be used together. That is,
+    we can add any BitField subclass into a BitStructure or
+    BitVariableStructure.
+    '''
 
     def __init__(self, name, counter_size, base_field = None):
+        '''
+        Initializes the bit variable structure field with the given
+        'name' as well as with the desired bit size ('counter_size')
+        for the self-contained counter field. The 'base_field'
+        parameter is only needed when unpacking, and an instance of
+        the structure's type being unpacked must me given.
+        '''
         BitStructure.__init__(self, name)
         self.__counter_size = counter_size
         self.__base_field = base_field
