@@ -26,7 +26,9 @@ __version__ = '0.1.0'
 
 __all__ = [
     'BitField',
-    'BitStructure'
+    'BitStructure',
+    'BitVariableStructure',
+    'Common'
     ]
 
 from BitPacket.BitField import BitField
