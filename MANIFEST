@@ -2,6 +2,7 @@ AUTHORS
 COPYING
 NEWS
 setup.py
+BitPacket/__init__.py
 BitPacket/BitField.py
 BitPacket/BitStructure.py
 BitPacket/Common.py
