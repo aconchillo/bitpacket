@@ -35,7 +35,7 @@ __doc__ = '''
 
     INTRODUCTION
 
-    These classes represent simple bit fields, and fixed or variable
+    These classes represent simple bit fields, and fixed and variable
     structures of bit fields which might be used to construct
     packets. BitStructure and BitVariableStructure are BitField
     themselves and all of them can be used together. That is, we can
