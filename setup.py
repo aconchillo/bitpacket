@@ -16,6 +16,6 @@ setup(name = 'BitPacket',
       description='A Python representation for bit field structures',
       long_description=
       '''
-      This module presents an objected oriented representation for bit
+      This module presents an objected-oriented representation for bit
       field structures.
       ''')
