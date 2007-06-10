@@ -10,9 +10,7 @@ setup(name = 'BitPacket',
       maintainer_email='aleix@member.fsf.org',
       url='http://hacks-galore.org/aleix/BitPacket',
       requires = ['BitVector'],
-      packages = ['BitPacket'],
-      py_modules = ['BitPacket.BitStructure', 'BitPacket.BitField',
-                    'BitPacket.Common'],
+      py_modules = ['BitPacket'],
       description='A Python representation for bit field structures',
       long_description=
       '''

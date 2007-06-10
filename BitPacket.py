@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
-# @file    BitStructure.py
-# @brief   Static and variable structures of bit fields
+# @file    BitPacket.py
+# @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Apr 01, 2007 12:53
 #
@@ -31,19 +31,66 @@ __url__     = 'http://hacks-galore.org/aleix/BitPacket'
 
 __doc__ = '''
 
-    A representation of structures of bit fields.
+    An object-oriented representation of bit field structures.
 
     INTRODUCTION
 
-    These classes represent structures and variable structures of bit
-    fields which might be used to construct packets. BitStructure and
-    BitVariableStructure are BitField themselves and all of them can
-    be used together. That is, we can add any BitField subclass into a
-    BitStructure or BitVariableStructure.
+    These classes represent simple bit fields, and fixed or variable
+    structures of bit fields which might be used to construct
+    packets. BitStructure and BitVariableStructure are BitField
+    themselves and all of them can be used together. That is, we can
+    add any BitField subclass into a BitStructure or
+    BitVariableStructure.
 
     Note that some of the code found in this documentation might not
     be self-contained, it may depend on code explained in previous
     sections.
+
+
+    SINGLE BIT FIELDS
+
+    A packet might be formed by mutiple fields that could be single
+    bit fields, integer fields, structure fields or variable structure
+    fields.
+
+    An example of a packet could be:
+
+    +-------+-----------+---------+------------------+
+    |  id   |  address  | nbytes  |       data       |
+    +-------+-----------+---------+------------------+
+     <- 1 -> <--- 4 ---> <-- 2 --> <---- nbytes ---->
+
+    That is, a packet with four fields:
+
+        - Indetifier: 1 byte
+        - Memory address: 4 bytes
+        - Number of data bytes: 2 bytes
+        - Data: number of data bytes
+
+    The first field could be constructed by the following piece of
+    code:
+
+    >>> bf = BitField('id', BYTE_SIZE, 0x54)
+    >>> bf.value() == 0x54
+    True
+
+    that would create a BitField instance of a field named 'id' of 1
+    byte size and value 0x54.
+
+
+    UNPACKING SINGLE BIT FIELDS
+
+    In order to unpack a single field from a data buffer, one would
+    create a BitField without any initialisation and assign the data
+    buffer when ready:
+
+    >>> data = array.array('B', [0x35])
+    >>> bf = BitField('id', BYTE_SIZE)
+    >>> bf.set_array(data)
+    >>> bf.array()
+    array('B', [53])
+    >>> print bf
+    (id = 0x35)
 
 
     FIXED STRUCTURES
@@ -72,8 +119,8 @@ __doc__ = '''
     now we need to add fields to it. This can be done by calling the
     append() method:
 
-    >>> bs.append(BitField('id', Common.BYTE_SIZE, 0x54))
-    >>> bs.append(BitField('address', Common.INTEGER_SIZE, 0x10203040))
+    >>> bs.append(BitField('id', BYTE_SIZE, 0x54))
+    >>> bs.append(BitField('address', INTEGER_SIZE, 0x10203040))
     >>> print bs
     (mystructure =
        (id = 0x54)
@@ -102,8 +149,8 @@ __doc__ = '''
     bytes to it.
 
     >>> bs = BitStructure('mypacket')
-    >>> bs.append(BitField('id', Common.BYTE_SIZE))
-    >>> bs.append(BitField('address', Common.INTEGER_SIZE))
+    >>> bs.append(BitField('id', BYTE_SIZE))
+    >>> bs.append(BitField('address', INTEGER_SIZE))
     >>> print bs
     (mypacket =
        (id = 0x0)
@@ -131,8 +178,8 @@ __doc__ = '''
     >>> class MyStructure(BitStructure):
     ...    def __init__(self, id = 0, address = 0):
     ...        BitStructure.__init__(self, 'mystructure')
-    ...        self.append(BitField('id', Common.BYTE_SIZE, id))
-    ...        self.append(BitField('address', Common.INTEGER_SIZE, address))
+    ...        self.append(BitField('id', BYTE_SIZE, id))
+    ...        self.append(BitField('address', INTEGER_SIZE, address))
     ...
     ...    def id(self):
     ...        return self['id']
@@ -175,9 +222,9 @@ __doc__ = '''
     increased.
 
     >>> bs = BitStructure('mystructure')
-    >>> bs.append(BitField('id', Common.BYTE_SIZE, 0x54))
-    >>> bs.append(BitField('address', Common.INTEGER_SIZE, 0x10203040))
-    >>> packet = BitVariableStructure('mypacket', Common.BYTE_SIZE)
+    >>> bs.append(BitField('id', BYTE_SIZE, 0x54))
+    >>> bs.append(BitField('address', INTEGER_SIZE, 0x10203040))
+    >>> packet = BitVariableStructure('mypacket', BYTE_SIZE)
     >>> packet.append(bs)
     >>> print packet
     (mypacket =
@@ -206,13 +253,13 @@ __doc__ = '''
 
     This can easly be done with the following piece of code:
 
-    >>> adds = BitVariableStructure('addresses', Common.BYTE_SIZE)
-    >>> adds.append(BitField('address', Common.INTEGER_SIZE, 0x10203040))
-    >>> adds.append(BitField('address', Common.INTEGER_SIZE, 0x40506080))
+    >>> adds = BitVariableStructure('addresses', BYTE_SIZE)
+    >>> adds.append(BitField('address', INTEGER_SIZE, 0x10203040))
+    >>> adds.append(BitField('address', INTEGER_SIZE, 0x40506080))
     >>> ids = BitStructure('ids')
-    >>> ids.append(BitField('id', Common.BYTE_SIZE, 0x34))
+    >>> ids.append(BitField('id', BYTE_SIZE, 0x34))
     >>> ids.append(adds)
-    >>> vs = BitVariableStructure('packet', Common.BYTE_SIZE)
+    >>> vs = BitVariableStructure('packet', BYTE_SIZE)
     >>> vs.append(ids)
     >>> print vs
     (packet =
@@ -265,13 +312,13 @@ __doc__ = '''
     defined in the 'VARIABLE STRUCTURES' section, we could do the
     following:
 
-    >>> addr = BitField('address', Common.INTEGER_SIZE)
-    >>> adds = BitVariableStructure('addresses', Common.BYTE_SIZE,
+    >>> addr = BitField('address', INTEGER_SIZE)
+    >>> adds = BitVariableStructure('addresses', BYTE_SIZE,
     ...                             base_field = addr)
     >>> ids = BitStructure('ids')
-    >>> ids.append(BitField('id', Common.BYTE_SIZE))
+    >>> ids.append(BitField('id', BYTE_SIZE))
     >>> ids.append(adds)
-    >>> vs = BitVariableStructure('packet', Common.BYTE_SIZE,
+    >>> vs = BitVariableStructure('packet', BYTE_SIZE,
     ...                           base_field = ids)
     >>> print vs
     (packet =
@@ -304,11 +351,123 @@ __doc__ = '''
 
 import array
 import copy
+import math
 
-import Common
-
-from BitField import BitField
 from BitVector import BitVector
+
+BIT_SIZE = 1
+BYTE_SIZE = BIT_SIZE * 8
+WORD_SIZE = BYTE_SIZE * 2
+
+# Chars
+CHAR_SIZE = BYTE_SIZE
+UNSIGNED_CHAR_SIZE = CHAR_SIZE
+SIGNED_CHAR_SIZE = CHAR_SIZE
+
+# Short integer
+SHORT_SIZE = WORD_SIZE
+UNSIGNED_SHORT_SIZE = SHORT_SIZE
+SIGNED_SHORT_SIZE = SHORT_SIZE
+
+# Integer
+INTEGER_SIZE = SHORT_SIZE * 2
+UNSIGNED_INTEGER_SIZE = INTEGER_SIZE
+SIGNED_INTEGER_SIZE = INTEGER_SIZE
+
+
+
+class BitField:
+    '''
+    This class represents a bit field to be used together with
+    BitStructure and BitVariableStructure classes in order to build
+    packets.
+    '''
+
+    def __init__(self, name, size, default = 0):
+        '''
+        Initializes the field with the given 'name' and 'size' (in
+        bits). By default the field's value will be initialized to 0
+        or to 'default' if specified.
+        '''
+        self._name = name
+        self.__check_value_size(default, size)
+        self.__size = size
+        self.__value = default
+
+    def name(self):
+        '''
+        Returns the name of the field.
+        '''
+        return self._name
+
+    def value(self):
+        '''
+        Returns the integer value of the field.
+        '''
+        return self.__value
+
+    def set_value(self, value, size = None):
+        '''
+        Sets a new integer 'value' to the field. An optional new bit
+        'size' can also be specified.
+        '''
+        if size != None:
+            self.__size = size
+        self.__check_value_size(value, self.__size)
+        self.__value = value
+
+    def array(self):
+        '''
+        Returns a byte array (big-endian) representing this field.
+        '''
+        return _bignum_to_array(self.value(), self.byte_size())
+
+    def set_array(self, data):
+        '''
+        Sets a byte array (big-endian) to the field. The array should
+        be of type 'B' (unsigned char). This method will modify the
+        field's size automatically depending on the array size.
+        '''
+        self.set_value(_array_to_bignum(data),
+                       len(data) * BYTE_SIZE)
+
+    def size(self):
+        '''
+        Returns the size of the field in bits.
+        '''
+        return self.__size
+
+    def byte_size(self):
+        '''
+        Returns the size of the field in bytes.
+        '''
+        byte_size = self.__size / 8
+        if (self.__size % 8) > 0:
+            byte_size += 1
+        return byte_size
+
+    def __str__(self, indent = 0):
+        '''
+        Prints the name and value of the field with an optional
+        indentation.
+        '''
+        s = ""
+        for i in range(indent):
+            s += " "
+        s += "(%s = 0x%X)" % (self._name, self.value())
+        return s
+
+    def __check_value_size(self, value, size):
+        '''
+        Checks if the given 'value' can be represented with the given
+        'size', raises a ValueError exception if not.
+        '''
+        value_size = _value_bit_size(value)
+        if (value != 0) and (size != 0) and (size <= value_size):
+            raise ValueError,  '"%s" value 0x%0X needs at least %d bits (%d given)' \
+                % (self._name, value, value_size, size)
+
+
 
 class BitStructure(BitField):
     '''
@@ -522,6 +681,45 @@ class BitVariableStructure(BitStructure):
             end = start + new_field.size()
             self.append(new_field)
             start = end
+
+
+# Private
+
+def _value_bit_size(value):
+    '''
+    Returns the number of needed bits to represent the given 'value'.
+    '''
+    if value == 0:
+        return 1
+    else:
+        return math.log(value, 2)
+
+def _array_to_bignum(byte_array):
+    '''
+    Transforms an array of bytes (in big-endian) into an integer
+    value.
+    '''
+    if byte_array.typecode != 'B':
+        raise TypeError, 'Array type should be unsigned char'
+    lst = byte_array.tolist()
+    i = len(lst) - 1
+    bignum = 0
+    for byte in lst:
+        bignum += byte * 2**(8*i)
+        i -= 1
+    return bignum
+
+def _bignum_to_array(bignum, size):
+    '''
+    Transforms an integer value into an array of bytes (in
+    big-endian).
+    '''
+    byte_mask = 0xFF
+    data = array.array('B')
+    for i in range(size):
+        data.append( (bignum>>i*8) & byte_mask)
+    data.reverse()
+    return data
 
 
 if __name__ == '__main__':
