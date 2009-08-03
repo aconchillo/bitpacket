@@ -2,15 +2,16 @@
 from distutils.core import setup
 
 setup(name = 'BitPacket',
-      version = '0.1.0',
+      version = '0.2.0',
       author = 'Aleix Conchillo Flaque',
       author_email = 'aleix@member.fsf.org',
       license = 'GPL',
       maintainer = 'Aleix Conchillo Flaque',
       maintainer_email='aleix@member.fsf.org',
       url='http://hacks-galore.org/aleix/BitPacket',
-      requires = ['BitVector'],
-      py_modules = ['BitPacket'],
+      requires = [],
+      packages = ['BitPacket'],
+      package_dir = {'BitPacket': 'src'},
       description = 'A Python representation for bit field structures',
       long_description =
       '''

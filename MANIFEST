@@ -2,4 +2,8 @@ AUTHORS
 COPYING
 NEWS
 setup.py
-BitPacket.py
+src/__init__.py
+src/BitFieldBase.py
+src/BitField.py
+src/BitStructure.py
+src/BitVariableStructure.py
