@@ -1,4 +1,4 @@
-
+# A set of various common bit sizes
 
 BIT_SIZE = 1
 BYTE_SIZE = BIT_SIZE * 8

@@ -44,12 +44,14 @@ __doc__ = '''
     added as in BitStructure and the counter will be automatically
     increased.
 
-    >>> BYTE_SIZE = 8
-    >>> INTEGER_SIZE = BYTE_SIZE * 4
     >>> bs = BitStructure('mystructure')
-    >>> bs.append(BitField('id', BYTE_SIZE, 0x54))
-    >>> bs.append(BitField('address', INTEGER_SIZE, 0x10203040))
-    >>> packet = BitVariableStructure('mypacket', BYTE_SIZE, bs)
+    >>> bs.append(BitField('id', BitPacket.BYTE_SIZE, 0x54))
+    >>> bs.append(BitField('address',
+    ...                    BitPacket.INTEGER_SIZE,
+    ...                    0x10203040))
+    >>> packet = BitVariableStructure('mypacket',
+    ...                               BitPacket.BYTE_SIZE,
+    ...                               bs)
     >>> packet.append(bs)
     >>> print packet
     (mypacket =
@@ -79,14 +81,22 @@ __doc__ = '''
 
     This can easly be done with the following piece of code:
 
-    >>> base_adds = BitField('address', INTEGER_SIZE)
-    >>> adds = BitVariableStructure('addresses', BYTE_SIZE, base_adds)
-    >>> adds.append(BitField('address', INTEGER_SIZE, 0x10203040))
-    >>> adds.append(BitField('address', INTEGER_SIZE, 0x40506080))
+    >>> base_adds = BitField('address', BitPacket.INTEGER_SIZE)
+    >>> adds = BitVariableStructure('addresses',
+    ...                             BitPacket.BYTE_SIZE,
+    ...                             base_adds)
+    >>> adds.append(BitField('address',
+    ...                      BitPacket.INTEGER_SIZE,
+    ...                      0x10203040))
+    >>> adds.append(BitField('address',
+    ...                      BitPacket.INTEGER_SIZE,
+    ...                      0x40506080))
     >>> ids = BitStructure('ids')
-    >>> ids.append(BitField('id', BYTE_SIZE, 0x34))
+    >>> ids.append(BitField('id', BitPacket.BYTE_SIZE, 0x34))
     >>> ids.append(adds)
-    >>> vs = BitVariableStructure('packet', BYTE_SIZE, ids)
+    >>> vs = BitVariableStructure('packet',
+    ...                           BitPacket.BYTE_SIZE,
+    ...                           ids)
     >>> vs.append(ids)
     >>> print vs
     (packet =
@@ -141,13 +151,15 @@ __doc__ = '''
     defined in the 'VARIABLE STRUCTURES' section, we could do the
     following:
 
-    >>> addr = BitField('address', INTEGER_SIZE)
-    >>> adds = BitVariableStructure('addresses', BYTE_SIZE,
+    >>> addr = BitField('address', BitPacket.INTEGER_SIZE)
+    >>> adds = BitVariableStructure('addresses',
+    ...                             BitPacket.BYTE_SIZE,
     ...                             base_field = addr)
     >>> ids = BitStructure('ids')
-    >>> ids.append(BitField('id', BYTE_SIZE))
+    >>> ids.append(BitField('id', BitPacket.BYTE_SIZE))
     >>> ids.append(adds)
-    >>> vs = BitVariableStructure('packet', BYTE_SIZE,
+    >>> vs = BitVariableStructure('packet',
+    ...                           BitPacket.BYTE_SIZE,
     ...                           base_field = ids)
     >>> print vs
     (packet =
@@ -183,6 +195,8 @@ __doc__ = '''
 
 import array
 import copy
+
+import BitPacket
 
 from BitField import BitField
 from BitStructure import BitStructure

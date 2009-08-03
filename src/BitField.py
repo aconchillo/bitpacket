@@ -47,8 +47,7 @@ __doc__ = '''
     The first field could be constructed by the following piece of
     code:
 
-    >>> BYTE_SIZE = 8
-    >>> bf = BitField('id', BYTE_SIZE, 0x54)
+    >>> bf = BitField('id', BitPacket.BYTE_SIZE, 0x54)
     >>> bf.value() == 0x54
     True
 
@@ -63,7 +62,7 @@ __doc__ = '''
     buffer when ready:
 
     >>> data = array.array('B', [0x35])
-    >>> bf = BitField('id', BYTE_SIZE)
+    >>> bf = BitField('id', BitPacket.BYTE_SIZE)
     >>> bf.set_array(data)
     >>> bf.array()
     array('B', [53])
@@ -77,6 +76,8 @@ __doc__ = '''
 '''
 
 import array
+
+import BitPacket
 
 from BitFieldBase import BitFieldBase
 from BitFieldBase import _bin_to_int

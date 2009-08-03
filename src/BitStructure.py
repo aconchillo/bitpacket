@@ -50,10 +50,10 @@ __doc__ = '''
     now we need to add fields to it. This can be done by calling the
     append() method:
 
-    >>> BYTE_SIZE = 8
-    >>> INTEGER_SIZE = BYTE_SIZE * 4
-    >>> bs.append(BitField('id', BYTE_SIZE, 0x54))
-    >>> bs.append(BitField('address', INTEGER_SIZE, 0x10203040))
+    >>> bs.append(BitField('id', BitPacket.BYTE_SIZE, 0x54))
+    >>> bs.append(BitField('address',
+    ...                    BitPacket.INTEGER_SIZE,
+    ...                    0x10203040))
     >>> print bs
     (mystructure =
        (id = 0x54)
@@ -82,8 +82,8 @@ __doc__ = '''
     bytes to it.
 
     >>> bs = BitStructure('mypacket')
-    >>> bs.append(BitField('id', BYTE_SIZE))
-    >>> bs.append(BitField('address', INTEGER_SIZE))
+    >>> bs.append(BitField('id', BitPacket.BYTE_SIZE))
+    >>> bs.append(BitField('address', BitPacket.INTEGER_SIZE))
     >>> print bs
     (mypacket =
        (id = 0x0)
@@ -111,8 +111,10 @@ __doc__ = '''
     >>> class MyStructure(BitStructure):
     ...    def __init__(self, id = 0, address = 0):
     ...        BitStructure.__init__(self, 'mystructure')
-    ...        self.append(BitField('id', BYTE_SIZE, id))
-    ...        self.append(BitField('address', INTEGER_SIZE, address))
+    ...        self.append(BitField('id', BitPacket.BYTE_SIZE, id))
+    ...        self.append(BitField('address',
+    ...                             BitPacket.INTEGER_SIZE,
+    ...                             address))
     ...
     ...    def id(self):
     ...        return self['id']
@@ -136,6 +138,8 @@ __doc__ = '''
 '''
 
 import array
+
+import BitPacket
 
 from BitFieldBase import BitFieldBase
 from BitFieldBase import _encode_array
