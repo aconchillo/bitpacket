@@ -3,7 +3,8 @@ COPYING
 NEWS
 setup.py
 src/__init__.py
-src/BitFieldBase.py
 src/BitField.py
+src/BitFieldBase.py
+src/BitFieldWriter.py
 src/BitStructure.py
 src/BitVariableStructure.py
