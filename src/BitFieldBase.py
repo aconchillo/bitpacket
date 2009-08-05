@@ -48,10 +48,11 @@ class BitFieldBase:
     non-implemented methods in it.
     '''
 
-    def __init__(self, name):
+    def __init__(self, name, writer = None):
         '''
         '''
         self._name = name
+        self.__writer = writer
 
     def name(self):
         '''
@@ -105,6 +106,22 @@ class BitFieldBase:
         '''
         return False
 
+    def writer(self):
+        return self.__writer
+
+    def set_writer(self, writer):
+        self.__writer = writer
+
+    def write(self, indent = 0):
+        '''
+        Returns a human-readable representation of this bit
+        field. This function uses the writer set via 'set_writer' to
+        obtain the final string.
+        '''
+        assert self.writer() != None, "No default writer set for this field"
+
+        return self.writer().write(self, indent)
+
     def size(self):
         '''
         Returns the size of the field in bits.
@@ -120,6 +137,16 @@ class BitFieldBase:
         if (bit_size % 8) > 0:
             byte_size += 1
         return byte_size
+
+    def __str__(self, indent = 0):
+        '''
+        Returns a human-readable representation of this bit
+        field. This function uses the writer set via 'set_writer' to
+        obtain the final string. It has the same effect than calling
+        'write'.
+        '''
+        return self.write(indent)
+
 
 
 # Private

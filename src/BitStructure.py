@@ -145,6 +145,8 @@ from BitFieldBase import BitFieldBase
 from BitFieldBase import _encode_array
 from BitField import BitField
 
+from BitFieldWriter import BitFieldWriter
+
 class BitStructure(BitFieldBase):
     '''
     This class represents an structure of bit fields to be used to
@@ -159,7 +161,7 @@ class BitStructure(BitFieldBase):
         Initializes the bit structure field with the given 'name'. By
         default an structure field does not contain any members.
         '''
-        BitFieldBase.__init__(self, name)
+        BitFieldBase.__init__(self, name, BitStructureTextWriter())
         self._reset()
 
     def append(self, field):
@@ -214,7 +216,7 @@ class BitStructure(BitFieldBase):
         '''
         size = len(bits)
         start = 0
-        for field in self.__fields:
+        for field in self.fields():
             field_size = field.size()
             if field.is_variable():
                 end = size
@@ -243,6 +245,27 @@ class BitStructure(BitFieldBase):
         '''
         return self.__fields_name[name]
 
+    def fields(self):
+        '''
+        Returns the ordered list of fields that form this bit
+        structure.
+        '''
+        return self.__fields
+
+    def is_variable(self):
+        '''
+        Tells whether this filed might have variable size depending on
+        its content. Note that an structure field might have variable
+        member fields.
+        '''
+        variable = False
+        for field in self.fields():
+            variable = variable or field.is_variable()
+            if variable:
+                # Exit loop at first variable size field
+                break
+        return variable
+
     def _reset(self):
         '''
         Remove all added fields from this structure.
@@ -269,18 +292,34 @@ class BitStructure(BitFieldBase):
         '''
         self.field(name).set_value(value)
 
-    def __str__(self, indent = 0):
-        '''
-        Returns a human-readable representation of the structure.
-        '''
-        s = ''
-        for i in range(indent):
-            s += ' '
-        s += '(%s =' % self.name()
-        for field in self.__fields:
+
+
+class BitStructureTextWriter(BitFieldWriter):
+
+    def write(self, field, indent = 0):
+        s = self.indentation(indent)
+        s += '(%s =' % field.name()
+        for f in field.fields():
             s += '\n'
-            s += field.__str__(indent + 3)
+            s += f.write(indent + 3)
         s += ')'
+        return s
+
+class BitStructureXMLWriter(BitFieldWriter):
+
+    def write(self, field, indent = 0):
+        s = self.indentation(indent)
+        s += '<packet name="%s" size="%d"' % (field.name(), field.size())
+        if len(field.fields()) > 0:
+            s += '>'
+            for f in field.fields():
+                s += '\n'
+                s += f.write(indent + 3)
+            s += '\n'
+            s += self.indentation(indent)
+            s += '</packet>'
+        else:
+            s += '/>'
         return s
 
 

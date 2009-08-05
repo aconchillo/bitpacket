@@ -85,6 +85,8 @@ from BitFieldBase import _int_to_bin
 from BitFieldBase import _encode_array
 from BitFieldBase import _decode_array
 
+from BitFieldWriter import BitFieldWriter
+
 class BitField(BitFieldBase):
     '''
     This class represents a bit field to be used together with
@@ -98,7 +100,7 @@ class BitField(BitFieldBase):
         bits). By default the field's value will be initialized to 0
         or to 'default' if specified.
         '''
-        BitFieldBase.__init__(self, name)
+        BitFieldBase.__init__(self, name, BitFieldTextWriter())
         self.__bits = []
         self.__size = size
         if default != None:
@@ -153,15 +155,21 @@ class BitField(BitFieldBase):
         '''
         return self.__size
 
-    def __str__(self, indent = 0):
-        '''
-        Prints the name and value of the field with an optional
-        indentation.
-        '''
-        s = ""
-        for i in range(indent):
-            s += " "
-        s += "(%s = 0x%X)" % (self.name(), self.value())
+
+
+class BitFieldTextWriter(BitFieldWriter):
+
+    def write(self, field, indent = 0):
+        s = self.indentation(indent)
+        s += '(%s = 0x%X)' % (field.name(), field.value())
+        return s
+
+class BitFieldXMLWriter(BitFieldWriter):
+
+    def write(self, field, indent = 0):
+        s = self.indentation(indent)
+        s += '<field name="%s" size="%d">0x%X</field>' \
+            % (field.name(), field.size(), field.value())
         return s
 
 

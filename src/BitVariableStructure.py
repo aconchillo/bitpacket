@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    BitVariableStructure.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Variable structure depending on a counter field
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 19:26
 #
@@ -24,7 +24,8 @@
 
 __doc__ = '''
 
-    VARIABLE STRUCTURES
+
+    Variable structures depending on a counter field.
 
     Sometimes we need to create packets that have a number of repeated
     structures in it. Normally, these kind of packets have a field
@@ -61,12 +62,14 @@ __doc__ = '''
              (id = 0x54)
              (address = 0x10203040))))
 
-    We can see that the packet has a counter field of value 1 and our
-    created structure 'mystructure'. Note that the structure has a new
-    name 'mystructure0'. This is because the BitStructure class does
-    not allow to have fields with the same name, thus when the
-    'mystructure' field has been added the name has automatically
-    changed.
+    Note that the variable structure has a new field 'fields' which
+    will contain all the structures being added to this variable
+    structure. We can also see that the packet has a counter field of
+    value 1 and our created structure 'mystructure' and that the
+    structure has a new name 'mystructure0'. This is because the
+    BitStructure class does not allow to have fields with the same
+    name, thus when the 'mystructure' field has been added the name
+    has automatically changed.
 
     Finally, we can also build more complex packets, such as the one
     below, where we have two variable structures one inside of the
@@ -90,7 +93,7 @@ __doc__ = '''
     ...                      0x10203040))
     >>> adds.append(BitField('address',
     ...                      BitPacket.INTEGER_SIZE,
-    ...                      0x40506080))
+    ...                      0x50607080))
     >>> ids = BitStructure('ids')
     >>> ids.append(BitField('id', BitPacket.BYTE_SIZE, 0x34))
     >>> ids.append(adds)
@@ -108,7 +111,7 @@ __doc__ = '''
                 (counter = 0x2)
                 (fields =
                    (address0 = 0x10203040)
-                   (address1 = 0x40506080))))))
+                   (address1 = 0x50607080))))))
 
     We have created a variable structure with two addresses 'adds' and
     we have added it to the fixed structure 'ids'. Our packet has been
@@ -118,7 +121,7 @@ __doc__ = '''
 
     ACCESSING VARIABLE STRUCTRES MEMBERS
 
-    In order to access members of variable structures we could follow
+    In order to access members of variable structures we can follow
     two methods: access by name or access by index.
 
     Both methods require to know how many members the variable
@@ -127,9 +130,8 @@ __doc__ = '''
     dynamically changed when added to a variable structure, thus
     appending and 'id' field will become 'id0' (if no member has been
     previously added), and appending 'id' again will become
-    'id1'. Knowing this, we could easily iterate through variable
-    structure members from the structure created in the previous
-    section:
+    'id1'. With this, we can easily iterate through variable structure
+    members from the structure created in the previous section:
 
     >>> for i in range(vs.counter()):
     ...     ids = vs.counter_field('ids%d' %i)
@@ -138,7 +140,7 @@ __doc__ = '''
     ...        print adds.counter_field('address%d' % j)
     ...
     (address0 = 0x10203040)
-    (address1 = 0x40506080)
+    (address1 = 0x50607080)
 
 
     UNPACKING VARIABLE STRUCTURES
@@ -170,7 +172,7 @@ __doc__ = '''
     the following array of bytes:
 
     >>> data = array.array('B', [0x01, 0x34, 0x02, 0x10, 0x20, 0x30, 0x40,
-    ...                          0x40, 0x50, 0x60, 0x80])
+    ...                          0x50, 0x60, 0x70, 0x80])
 
     into our previously defined variable structure:
 
@@ -184,8 +186,8 @@ __doc__ = '''
              (addresses =
                 (counter = 0x2)
                 (fields =
-                   (address0 = 0x0)
-                   (address1 = 0x0))))))
+                   (address0 = 0x10203040)
+                   (address1 = 0x50607080))))))
 
      As we can see, the BitVariableStructure class dynamically creates
      copies of the 'base_field' parameter in order to reconstruct the
@@ -205,19 +207,20 @@ from BitFieldBase import _bin_to_int
 class BitVariableStructure(BitStructure):
     '''
     This class represents a variable structure of bit fields to be
-    used to build packets. BitStructure and BitVariableStructure are
-    BitField themselves and all of them can be used together. That is,
-    we can add any BitField subclass into a BitStructure or
-    BitVariableStructure.
+    used to build packets. It inhertis from BitStructure, thus both
+    are BitFieldBase themselves and all of them can be used
+    together. That is, we can add any BitFieldBase subclass into a
+    BitStructure or BitVariableStructure.
     '''
 
     def __init__(self, name, counter_size, base_field):
         '''
         Initializes the bit variable structure field with the given
         'name' as well as with the desired bit size ('counter_size')
-        for the self-contained counter field. The 'base_field'
-        parameter is only needed when unpacking, and an instance of
-        the structure's type being unpacked must me given.
+        for the self-contained counter field. The 'base_field' might
+        be an instance of the structure's type to be added. Note that
+        it is only allowed to add fields of the same type and size of
+        the base field.
         '''
         self.__counter_size = counter_size
         self.__base_field = base_field
