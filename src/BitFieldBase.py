@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 12:28
 #
-# Copyright (C) 2007, 2008, 2009 Aleix Conchillo Flaque
+# Copyright (C) 2007-2009 Aleix Conchillo Flaque
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,6 +41,8 @@ __doc__ = '''
 
 import array
 
+from BitFieldWriterBasic import BitFieldWriterBasic
+
 class BitFieldBase:
     '''
     This the abstract class for all bit fields sub-classes. All bit
@@ -48,11 +50,15 @@ class BitFieldBase:
     non-implemented methods in it.
     '''
 
-    def __init__(self, name, writer = None):
+    def __init__(self, name, writer = BitFieldWriterBasic()):
         '''
         '''
         self._name = name
         self.__writer = writer
+        self.__calibration = None
+
+        # Identity calibration
+        self.set_calibration_curve(lambda x: x.value())
 
     def name(self):
         '''
@@ -62,13 +68,13 @@ class BitFieldBase:
 
     def value(self):
         '''
-        Returns the integer value of the field.
+        Returns the value (integer, float...) of the field.
         '''
         raise NotImplementedError
 
     def set_value(self, value):
         '''
-        Sets a new integer 'value' to the field.
+        Sets a new 'value' (integer, float...) to the field.
         '''
         raise NotImplementedError
 
@@ -99,10 +105,58 @@ class BitFieldBase:
         '''
         raise NotImplementedError
 
+    def set_calibration_curve(self, curve):
+        self.__calibration = curve
+
+    def hex_value(self):
+        '''
+        Returns the hexadecimal integer representation of this
+        field. That is, the bytes forming this field in its integer
+        representation.
+        '''
+        raise NotImplementedError
+
+    def eng_value(self):
+        '''
+        Returns the engineering value of this field. The engineering
+        value is the result of applying a calibration curve to the
+        value of this field. Some fields might represent tempreatures,
+        angles, etc. that need to be converted from its digital form
+        to its analog form. This function will return the value after
+        the conversion is done.
+        '''
+        return self.__calibration(self)
+
+    def str_value(self):
+        '''
+        Returns a human-readable representation of this field. Note
+        that the type of the field can be a float, integer, etc. So,
+        the representation might be different for each type.
+        '''
+        raise NotImplementedError
+
+    def str_hex_value(self):
+        '''
+        Returns a human-readable representation of this field. Note
+        that the type of the field can be a float, integer, etc. So,
+        the representation might be different for each type.
+        '''
+        raise NotImplementedError
+
+    def str_eng_value(self):
+        '''
+        Returns a human-readable representation of the engineering
+        value. Note that the type of the field can be a float,
+        integer, etc. So, the representation might be different for
+        each type.
+        '''
+        raise NotImplementedError
+
     def is_variable(self):
         '''
-        Tells whether this filed might have variable size depending on
-        its content.
+        Tells whether this field might have variable size depending on
+        its content. The field might content variable or non-variable
+        fields.
         '''
         return False
 
@@ -112,15 +166,18 @@ class BitFieldBase:
     def set_writer(self, writer):
         self.__writer = writer
 
-    def write(self, indent = 0):
+    def write(self):
         '''
-        Returns a human-readable representation of this bit
-        field. This function uses the writer set via 'set_writer' to
-        obtain the final string.
+        Returns a human-readable representation of the information of
+        this bit field. This function uses the writer set via
+        'set_writer' to obtain the final string.
+
+        Note that the result might not contain all the information. It
+        all depends on the BitFieldWriter implementation.
         '''
         assert self.writer() != None, "No default writer set for this field"
 
-        return self.writer().write(self, indent)
+        return self.writer().write(self)
 
     def size(self):
         '''
@@ -138,14 +195,15 @@ class BitFieldBase:
             byte_size += 1
         return byte_size
 
-    def __str__(self, indent = 0):
+    def __str__(self):
         '''
-        Returns a human-readable representation of this bit
-        field. This function uses the writer set via 'set_writer' to
-        obtain the final string. It has the same effect than calling
-        'write'.
+        Returns a human-readable representation of the information of
+        this bit field. This function uses the writer set via
+        'set_writer' to obtain the final string.
+
+        It has the same effect than calling the 'write' method.
         '''
-        return self.write(indent)
+        return self.write()
 
 
 

@@ -1,8 +1,42 @@
 BitPacket -- History of visible changes.
 
-Copyright (C) 2007 Aleix Conchillo Flaque
+Copyright (C) 2007-2009 Aleix Conchillo Flaque
 
 See the end for copying conditions.
+
+------------------------------------------------------------------------
+
+* Version 0.2.0 (09/10/??)
+
+** Changes:
+
+   - BitVector is not needed anymore. Internal encoding and decoding
+     of bits has been copied from the Construct project, thanks!
+     (http://construct.wikispaces.com/)
+
+   - BitField and BitStructure now inherit from the BitFieldBase
+     abstract class.
+
+   - Multiple outputs are now available as BitWriters. Basic text (old
+     output), text tables and XML formats are available. Users can
+     define new formats easily by implementing a new BitWriter.
+
+   - Engineering values have been added. Engineering values are
+     extracted from the real value by applying a calibration
+     curve. This calibration might convert, for example, a digital
+     value into a temperature. A calibration curve can be set to each
+     BitFieldBase instance.
+
+   - BitPacket sizes (BIT_SIZE, INTEGER_SIZE...) have been removed in
+     favour of the BitFieldReal and BitFieldInteger classes.
+
+   - BitFieldReal has floats and doubles subclasses.
+
+   - BitFieldInteger has integer subclasses for 8 to 64 bit integers.
+
+   - BitFieldStruct subclasses (BitFieldReal and BitFieldInteger)
+     support endianness (using the built-in Pyhton struct module). By
+     default network endianness is used (i.e. big-endian).
 
 ------------------------------------------------------------------------
 
@@ -13,13 +47,13 @@ See the end for copying conditions.
 ------------------------------------------------------------------------
 Copying information:
 
-Copyright (C) 2007 Aleix Conchillo Flaque
+Copyright (C) 2007-2009 Aleix Conchillo Flaque
 
-  Permission is granted to anyone  to make or distribute verbatim copies
-of this document as received, in any medium, provided that the copyright
-notice  and  this  permission  notice  are preserved,  thus  giving  the
-recipient permission to redistribute in turn.
+  Permission is granted to anyone to make or distribute verbatim
+copies of this document as received, in any medium, provided that the
+copyright notice and this permission notice are preserved, thus giving
+the recipient permission to redistribute in turn.
 
-  Permission  is  granted  to   distribute  modified  versions  of  this
-document, or  of portions  of it, under  the above  conditions, provided
+  Permission is granted to distribute modified versions of this
+document, or of portions of it, under the above conditions, provided
 also that they carry prominent notices stating who last changed them.

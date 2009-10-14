@@ -5,6 +5,12 @@ setup.py
 src/__init__.py
 src/BitField.py
 src/BitFieldBase.py
+src/BitFieldInteger.py
+src/BitFieldReal.py
+src/BitFieldStruct.py
 src/BitFieldWriter.py
+src/BitFieldWriterBasic.py
+src/BitFieldWriterTable.py
+src/BitFieldWriterXML.py
 src/BitStructure.py
 src/BitVariableStructure.py

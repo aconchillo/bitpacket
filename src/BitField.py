@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 12:34
 #
-# Copyright (C) 2007, 2008, 2009 Aleix Conchillo Flaque
+# Copyright (C) 2007-2009 Aleix Conchillo Flaque
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ __doc__ = '''
     The first field could be constructed by the following piece of
     code:
 
-    >>> bf = BitField('id', BitPacket.BYTE_SIZE, 0x54)
+    >>> bf = BitField('id', 8, 0x54)
     >>> bf.value() == 0x54
     True
 
@@ -62,7 +62,7 @@ __doc__ = '''
     buffer when ready:
 
     >>> data = array.array('B', [0x35])
-    >>> bf = BitField('id', BitPacket.BYTE_SIZE)
+    >>> bf = BitField('id', 8)
     >>> bf.set_array(data)
     >>> bf.array()
     array('B', [53])
@@ -77,15 +77,11 @@ __doc__ = '''
 
 import array
 
-import BitPacket
-
 from BitFieldBase import BitFieldBase
 from BitFieldBase import _bin_to_int
 from BitFieldBase import _int_to_bin
 from BitFieldBase import _encode_array
 from BitFieldBase import _decode_array
-
-from BitFieldWriter import BitFieldWriter
 
 class BitField(BitFieldBase):
     '''
@@ -100,7 +96,7 @@ class BitField(BitFieldBase):
         bits). By default the field's value will be initialized to 0
         or to 'default' if specified.
         '''
-        BitFieldBase.__init__(self, name, BitFieldTextWriter())
+        BitFieldBase.__init__(self, name)
         self.__bits = []
         self.__size = size
         if default != None:
@@ -110,7 +106,7 @@ class BitField(BitFieldBase):
         '''
         Returns the integer value of the field.
         '''
-        return _bin_to_int(self.__bits)
+        return self.hex_value()
 
     def set_value(self, value):
         '''
@@ -155,22 +151,30 @@ class BitField(BitFieldBase):
         '''
         return self.__size
 
-
+    def hex_value(self):
+        return _bin_to_int(self.__bits)
 
-class BitFieldTextWriter(BitFieldWriter):
+    def str_value(self):
+        '''
+        Returns a human-readable representation of this field. This is
+        is a default hexadecimal representation for all BitFields.
+        '''
+        return self.str_hex_value()
 
-    def write(self, field, indent = 0):
-        s = self.indentation(indent)
-        s += '(%s = 0x%X)' % (field.name(), field.value())
-        return s
+    def str_hex_value(self):
+        '''
+        Returns a human-readable representation of this field. This is
+        is a default hexadecimal representation for all BitFields.
+        '''
+        hex_size = self.byte_size() * 2
+        return '0x%0*X' % (hex_size, self.hex_value())
 
-class BitFieldXMLWriter(BitFieldWriter):
-
-    def write(self, field, indent = 0):
-        s = self.indentation(indent)
-        s += '<field name="%s" size="%d">0x%X</field>' \
-            % (field.name(), field.size(), field.value())
-        return s
+    def str_eng_value(self):
+        '''
+        Returns a human-readable representation of this field. This is
+        is a default hexadecimal representation for all BitFields.
+        '''
+        return '0x%0*X' % (hex_size, self.eng_value())
 
 
 if __name__ == '__main__':

@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 19:26
 #
-# Copyright (C) 2007, 2008, 2009 Aleix Conchillo Flaque
+# Copyright (C) 2007-2009 Aleix Conchillo Flaque
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -46,17 +46,13 @@ __doc__ = '''
     increased.
 
     >>> bs = BitStructure('mystructure')
-    >>> bs.append(BitField('id', BitPacket.BYTE_SIZE, 0x54))
-    >>> bs.append(BitField('address',
-    ...                    BitPacket.INTEGER_SIZE,
-    ...                    0x10203040))
-    >>> packet = BitVariableStructure('mypacket',
-    ...                               BitPacket.BYTE_SIZE,
-    ...                               bs)
+    >>> bs.append(BitField('id', 8, 0x54))
+    >>> bs.append(BitField('address', 32, 0x10203040))
+    >>> packet = BitVariableStructure('mypacket', 8, bs)
     >>> packet.append(bs)
     >>> print packet
     (mypacket =
-       (counter = 0x1)
+       (counter = 0x01)
        (fields =
           (mystructure0 =
              (id = 0x54)
@@ -84,31 +80,23 @@ __doc__ = '''
 
     This can easly be done with the following piece of code:
 
-    >>> base_adds = BitField('address', BitPacket.INTEGER_SIZE)
-    >>> adds = BitVariableStructure('addresses',
-    ...                             BitPacket.BYTE_SIZE,
-    ...                             base_adds)
-    >>> adds.append(BitField('address',
-    ...                      BitPacket.INTEGER_SIZE,
-    ...                      0x10203040))
-    >>> adds.append(BitField('address',
-    ...                      BitPacket.INTEGER_SIZE,
-    ...                      0x50607080))
+    >>> base_adds = BitField('address', 32)
+    >>> adds = BitVariableStructure('addresses', 8, base_adds)
+    >>> adds.append(BitField('address', 32, 0x10203040))
+    >>> adds.append(BitField('address', 32, 0x50607080))
     >>> ids = BitStructure('ids')
-    >>> ids.append(BitField('id', BitPacket.BYTE_SIZE, 0x34))
+    >>> ids.append(BitField('id', 8, 0x34))
     >>> ids.append(adds)
-    >>> vs = BitVariableStructure('packet',
-    ...                           BitPacket.BYTE_SIZE,
-    ...                           ids)
+    >>> vs = BitVariableStructure('packet', 8, ids)
     >>> vs.append(ids)
     >>> print vs
     (packet =
-       (counter = 0x1)
+       (counter = 0x01)
        (fields =
           (ids0 =
              (id = 0x34)
              (addresses =
-                (counter = 0x2)
+                (counter = 0x02)
                 (fields =
                    (address0 = 0x10203040)
                    (address1 = 0x50607080))))))
@@ -153,19 +141,15 @@ __doc__ = '''
     defined in the 'VARIABLE STRUCTURES' section, we could do the
     following:
 
-    >>> addr = BitField('address', BitPacket.INTEGER_SIZE)
-    >>> adds = BitVariableStructure('addresses',
-    ...                             BitPacket.BYTE_SIZE,
-    ...                             base_field = addr)
+    >>> addr = BitField('address', 32)
+    >>> adds = BitVariableStructure('addresses', 8, base_field = addr)
     >>> ids = BitStructure('ids')
-    >>> ids.append(BitField('id', BitPacket.BYTE_SIZE))
+    >>> ids.append(BitField('id', 8))
     >>> ids.append(adds)
-    >>> vs = BitVariableStructure('packet',
-    ...                           BitPacket.BYTE_SIZE,
-    ...                           base_field = ids)
+    >>> vs = BitVariableStructure('packet', 8, base_field = ids)
     >>> print vs
     (packet =
-       (counter = 0x0)
+       (counter = 0x00)
        (fields =))
 
     The BitVariableStructure 'packet' is empty, so, now we can unpack
@@ -179,12 +163,12 @@ __doc__ = '''
     >>> vs.set_array(data)
     >>> print vs
     (packet =
-       (counter = 0x1)
+       (counter = 0x01)
        (fields =
           (ids0 =
              (id = 0x34)
              (addresses =
-                (counter = 0x2)
+                (counter = 0x02)
                 (fields =
                    (address0 = 0x10203040)
                    (address1 = 0x50607080))))))
@@ -197,8 +181,6 @@ __doc__ = '''
 
 import array
 import copy
-
-import BitPacket
 
 from BitField import BitField
 from BitStructure import BitStructure
