@@ -35,7 +35,7 @@ __STRUCT_DOUBLE_FMT__ = 'd'
 
 class BitFieldReal(BitFieldStruct):
 
-    def __init__(self, name, format, default = None):
+    def __init__(self, name, format, default = 0):
         BitFieldStruct.__init__(self, name, format, default)
 
     def str_value(self):
@@ -53,12 +53,12 @@ class BitFieldReal(BitFieldStruct):
 
 class BitFieldFloat(BitFieldReal):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldReal.__init__(self, name, __STRUCT_FLOAT_FMT__, default)
 
 class BitFieldDouble(BitFieldReal):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldReal.__init__(self, name, __STRUCT_DOUBLE_FMT__, default)
 
 

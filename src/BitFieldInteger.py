@@ -41,7 +41,7 @@ __STRUCT_UINT64_FMT__ = 'Q'
 
 class BitFieldInteger(BitFieldStruct):
 
-    def __init__(self, name, format, default = None):
+    def __init__(self, name, format, default = 0):
         BitFieldStruct.__init__(self, name, format, default)
 
     def str_value(self):
@@ -59,42 +59,42 @@ class BitFieldInteger(BitFieldStruct):
 
 class BitFieldInt8(BitFieldInteger):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_INT8_FMT__, default)
 
 class BitFieldUInt8(BitFieldInteger):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_UINT8_FMT__, default)
 
 class BitFieldInt16(BitFieldInteger):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_INT16_FMT__, default)
 
 class BitFieldUInt16(BitFieldInteger):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_UINT16_FMT__, default)
 
 class BitFieldInt32(BitFieldInteger):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_INT32_FMT__, default)
 
 class BitFieldUInt32(BitFieldInteger):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_UINT32_FMT__, default)
 
 class BitFieldInt64(BitFieldInteger):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_INT64_FMT__, default)
 
 class BitFieldUInt64(BitFieldInteger):
 
-    def __init__(self, name, default = None):
+    def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_UINT64_FMT__, default)
 
 

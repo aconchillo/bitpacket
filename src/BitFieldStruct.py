@@ -41,7 +41,7 @@ __DEFAULT_ENDIANNESS__ = '>'
 
 class BitFieldStruct(BitField):
 
-    def __init__(self, name, format, default = None):
+    def __init__(self, name, format, default = 0):
         # Set default endianness
         self.set_endianness(__DEFAULT_ENDIANNESS__)
 
@@ -51,8 +51,7 @@ class BitFieldStruct(BitField):
 
         # Initialize BitField and set converted value
         BitField.__init__(self, name, size)
-        if default != None:
-            self.set_array(self.__value2array(default))
+        self.set_array(self.__value2array(default))
 
     def value(self):
         string = self.array().tostring()

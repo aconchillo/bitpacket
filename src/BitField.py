@@ -97,7 +97,7 @@ class BitField(BitFieldBase):
     build packets.
     '''
 
-    def __init__(self, name, size, default = None):
+    def __init__(self, name, size, default = 0):
         '''
         Initializes the field with the given 'name' and 'size' (in
         bits). By default the field's value will be initialized to 0
@@ -106,8 +106,7 @@ class BitField(BitFieldBase):
         BitFieldBase.__init__(self, name)
         self.__bits = []
         self.__size = size
-        if default != None:
-            self.set_value(default)
+        self.set_value(default)
 
     def value(self):
         '''
@@ -190,7 +189,7 @@ __BYTE_SIZE__ = 8
 
 class BitFieldByte(BitField):
 
-    def __init__(self, name, size, default = None):
+    def __init__(self, name, size, default = 0):
         BitField.__init__(self, name, size * __BYTE_SIZE__, default)
 
 
