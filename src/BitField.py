@@ -54,6 +54,13 @@ __doc__ = '''
     that would create a BitField instance of a field named 'id' of 1
     byte size and value 0x54.
 
+    Also, the BitFieldByte class might be useful for creating
+    byte-sized fields. So, following the last example:
+
+    >>> bf = BitFieldByte('id', 1, 0x54)
+    >>> bf.value() == 0x54
+    True
+
 
     UNPACKING SINGLE BIT FIELDS
 
@@ -175,6 +182,16 @@ class BitField(BitFieldBase):
         is a default hexadecimal representation for all BitFields.
         '''
         return '0x%0*X' % (hex_size, self.eng_value())
+
+
+
+# Size (in bits) of a byte
+__BYTE_SIZE__ = 8
+
+class BitFieldByte(BitField):
+
+    def __init__(self, name, size, default = None):
+        BitField.__init__(self, name, size * __BYTE_SIZE__, default)
 
 
 if __name__ == '__main__':
