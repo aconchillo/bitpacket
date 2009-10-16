@@ -169,6 +169,11 @@ class BitStructure(BitFieldBase):
         self.__fields.append(field)
 
     def array(self):
+        '''
+        Returns a byte array representing this field, that is, the
+        concatenated arrays of all fields in the structure. The
+        returned array is of type 'B' (unsigned char).
+        '''
         if (self.size() & 7) != 0:
             raise ValueError, '"%s" size must be a multiple of 8' % self.name()
 
@@ -178,27 +183,62 @@ class BitStructure(BitFieldBase):
         return arr
 
     def set_array(self, data):
+        '''
+        Sets a byte array to the structure. The array should be of
+        type 'B' (unsigned char).
+
+        This will unpack the given array in to the multiple fields
+        contained in this structure.
+        '''
         if (self.size() & 7) != 0:
             raise ValueError, '"%s" size must be a multiple of 8' % self.name()
 
-        bits = _encode_array(data)
-        self.set_binary(bits)
+        if not self.is_byte_aligned():
+            bits = _encode_array(data)
+            self.set_binary(bits)
+        else:
+            size = len(data)
+            start = 0
+            for field in self.fields():
+                byte_size = field.byte_size()
+                if field.is_variable():
+                    end = size
+                else:
+                    end = start + byte_size
+                # We could have a field with greater size than given one,
+                # so we need to check this.
+                if end > size:
+                    end = size
+                field.set_array(data[start:end])
+                start = end
 
     def binary(self):
+        '''
+        Returns a binary string representing this structure, that is
+        the concatenated binary strings of all fields in the
+        structure. The binary string is a sequence of 0's and 1's.
+        '''
         bits = []
         for i in range(0, len(self.__fields)):
             bits += self.__fields[i].binary()
         return bits
 
     def set_binary(self, bits):
+        '''
+        Sets a binary string to the structure. The binary string is a
+        sequence of 0's and 1's.
+
+        This will unpack the given binary string in to the multiple
+        fields contained in this structure.
+        '''
         size = len(bits)
         start = 0
         for field in self.fields():
-            field_size = field.size()
+            bit_size = field.size()
             if field.is_variable():
                 end = size
             else:
-                end = start + field_size
+                end = start + bit_size
             # We could have a field with greater size than given one,
             # so we need to check this.
             if end > size:
@@ -213,9 +253,18 @@ class BitStructure(BitFieldBase):
         return self.__fields_name[name]
 
     def fields(self):
+        '''
+        Returns the (ordered) list of fields that form this field.
+        '''
         return self.__fields
 
     def is_variable(self):
+        '''
+        Tells whether this structure might have variable size
+        depending on its content. Note that the structure might
+        content variable or non-variable fields. So, if any of them is
+        variable, the structure is also variable.
+        '''
         variable = False
         for field in self.fields():
             variable = field.is_variable()
@@ -225,6 +274,11 @@ class BitStructure(BitFieldBase):
         return variable
 
     def write(self):
+        '''
+        Returns a human-readable representation of the information of
+        this bit field. This function uses the writer set via
+        'set_writer' to obtain the final string.
+        '''
         s = self.writer().start_block(self)
         for field in self.fields():
             # Save field writer
@@ -238,10 +292,23 @@ class BitStructure(BitFieldBase):
         return s
 
     def size(self):
+        '''
+        Returns the size of the field in bits. That is, the sum of all
+        bit sizes of the fields in this structure.
+        '''
         size = 0
         for field in self.__fields:
             size += field.size()
         return size
+
+    def is_byte_aligned(self):
+        aligned = True
+        for field in self.fields():
+            aligned = field.is_byte_aligned()
+            if not aligned:
+                # Exit loop at first non-byte aligned field
+                break
+        return aligned
 
     def reset(self):
         '''

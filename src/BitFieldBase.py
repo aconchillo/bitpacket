@@ -187,6 +187,14 @@ class BitFieldBase:
         '''
         return False
 
+    def is_byte_aligned(self):
+        '''
+        Tells whteher the given field is byte aligned or not. This,
+        for example, might be useful to improve performance when all
+        fields are byte aligned.
+        '''
+        return (self.size() & 7) == 0
+
     def fields(self):
         '''
         Returns the (ordered) list of fields that form this field. A

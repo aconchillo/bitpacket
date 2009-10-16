@@ -30,9 +30,26 @@ __doc__ = '''
     This module provides classes to define signed and unsigned
     integers bit fields, from 8-bit to 64-bit.
 
-    In order to encode and decode real values, the Python's 'struct'
-    module is used. So, the conversion from binary data to real values
-    depends on that module.
+    In order to encode and decode integer values, the Python's
+    'struct' module is used. So, the conversion from binary data to
+    integer values depends on that module.
+
+
+    SIGNED and UNSIGNED INTEGERS
+
+    Multiple signed and unsigned integer classes are available. It is,
+    for example, very easy to create a new 16-bit signed integer bit
+    field:
+
+    >>> value = BitFieldInt16('int16', -1345)
+    >>> print value
+    (int16 = -1345)
+
+    or a 16-bit unsigned one:
+
+    >>> value = BitFieldUInt16('uint16', 0x8000)
+    >>> print value
+    (uint16 = 32768)
 
 '''
 

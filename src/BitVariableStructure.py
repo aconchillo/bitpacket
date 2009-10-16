@@ -179,6 +179,7 @@ import copy
 from BitField import BitField
 from BitStructure import BitStructure
 from BitFieldBase import _bin_to_int
+from BitFieldBase import _encode_array
 
 class BitVariableStructure(BitStructure):
     '''
@@ -235,6 +236,24 @@ class BitVariableStructure(BitStructure):
         field.set_name('%s%d' % (field.name(), counter))
         self.__fields.append(field)
         self.__counter.set_value(counter + 1)
+
+    def set_array(self, data):
+        # We might be re-using the instance, so we need to reset it.
+        self.reset()
+
+        if not self.is_byte_aligned():
+            bits = _encode_array(data)
+            self.set_binary(bits)
+        else:
+            # Get counter from data and append fields.
+            bits = _encode_array(data[0:self.__counter.byte_size()])
+            counter = _bin_to_int(bits)
+            for i in range(counter):
+                new_field = self.__base_type()
+                self.append(new_field)
+
+            # Fields have been only added, we need to set the value now.
+            self.__fields.set_array(data[self.__counter.byte_size():])
 
     def set_binary(self, bits):
         # We might be re-using the instance, so we need to reset it.
