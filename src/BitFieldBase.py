@@ -28,14 +28,11 @@ __doc__ = '''
 
     These classes represent simple bit fields, and fixed and variable
     structures of bit fields which might be used to construct
-    packets. BitStructure and BitVariableStructure are BitField
-    themselves and all of them can be used together. That is, we can
-    add any BitField subclass into a BitStructure or
+    packets. BitField, BitStructure and BitVariableStructure implement
+    the BitFieldBase abstract class, so all of them can be used
+    together. This means that, for example, we can add any
+    BitFieldBase sub-class into a BitStructure or
     BitVariableStructure.
-
-    Note that some of the code found in this documentation might not
-    be self-contained, it may depend on code explained in previous
-    sections.
 
 '''
 
@@ -48,14 +45,18 @@ class BitFieldBase:
     This the abstract class for all bit fields sub-classes. All bit
     fields must inherit from this class and implement the
     non-implemented methods in it.
+
+    As this is an abstract class, most of the methods are not
+    implemented, so it can not be used as is.
     '''
 
-    def __init__(self, name, writer = BitFieldWriterBasic()):
+    def __init__(self, name):
         '''
+        Initialize this abstract class with the given 'name'.
         '''
-        self._name = name
-        self.__writer = writer
+        self.__name = name
         self.__calibration = None
+        self.__writer = BitFieldWriterBasic()
 
         # Identity calibration
         self.set_calibration_curve(lambda x: x.value())
@@ -64,7 +65,15 @@ class BitFieldBase:
         '''
         Returns the name of the field.
         '''
-        return self._name
+        return self.__name
+
+    def set_name(self, name):
+        '''
+        Sets a new 'name' to this field. This fuction should be used
+        with caution as could cause problems with already running
+        code.
+        '''
+        self.__name = name
 
     def value(self):
         '''
@@ -80,14 +89,19 @@ class BitFieldBase:
 
     def array(self):
         '''
-        Returns a byte array (big-endian) representing this field.
+        Returns a byte array representing this field. The returned
+        array is of type 'B' (unsigned char).
+
+        See Python's array module.
         '''
         raise NotImplementedError
 
     def set_array(self, data):
         '''
-        Sets a byte array (big-endian) to the field. The array should
-        be of type 'B' (unsigned char).
+        Sets a byte array to the field. The array should be of type
+        'B' (unsigned char).
+
+        See Python's array module.
         '''
         raise NotImplementedError
 
@@ -106,6 +120,13 @@ class BitFieldBase:
         raise NotImplementedError
 
     def set_calibration_curve(self, curve):
+        '''
+        Sets the calibration curve to be applied to this field value
+        in order to obtain the enginnering value. Some fields might
+        represent tempreatures, angles, etc. that need to be converted
+        from its digital form to its analog form. The calibration
+        curve provides the functionality to perform this conversion.
+        '''
         self.__calibration = curve
 
     def hex_value(self):
@@ -123,32 +144,35 @@ class BitFieldBase:
         value of this field. Some fields might represent tempreatures,
         angles, etc. that need to be converted from its digital form
         to its analog form. This function will return the value after
-        the conversion is done.
+        the conversion is done, that is, after applying the
+        calibration curve.
         '''
         return self.__calibration(self)
 
     def str_value(self):
         '''
-        Returns a human-readable representation of this field. Note
-        that the type of the field can be a float, integer, etc. So,
-        the representation might be different for each type.
+        Returns a human-readable representation of the value of this
+        field. Note that the type of the field can be a float,
+        integer, etc. So, the representation might be different for
+        each type.
         '''
         raise NotImplementedError
 
     def str_hex_value(self):
         '''
-        Returns a human-readable representation of this field. Note
-        that the type of the field can be a float, integer, etc. So,
-        the representation might be different for each type.
+        Returns a human-readable representation of the hexadecimal
+        values of this field. Note that the type of the field can be a
+        float, integer, etc. This is the real representation (in
+        memory) of the value.
         '''
         raise NotImplementedError
 
     def str_eng_value(self):
         '''
         Returns a human-readable representation of the engineering
-        value. Note that the type of the field can be a float,
-        integer, etc. So, the representation might be different for
-        each type.
+        value. This function will first calculate the engineering
+        value (by applying the calibration curve) and will return the
+        string representation of it.
         '''
         raise NotImplementedError
 
@@ -157,13 +181,35 @@ class BitFieldBase:
         Tells whether this field might have variable size depending on
         its content. The field might content variable or non-variable
         fields.
+
+        A variable field is a field that might vary its size depending
+        on its content.
         '''
         return False
 
+    def fields(self):
+        '''
+        Returns the (ordered) list of fields that form this field. A
+        BitFieldBase subclass, such as BitStructure, might be formed
+        by multiple fields. This function will return a list of these
+        fields.
+        '''
+        return []
+
     def writer(self):
+        '''
+        Returns the writer to be used by this field in order to print
+        the field information.
+
+        By default, the BitFieldWriterBasic is used.
+        '''
         return self.__writer
 
     def set_writer(self, writer):
+        '''
+        Sets the new 'writer' to be used by this field in order to
+        print the field information.
+        '''
         self.__writer = writer
 
     def write(self):

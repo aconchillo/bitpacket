@@ -24,6 +24,16 @@
 
 
 __doc__ = '''
+
+    Signed and unsigned integer bit fields.
+
+    This module provides classes to define signed and unsigned
+    integers bit fields, from 8-bit to 64-bit.
+
+    In order to encode and decode real values, the Python's 'struct'
+    module is used. So, the conversion from binary data to real values
+    depends on that module.
+
 '''
 
 from BitFieldStruct import BitFieldStruct
@@ -46,13 +56,17 @@ class BitFieldInteger(BitFieldStruct):
 
     def str_value(self):
         '''
-        Returns a human-readable representation for a float value.
+        Returns a human-readable representation for the integer value.
         '''
         return '%d' % self.value()
 
     def str_eng_value(self):
         '''
-        Returns a human-readable representation for a float value.
+        Returns a human-readable representation for the engineering
+        value.
+
+        The engineering values is, by default, represented as an
+        integer value.
         '''
         return '%d' % self.eng_value()
 

@@ -142,24 +142,23 @@ from BitField import BitField
 class BitStructure(BitFieldBase):
     '''
     This class represents an structure of bit fields to be used to
-    build packets. BitStructure and BitVariableStructure are BitField
-    themselves and all of them can be used together. That is, we can
-    add any BitField subclass into a BitStructure or
-    BitVariableStructure.
+    build packets.
     '''
 
     def __init__(self, name):
         '''
         Initializes the bit structure field with the given 'name'. By
-        default an structure field does not contain any members.
+        default an structure field does not contain any fields.
         '''
         BitFieldBase.__init__(self, name)
-        self._reset()
+
+        self.__fields = []
+        self.__fields_name = {}
 
     def append(self, field):
         '''
-        Appends a new 'field' (of any derived BitField type) into the
-        structure.
+        Appends a new 'field' (of any derived BitFieldBase type) into
+        the structure.
         '''
         if field.name() in self.__fields_name:
             raise NameError, 'field "%s" already exists in structure "%s"' \
@@ -170,9 +169,6 @@ class BitStructure(BitFieldBase):
         self.__fields.append(field)
 
     def array(self):
-        '''
-        Returns a byte array (big-endian) representing this field.
-        '''
         if (self.size() & 7) != 0:
             raise ValueError, '"%s" size must be a multiple of 8' % self.name()
 
@@ -182,10 +178,6 @@ class BitStructure(BitFieldBase):
         return arr
 
     def set_array(self, data):
-        '''
-        Sets a byte array (big-endian) to the field. The array should
-        be of type 'B' (unsigned char).
-        '''
         if (self.size() & 7) != 0:
             raise ValueError, '"%s" size must be a multiple of 8' % self.name()
 
@@ -193,20 +185,12 @@ class BitStructure(BitFieldBase):
         self.set_binary(bits)
 
     def binary(self):
-        '''
-        Returns a binary string representing this field. The binary
-        string is a sequence of 0's and 1's.
-        '''
         bits = []
         for i in range(0, len(self.__fields)):
             bits += self.__fields[i].binary()
         return bits
 
     def set_binary(self, bits):
-        '''
-        Sets a binary string to the field. The binary string is a
-        sequence of 0's and 1's.
-        '''
         size = len(bits)
         start = 0
         for field in self.fields():
@@ -222,16 +206,6 @@ class BitStructure(BitFieldBase):
             field.set_binary(bits[start:end])
             start = end
 
-    def size(self):
-        '''
-        Returns the size of the field in bits. That is, the sum of all
-        item' sizes in the structure.
-        '''
-        size = 0
-        for field in self.__fields:
-            size += field.size()
-        return size
-
     def field(self, name):
         '''
         Returns the structure field identified by 'name'.
@@ -239,18 +213,9 @@ class BitStructure(BitFieldBase):
         return self.__fields_name[name]
 
     def fields(self):
-        '''
-        Returns the ordered list of fields that form this bit
-        structure.
-        '''
         return self.__fields
 
     def is_variable(self):
-        '''
-        Tells whether this filed might have variable size depending on
-        its content. Note that an structure field might have variable
-        member fields.
-        '''
         variable = False
         for field in self.fields():
             variable = field.is_variable()
@@ -272,9 +237,16 @@ class BitStructure(BitFieldBase):
         s += self.writer().end_block(self)
         return s
 
-    def _reset(self):
+    def size(self):
+        size = 0
+        for field in self.__fields:
+            size += field.size()
+        return size
+
+    def reset(self):
         '''
-        Remove all added fields from this structure.
+        Remove all added fields from this structure. This function
+        will loss all previous information stored in this field.
         '''
         self.__fields = []
         self.__fields_name = {}

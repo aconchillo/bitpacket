@@ -24,9 +24,9 @@
 
 __doc__ = '''
 
-    SINGLE BIT FIELDS
+    Single bit fields.
 
-    A packet might be formed by mutiple fields that could be single
+    A packet might be formed by multiple fields that could be single
     bit fields, integer fields, structure fields or variable structure
     fields.
 
@@ -65,7 +65,7 @@ __doc__ = '''
     UNPACKING SINGLE BIT FIELDS
 
     In order to unpack a single field from a data buffer, one would
-    create a BitField without any initialisation and assign the data
+    create a BitField without any initialization and assign the data
     buffer when ready:
 
     >>> data = array.array('B', [0x35])
@@ -92,9 +92,9 @@ from BitFieldBase import _decode_array
 
 class BitField(BitFieldBase):
     '''
-    This class represents a bit field to be used together with
-    BitStructure and BitVariableStructure sub-classes in order to
-    build packets.
+    This class represents a single bit field to be used together with
+    other BitFieldBase sub-classes, such as BitStructure, in order to
+    build bigger fields.
     '''
 
     def __init__(self, name, size, default = 0):
@@ -105,12 +105,20 @@ class BitField(BitFieldBase):
         '''
         BitFieldBase.__init__(self, name)
         self.__bits = []
+
+        if size == 0:
+            raise SizeError, 'Bit size must be at least 1'
+
         self.__size = size
         self.set_value(default)
 
     def value(self):
         '''
-        Returns the integer value of the field.
+        Returns the value of this field. As single bit fields do not
+        have a concrete type (signed integers, float...) this will
+        return the hexadecimal integer representation of this field.
+
+        This is the same as calling 'hex_value'.
         '''
         return self.hex_value()
 
@@ -122,7 +130,7 @@ class BitField(BitFieldBase):
 
     def array(self):
         '''
-        Returns a byte array (big-endian) representing this field.
+        Returns a byte array representing this field.
         '''
         if (self.size() & 7) != 0:
             raise ValueError, '"%s" size must be a multiple of 8' % self.name()
@@ -130,8 +138,8 @@ class BitField(BitFieldBase):
 
     def set_array(self, data):
         '''
-        Sets a byte array (big-endian) to the field. The array should
-        be of type 'B' (unsigned char).
+        Sets a byte array to the field. The array should be of type
+        'B' (unsigned char).
         '''
         if (self.size() & 7) != 0:
             raise ValueError, '"%s" size must be a multiple of 8' % self.name()
@@ -151,36 +159,50 @@ class BitField(BitFieldBase):
         '''
         self.__bits = bits
 
-    def size(self):
-        '''
-        Returns the size of the field in bits.
-        '''
-        return self.__size
-
     def hex_value(self):
+        '''
+        Returns the hexadecimal integer representation of this
+        field. That is, the bytes forming this field in its integer
+        representation.
+        '''
         return _bin_to_int(self.__bits)
 
     def str_value(self):
         '''
-        Returns a human-readable representation of this field. This is
-        is a default hexadecimal representation for all BitFields.
+        Returns a human-readable representation of the value of this
+        field. For single bit fields (base class) this is the
+        hexadecimal representation.
+
+        This is the same as calling 'str_hex_value'.
         '''
         return self.str_hex_value()
 
     def str_hex_value(self):
         '''
-        Returns a human-readable representation of this field. This is
-        is a default hexadecimal representation for all BitFields.
+        Returns a human-readable representation of the hexadecimal
+        values of this field.
         '''
         hex_size = self.byte_size() * 2
         return '0x%0*X' % (hex_size, self.hex_value())
 
     def str_eng_value(self):
         '''
-        Returns a human-readable representation of this field. This is
-        is a default hexadecimal representation for all BitFields.
+        Returns a human-readable representation of the engineering
+        value. This function will first calculate the engineering
+        value (by applying the calibration curve) and will return the
+        string representation of it.
+
+        For single bit fields (base class) the hexadecimal
+        representation is returned.
         '''
+        hex_size = self.byte_size() * 2
         return '0x%0*X' % (hex_size, self.eng_value())
+
+    def size(self):
+        '''
+        Returns the size of the field in bits.
+        '''
+        return self.__size
 
 
 
@@ -188,8 +210,17 @@ class BitField(BitFieldBase):
 __BYTE_SIZE__ = 8
 
 class BitFieldByte(BitField):
+    '''
+    This class is a helper BitField sub-class to create fields with
+    byte-aligned sizes.
+    '''
 
     def __init__(self, name, size, default = 0):
+        '''
+        Initializes the field with the given 'name' and 'size' (in
+        bytes). By default the field's value will be initialized to 0
+        or to 'default' if specified.
+        '''
         BitField.__init__(self, name, size * __BYTE_SIZE__, default)
 
 

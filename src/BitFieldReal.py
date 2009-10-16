@@ -24,6 +24,37 @@
 
 
 __doc__ = '''
+
+    Float and double bit fields.
+
+    This module provides classes to define float (32-bit) and double
+    (64-bit) bit fields.
+
+    In order to encode and decode real values, the Python's 'struct'
+    module is used. So, the conversion from binary data to real values
+    depends on that module.
+
+
+    32-BIT and 64-BIT REAL VALUES
+
+    A float value can be easily created with the BitFieldFloat class:
+
+    >>> value = BitFieldFloat('f', 1.967834)
+    >>> print value
+    (f = 1.96783)
+
+    Some times, it is also useful to see the hexadecimal value that
+    forms this float number.
+
+    >>> print value.str_hex_value()
+    0x3FFBE1FC
+
+    The same might be applied for doubles:
+
+    >>> value = BitFieldDouble('f', 0.0087552)
+    >>> print value
+    (f = 0.0087552)
+
 '''
 
 from BitFieldStruct import BitFieldStruct
@@ -35,30 +66,44 @@ __STRUCT_DOUBLE_FMT__ = 'd'
 
 class BitFieldReal(BitFieldStruct):
 
-    def __init__(self, name, format, default = 0):
+    def __init__(self, name, format, default = 0.0):
         BitFieldStruct.__init__(self, name, format, default)
 
     def str_value(self):
         '''
-        Returns a human-readable representation for a float value.
+        Returns a human-readable representation for the float value.
+
+        The value is rounded and converted to decimal notation in the
+        style [-]ddd.ddd or [-]d.ddde[+-]dd depeding on the exponent.
+
+        See 'printf' documentation for 'g' format.
         '''
         return '%g' % self.value()
 
     def str_eng_value(self):
         '''
-        Returns a human-readable representation for a float value.
+        Returns a human-readable representation for the engineering
+        value.
+
+        The engineering values is, by default, represented as a real
+        value.
+
+        The value is rounded and converted to decimal notation in the
+        style [-]ddd.ddd or [-]d.ddde[+-]dd depeding on the exponent.
+
+        See 'printf' documentation for 'g' format.
         '''
         return '%g' % self.eng_value()
 
 
 class BitFieldFloat(BitFieldReal):
 
-    def __init__(self, name, default = 0):
+    def __init__(self, name, default = 0.0):
         BitFieldReal.__init__(self, name, __STRUCT_FLOAT_FMT__, default)
 
 class BitFieldDouble(BitFieldReal):
 
-    def __init__(self, name, default = 0):
+    def __init__(self, name, default = 0.0):
         BitFieldReal.__init__(self, name, __STRUCT_DOUBLE_FMT__, default)
 
 
