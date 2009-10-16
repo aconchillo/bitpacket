@@ -205,7 +205,6 @@ class BitField(BitFieldBase):
         return self.__size
 
 
-
 
 
 # Size (in bits) of a byte

@@ -220,7 +220,7 @@ class BitFieldBase:
 
         Note that the result might not contain all the information. It
         all depends on the BitFieldWriter implementation.
-p        '''
+        '''
         assert self.writer() != None, "No default writer set for this field"
 
         return self.writer().write(self)
