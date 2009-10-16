@@ -193,24 +193,8 @@ class BitStructure(BitFieldBase):
         if (self.size() & 7) != 0:
             raise ValueError, '"%s" size must be a multiple of 8' % self.name()
 
-        if not self.is_byte_aligned():
-            bits = _encode_array(data)
-            self.set_binary(bits)
-        else:
-            size = len(data)
-            start = 0
-            for field in self.fields():
-                byte_size = field.byte_size()
-                if field.is_variable():
-                    end = size
-                else:
-                    end = start + byte_size
-                # We could have a field with greater size than given one,
-                # so we need to check this.
-                if end > size:
-                    end = size
-                field.set_array(data[start:end])
-                start = end
+        bits = _encode_array(data)
+        self.set_binary(bits)
 
     def binary(self):
         '''
@@ -300,15 +284,6 @@ class BitStructure(BitFieldBase):
         for field in self.__fields:
             size += field.size()
         return size
-
-    def is_byte_aligned(self):
-        aligned = True
-        for field in self.fields():
-            aligned = field.is_byte_aligned()
-            if not aligned:
-                # Exit loop at first non-byte aligned field
-                break
-        return aligned
 
     def reset(self):
         '''

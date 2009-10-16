@@ -187,14 +187,6 @@ class BitFieldBase:
         '''
         return False
 
-    def is_byte_aligned(self):
-        '''
-        Tells whteher the given field is byte aligned or not. This,
-        for example, might be useful to improve performance when all
-        fields are byte aligned.
-        '''
-        return (self.size() & 7) == 0
-
     def fields(self):
         '''
         Returns the (ordered) list of fields that form this field. A
@@ -228,7 +220,7 @@ class BitFieldBase:
 
         Note that the result might not contain all the information. It
         all depends on the BitFieldWriter implementation.
-        '''
+p        '''
         assert self.writer() != None, "No default writer set for this field"
 
         return self.writer().write(self)
