@@ -87,9 +87,11 @@ class BitFieldBase:
 
     def string(self):
         '''
-        Returns a string of bytes representing this field.
+        Returns a string of bytes representing this field. Note that
+        if the field is not byte aligned, the last byte starts from
+        the MSB.
         '''
-        raise NotImplementedError
+        return _decode_string(self.binary())
 
     def set_string(self, string, start):
         '''
@@ -238,8 +240,13 @@ class BitFieldBase:
 
 # Private
 
+__BYTE_SIZE__ = 8
+
 def _byte_aligned(number):
     return (number & 0x07) == 0
+
+def _byte_start(bit_start):
+    return (bit_start >> 3)
 
 def _hex_string(number, byte_size):
     hex_size = byte_size * 2
@@ -272,12 +279,12 @@ _char_to_bin = {}
 _bin_to_char = {}
 for _i in range(256):
     _ch = chr(_i)
-    _bin = _int_to_bin(_i, 8)
+    _bin = _int_to_bin(_i, __BYTE_SIZE__)
     _char_to_bin[_ch] = _bin
     _bin_to_char[_bin] = _ch
 
 def _encode_string(data, bit_start, width = 0):
-    byte_start = bit_start >> 3
+    byte_start = _byte_start(bit_start)
     if width == 0:
         data_aux = data[byte_start:]
     else:
@@ -288,12 +295,13 @@ def _encode_string(data, bit_start, width = 0):
     return "".join(_char_to_bin[ch] for ch in data_aux)
 
 def _decode_string(data):
-    i = 0
-    j = 0
-    l = len(data) // 8
+    data_size = len(data)
+    bit_size = (_byte_start(data_size) + 1) * __BYTE_SIZE__
+    bit_missing = bit_size - data_size
+    data = data + '\x00' * bit_missing
     chars = ""
-    while j < l:
-        chars += _bin_to_char[data[i:i+8]]
+    i = 0
+    while i < bit_size:
+        chars += _bin_to_char[data[i:i + __BYTE_SIZE__]]
         i += 8
-        j += 1
     return chars

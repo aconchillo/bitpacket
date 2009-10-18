@@ -76,7 +76,6 @@ from BitFieldBase import BitFieldBase
 from BitFieldBase import _bin_to_int
 from BitFieldBase import _int_to_bin
 from BitFieldBase import _encode_string
-from BitFieldBase import _decode_string
 from BitFieldBase import _byte_aligned
 
 class BitField(BitFieldBase):
@@ -116,14 +115,6 @@ class BitField(BitFieldBase):
         Sets a new integer 'value' to the field.
         '''
         self.__bits = _int_to_bin(value, self.size())
-
-    def string(self):
-        '''
-        Returns a string of bytes representing this field. Note that
-        if the field is not aligned to byte, only the necessary bits
-        from the last byte will be written (starting from MSB).
-        '''
-        return _decode_string(self.__bits)
 
     def set_string(self, string, start = 0):
         '''
