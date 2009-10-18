@@ -69,7 +69,11 @@ __STRUCT_UINT64_FMT__ = 'Q'
 class BitFieldInteger(BitFieldStruct):
 
     def __init__(self, name, format, default = 0):
-        BitFieldStruct.__init__(self, name, format, default)
+        BitFieldStruct.__init__(self, name, format)
+        self.set_value(default)
+
+    def value(self):
+        return BitFieldStruct.value(self)[0]
 
     def str_value(self):
         '''
@@ -132,3 +136,44 @@ class BitFieldUInt64(BitFieldInteger):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
+
+# class BitFieldIntegerVariable(BitFieldStruct):
+
+#     def __init__(self, name, size, format, default = None):
+#         if size == 0:
+#             raise ValueError, 'Number of integers must be at least 1'
+
+#         self.__count = size
+#         format = "%d%s" % (size, format)
+
+#         BitFieldStruct.__init__(self, name, format)
+#         if default != None:
+#             self.set_value(default)
+
+#     def count(self):
+#         return self.__count
+
+#     def value(self):
+#         return BitFieldStruct.value(self)
+
+#     def set_value(self, values):
+#         if len(values) != self.count():
+#             raise ValueError, \
+#                 "Wrong number of values (given %d, expected %d)" \
+#                 % (len(values), self.count())
+#         BitFieldStruct.set_value(self, *values)
+
+#     def str_eng_value(self):
+#         '''
+#         Returns a human-readable representation for the engineering
+#         value.
+
+#         The engineering values is, by default, represented as an
+#         integer value.
+#         '''
+#         return ['%d' % value for value in self.eng_value()]
+
+# class BitFieldUInt16Variable(BitFieldIntegerVariable):
+
+#     def __init__(self, name, size, default = None):
+#         BitFieldIntegerVariable.__init__(self, name, size, __STRUCT_UINT16_FMT__, default)

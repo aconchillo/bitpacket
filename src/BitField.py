@@ -54,13 +54,6 @@ __doc__ = '''
     that would create a BitField instance of a field named 'id' of 1
     byte size and value 0x54.
 
-    Also, the BitFieldByte class might be useful for creating
-    byte-sized fields. So, following the last example:
-
-    >>> bf = BitFieldByte('id', 1, 0x54)
-    >>> bf.value() == 0x54
-    True
-
 
     UNPACKING SINGLE BIT FIELDS
 
@@ -68,27 +61,23 @@ __doc__ = '''
     create a BitField without any initialization and assign the data
     buffer when ready:
 
-    >>> data = array.array('B', [0x35])
     >>> bf = BitField('id', 8)
-    >>> bf.set_array(data)
-    >>> bf.array()
-    array('B', [53])
+    >>> bf.set_string("\x35")
     >>> print bf
     (id = 0x35)
-    >>> bf.set_array(bf.array())
+    >>> bf.set_string(bf.string())
     >>> bf.set_value(bf.value())
     >>> print bf
     (id = 0x35)
 
 '''
 
-import array
-
 from BitFieldBase import BitFieldBase
 from BitFieldBase import _bin_to_int
 from BitFieldBase import _int_to_bin
-from BitFieldBase import _encode_array
-from BitFieldBase import _decode_array
+from BitFieldBase import _encode_string
+from BitFieldBase import _decode_string
+from BitFieldBase import _byte_aligned
 
 class BitField(BitFieldBase):
     '''
@@ -128,22 +117,26 @@ class BitField(BitFieldBase):
         '''
         self.__bits = _int_to_bin(value, self.size())
 
-    def array(self):
+    def string(self):
         '''
-        Returns a byte array representing this field.
+        Returns a string of bytes representing this field. Note that
+        if the field is not aligned to byte, only the necessary bits
+        from the last byte will be written (starting from MSB).
         '''
-        if (self.size() & 7) != 0:
-            raise ValueError, '"%s" size must be a multiple of 8' % self.name()
-        return _decode_array(self.__bits)
+        return _decode_string(self.__bits)
 
-    def set_array(self, data):
+    def set_string(self, string, start = 0):
         '''
-        Sets a byte array to the field. The array should be of type
-        'B' (unsigned char).
+        Sets a string of bytes to the field. Note that if the field is
+        not aligned to byte, only the necessary bits from the last
+        byte will be read (starting from MSB).
         '''
-        if (self.size() & 7) != 0:
-            raise ValueError, '"%s" size must be a multiple of 8' % self.name()
-        self.__bits = _encode_array(data, self.byte_size())
+        bits = _encode_string(string, start, self.byte_size())
+        # If the bit start is byte aligned, _encode_string will return
+        # the first valid byte, so we need start from 0.
+        if _byte_aligned(start):
+            start = 0
+        self.set_binary(bits, start)
 
     def binary(self):
         '''
@@ -152,12 +145,12 @@ class BitField(BitFieldBase):
         '''
         return self.__bits
 
-    def set_binary(self, bits):
+    def set_binary(self, bits, start = 0):
         '''
         Sets a binary string to the field. The binary string is a
         sequence of 0's and 1's.
         '''
-        self.__bits = bits
+        self.__bits = bits[start:self.size() + start]
 
     def hex_value(self):
         '''
@@ -167,62 +160,11 @@ class BitField(BitFieldBase):
         '''
         return _bin_to_int(self.__bits)
 
-    def str_value(self):
-        '''
-        Returns a human-readable representation of the value of this
-        field. For single bit fields (base class) this is the
-        hexadecimal representation.
-
-        This is the same as calling 'str_hex_value'.
-        '''
-        return self.str_hex_value()
-
-    def str_hex_value(self):
-        '''
-        Returns a human-readable representation of the hexadecimal
-        values of this field.
-        '''
-        hex_size = self.byte_size() * 2
-        return '0x%0*X' % (hex_size, self.hex_value())
-
-    def str_eng_value(self):
-        '''
-        Returns a human-readable representation of the engineering
-        value. This function will first calculate the engineering
-        value (by applying the calibration curve) and will return the
-        string representation of it.
-
-        For single bit fields (base class) the hexadecimal
-        representation is returned.
-        '''
-        hex_size = self.byte_size() * 2
-        return '0x%0*X' % (hex_size, self.eng_value())
-
     def size(self):
         '''
         Returns the size of the field in bits.
         '''
         return self.__size
-
-
-
-
-# Size (in bits) of a byte
-__BYTE_SIZE__ = 8
-
-class BitFieldByte(BitField):
-    '''
-    This class is a helper BitField sub-class to create fields with
-    byte-aligned sizes.
-    '''
-
-    def __init__(self, name, size, default = 0):
-        '''
-        Initializes the field with the given 'name' and 'size' (in
-        bytes). By default the field's value will be initialized to 0
-        or to 'default' if specified.
-        '''
-        BitField.__init__(self, name, size * __BYTE_SIZE__, default)
 
 
 if __name__ == '__main__':

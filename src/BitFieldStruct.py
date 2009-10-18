@@ -22,15 +22,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
-import array
-
 from struct import *
 
-from BitField import BitField
+from BitFieldBase import BitFieldBase
 
 __ALLOWED_ENDIANNES__ = [ '@', '=', '<', '>', '!' ]
 
 __DEFAULT_ENDIANNESS__ = '>'
+
+# Size (in bits) of a byte
+__BYTE_SIZE__ = 8
 
 #Character 	Byte order 	Size and alignment
 # @ 	native 	native
@@ -39,35 +40,62 @@ __DEFAULT_ENDIANNESS__ = '>'
 # > 	big-endian 	standard
 # ! 	network (= big-endian) 	standard
 
-class BitFieldStruct(BitField):
+class BitFieldStruct(BitFieldBase):
 
-    def __init__(self, name, format, default = 0):
-        # Set default endianness
-        self.set_endianness(__DEFAULT_ENDIANNESS__)
+    def __init__(self, name, format):
+        BitFieldBase.__init__(self, name)
+
+        # This will store the string of bytes
+        self.__bytes = ""
 
         # Calculate bit size from struct type
         self.__format = format
-        size = calcsize(format) * 8
+        self.__size = calcsize(format)
 
-        # Initialize BitField and set converted value
-        BitField.__init__(self, name, size)
-        self.set_array(self.__value2array(default))
+        # Set default endianness
+        self.set_endianness(__DEFAULT_ENDIANNESS__)
 
     def value(self):
-        string = self.array().tostring()
-        val = unpack(self.__str_format(), string)
-        return val[0]
+        return unpack(self.__str_format(), self.string())
+
+    def set_value(self, *values):
+        string = pack(self.__str_format(), *values)
+        self.set_string(string)
+
+    def string(self):
+        return self.__bytes
+
+    def set_string(self, string):
+        self.__bytes = string[0:self.byte_size()]
+
+    def binary(self):
+        return _encode_string(self.__bytes, self.byte_size())
+
+    def set_binary(self, bits):
+        self.set_string(_decode_string(bits))
+
+    def hex_value(self):
+        value = 0
+        for c in self.__bytes:
+            value = (value << __BYTE_SIZE__) + ord(c)
+        return value
 
     def set_endianness(self, endianness):
         if endianness not in __ALLOWED_ENDIANNES__:
             raise KeyError, "'%s' is not an allowed endianness" % endianness
         self.__endianness = endianness
 
-    def __value2array(self, value):
-        packed = pack(self.__str_format(), value)
-        data = array.array('B')
-        data.fromstring(packed)
-        return data
+    def size(self):
+        '''
+        Returns the size of the field in bits.
+        '''
+        return self.byte_size() * __BYTE_SIZE__
+
+    def byte_size(self):
+        '''
+        Returns the size of the field in bytes.
+        '''
+        return self.__size
 
     def __str_format(self):
         return self.__endianness + self.__format

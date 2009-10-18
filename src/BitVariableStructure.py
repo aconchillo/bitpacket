@@ -154,7 +154,7 @@ __doc__ = '''
 
     into our previously defined variable structure:
 
-    >>> vs.set_array(data)
+    >>> vs.set_string(data.tostring())
     >>> print vs
     (packet =
        (counter = 0x01)
@@ -174,12 +174,9 @@ __doc__ = '''
 '''
 
 import array
-import copy
 
 from BitField import BitField
 from BitStructure import BitStructure
-from BitFieldBase import _bin_to_int
-from BitFieldBase import _encode_array
 
 class BitVariableStructure(BitStructure):
     '''
@@ -237,21 +234,26 @@ class BitVariableStructure(BitStructure):
         self.__fields.append(field)
         self.__counter.set_value(counter + 1)
 
-    def set_binary(self, bits):
+    def set_string(self, string, start = 0):
         # We might be re-using the instance, so we need to reset it.
         self.reset()
 
-        # Get counter from data and append fields.
-        counter = _bin_to_int(bits[0:self.__counter.size()])
+        # Get counter from data. Note that this will only get the
+        # counter, as there are no sub-fields yet.
+        BitStructure.set_string(self, string, start)
+        counter = self.counter()
+
+        # We need to set counter to 0 again as it will be
+        # automatically incremented when appending fields.
+        self.__counter.set_value(0)
+
+        # Append fields.
         for i in range(counter):
             new_field = self.__base_type()
             self.append(new_field)
 
         # Fields have been only added, we need to set the value now.
-        self.__fields.set_binary(bits[self.__counter.size():])
-
-    def is_variable(self):
-        return True
+        BitStructure.set_string(self, string, start)
 
     def reset(self):
         '''

@@ -74,9 +74,9 @@ __doc__ = '''
 
     UNPACKING STRUCTURES
 
-    To be able to unpack an integer value or an array of bytes into a
+    To be able to unpack an integer value or a string of bytes into a
     BitStructure, we only need to create the desired packet without
-    initializing any field and assign the integer value or array of
+    initializing any field and assign the integer value or string of
     bytes to it.
 
     >>> bs = BitStructure('mypacket')
@@ -93,7 +93,7 @@ __doc__ = '''
 
     into our previously defined structure:
 
-    >>> bs.set_array(data)
+    >>> bs.set_string(data.tostring())
     >>> print bs
     (mypacket =
        (id = 0x38)
@@ -136,7 +136,8 @@ __doc__ = '''
 import array
 
 from BitFieldBase import BitFieldBase
-from BitFieldBase import _encode_array
+from BitFieldBase import _decode_string
+
 from BitField import BitField
 
 class BitStructure(BitFieldBase):
@@ -168,33 +169,13 @@ class BitStructure(BitFieldBase):
 
         self.__fields.append(field)
 
-    def array(self):
-        '''
-        Returns a byte array representing this field, that is, the
-        concatenated arrays of all fields in the structure. The
-        returned array is of type 'B' (unsigned char).
-        '''
-        if (self.size() & 7) != 0:
-            raise ValueError, '"%s" size must be a multiple of 8' % self.name()
+    def string(self):
+        return "".join([field.string() for field in self.fields()])
 
-        arr = array.array('B')
-        for i in range(0, len(self.__fields)):
-            arr += self.__fields[i].array()
-        return arr
-
-    def set_array(self, data):
-        '''
-        Sets a byte array to the structure. The array should be of
-        type 'B' (unsigned char).
-
-        This will unpack the given array in to the multiple fields
-        contained in this structure.
-        '''
-        if (self.size() & 7) != 0:
-            raise ValueError, '"%s" size must be a multiple of 8' % self.name()
-
-        bits = _encode_array(data)
-        self.set_binary(bits)
+    def set_string(self, string, start = 0):
+        for field in self.fields():
+            field.set_string(string, start)
+            start += field.size()
 
     def binary(self):
         '''
@@ -203,11 +184,11 @@ class BitStructure(BitFieldBase):
         structure. The binary string is a sequence of 0's and 1's.
         '''
         bits = []
-        for i in range(0, len(self.__fields)):
-            bits += self.__fields[i].binary()
+        for field in self.fields():
+            bits += field.binary()
         return bits
 
-    def set_binary(self, bits):
+    def set_binary(self, bits, start = 0):
         '''
         Sets a binary string to the structure. The binary string is a
         sequence of 0's and 1's.
@@ -215,20 +196,8 @@ class BitStructure(BitFieldBase):
         This will unpack the given binary string in to the multiple
         fields contained in this structure.
         '''
-        size = len(bits)
-        start = 0
-        for field in self.fields():
-            bit_size = field.size()
-            if field.is_variable():
-                end = size
-            else:
-                end = start + bit_size
-            # We could have a field with greater size than given one,
-            # so we need to check this.
-            if end > size:
-                end = size
-            field.set_binary(bits[start:end])
-            start = end
+        string = _decode_string(bits)
+        self.set_string(string, start)
 
     def field(self, name):
         '''
@@ -241,21 +210,6 @@ class BitStructure(BitFieldBase):
         Returns the (ordered) list of fields that form this field.
         '''
         return self.__fields
-
-    def is_variable(self):
-        '''
-        Tells whether this structure might have variable size
-        depending on its content. Note that the structure might
-        content variable or non-variable fields. So, if any of them is
-        variable, the structure is also variable.
-        '''
-        variable = False
-        for field in self.fields():
-            variable = field.is_variable()
-            if variable:
-                # Exit loop at first variable size field
-                break
-        return variable
 
     def write(self):
         '''

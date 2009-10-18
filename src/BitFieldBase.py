@@ -36,8 +36,6 @@ __doc__ = '''
 
 '''
 
-import array
-
 from BitFieldWriterBasic import BitFieldWriterBasic
 
 class BitFieldBase:
@@ -87,21 +85,15 @@ class BitFieldBase:
         '''
         raise NotImplementedError
 
-    def array(self):
+    def string(self):
         '''
-        Returns a byte array representing this field. The returned
-        array is of type 'B' (unsigned char).
-
-        See Python's array module.
+        Returns a string of bytes representing this field.
         '''
         raise NotImplementedError
 
-    def set_array(self, data):
+    def set_string(self, string, start):
         '''
-        Sets a byte array to the field. The array should be of type
-        'B' (unsigned char).
-
-        See Python's array module.
+        Sets a string of bytes to the field.
         '''
         raise NotImplementedError
 
@@ -112,7 +104,7 @@ class BitFieldBase:
         '''
         raise NotImplementedError
 
-    def set_binary(self, bits):
+    def set_binary(self, bits, start):
         '''
         Sets a binary string to the field. The binary string is a
         sequence of 0's and 1's.
@@ -155,8 +147,10 @@ class BitFieldBase:
         field. Note that the type of the field can be a float,
         integer, etc. So, the representation might be different for
         each type.
+
+        By default, this is the same as calling 'str_hex_value'.
         '''
-        raise NotImplementedError
+        return self.str_hex_value()
 
     def str_hex_value(self):
         '''
@@ -165,7 +159,7 @@ class BitFieldBase:
         float, integer, etc. This is the real representation (in
         memory) of the value.
         '''
-        raise NotImplementedError
+        return _hex_string(self.hex_value(), self.byte_size())
 
     def str_eng_value(self):
         '''
@@ -174,18 +168,7 @@ class BitFieldBase:
         value (by applying the calibration curve) and will return the
         string representation of it.
         '''
-        raise NotImplementedError
-
-    def is_variable(self):
-        '''
-        Tells whether this field might have variable size depending on
-        its content. The field might content variable or non-variable
-        fields.
-
-        A variable field is a field that might vary its size depending
-        on its content.
-        '''
-        return False
+        return _hex_string(self.eng_value(), self.byte_size())
 
     def fields(self):
         '''
@@ -236,8 +219,8 @@ class BitFieldBase:
         Returns the size of the field in bytes.
         '''
         bit_size = self.size()
-        byte_size = bit_size / 8
-        if (bit_size % 8) > 0:
+        byte_size = bit_size >> 3
+        if not _byte_aligned(bit_size):
             byte_size += 1
         return byte_size
 
@@ -254,6 +237,13 @@ class BitFieldBase:
 
 
 # Private
+
+def _byte_aligned(number):
+    return (number & 0x07) == 0
+
+def _hex_string(number, byte_size):
+    hex_size = byte_size * 2
+    return '0x%0*X' % (hex_size, number)
 
 def _int_to_bin(number, width = 32):
     if number < 0:
@@ -278,34 +268,32 @@ def _bin_to_int(bits, signed = False):
         number |= _bit_values[b]
     return number - bias
 
-_intchar_to_bin = {}
-_bin_to_intchar = {}
+_char_to_bin = {}
+_bin_to_char = {}
 for _i in range(256):
     _ch = chr(_i)
     _bin = _int_to_bin(_i, 8)
-    _intchar_to_bin[_i] = _bin
-    _bin_to_intchar[_bin] = _i
+    _char_to_bin[_ch] = _bin
+    _bin_to_char[_bin] = _ch
 
-def _encode_array(data, width = 0):
-    assert data.typecode == 'B', "Array must be of type 'B'"
+def _encode_string(data, bit_start, width = 0):
+    byte_start = bit_start >> 3
     if width == 0:
-        data_aux = data
+        data_aux = data[byte_start:]
     else:
-        data_aux = data[0:width]
-    return "".join(_intchar_to_bin[ch] for ch in data_aux)
+        byte_end = width + byte_start
+        if bit_start > 0:
+            byte_end += 1
+        data_aux = data[byte_start:byte_end]
+    return "".join(_char_to_bin[ch] for ch in data_aux)
 
-def _decode_array(data):
+def _decode_string(data):
     i = 0
     j = 0
     l = len(data) // 8
-    chars = array.array('B')
+    chars = ""
     while j < l:
-        chars.append(_bin_to_intchar[data[i:i+8]])
+        chars += _bin_to_char[data[i:i+8]]
         i += 8
         j += 1
     return chars
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
