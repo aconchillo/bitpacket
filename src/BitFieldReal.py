@@ -67,7 +67,7 @@ __STRUCT_DOUBLE_FMT__ = 'd'
 class BitFieldReal(BitFieldStruct):
 
     def __init__(self, name, format, default = 0.0):
-        BitFieldStruct.__init__(self, name, format)
+        BitFieldStruct.__init__(self, name, 1, format)
         self.set_value(default)
 
     def value(self):

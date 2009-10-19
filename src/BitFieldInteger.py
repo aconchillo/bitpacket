@@ -41,13 +41,13 @@ __doc__ = '''
     for example, very easy to create a new 16-bit signed integer bit
     field:
 
-    >>> value = BitFieldInt16('int16', -1345)
+    >>> value = BFInt16('int16', -1345)
     >>> print value
     (int16 = -1345)
 
     or a 16-bit unsigned one:
 
-    >>> value = BitFieldUInt16('uint16', 0x8000)
+    >>> value = BFUInt16('uint16', 0x8000)
     >>> print value
     (uint16 = 32768)
 
@@ -69,7 +69,7 @@ __STRUCT_UINT64_FMT__ = 'Q'
 class BitFieldInteger(BitFieldStruct):
 
     def __init__(self, name, format, default = 0):
-        BitFieldStruct.__init__(self, name, format)
+        BitFieldStruct.__init__(self, name, 1, format)
         self.set_value(default)
 
     def value(self):
@@ -91,43 +91,42 @@ class BitFieldInteger(BitFieldStruct):
         '''
         return '%d' % self.eng_value()
 
-
-class BitFieldInt8(BitFieldInteger):
+class BFInt8(BitFieldInteger):
 
     def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_INT8_FMT__, default)
 
-class BitFieldUInt8(BitFieldInteger):
+class BFUInt8(BitFieldInteger):
 
     def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_UINT8_FMT__, default)
 
-class BitFieldInt16(BitFieldInteger):
+class BFInt16(BitFieldInteger):
 
     def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_INT16_FMT__, default)
 
-class BitFieldUInt16(BitFieldInteger):
+class BFUInt16(BitFieldInteger):
 
     def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_UINT16_FMT__, default)
 
-class BitFieldInt32(BitFieldInteger):
+class BFInt32(BitFieldInteger):
 
     def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_INT32_FMT__, default)
 
-class BitFieldUInt32(BitFieldInteger):
+class BFUInt32(BitFieldInteger):
 
     def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_UINT32_FMT__, default)
 
-class BitFieldInt64(BitFieldInteger):
+class BFInt64(BitFieldInteger):
 
     def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_INT64_FMT__, default)
 
-class BitFieldUInt64(BitFieldInteger):
+class BFUInt64(BitFieldInteger):
 
     def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_UINT64_FMT__, default)
@@ -136,44 +135,3 @@ class BitFieldUInt64(BitFieldInteger):
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-
-# class BitFieldIntegerVariable(BitFieldStruct):
-
-#     def __init__(self, name, size, format, default = None):
-#         if size == 0:
-#             raise ValueError, 'Number of integers must be at least 1'
-
-#         self.__count = size
-#         format = "%d%s" % (size, format)
-
-#         BitFieldStruct.__init__(self, name, format)
-#         if default != None:
-#             self.set_value(default)
-
-#     def count(self):
-#         return self.__count
-
-#     def value(self):
-#         return BitFieldStruct.value(self)
-
-#     def set_value(self, values):
-#         if len(values) != self.count():
-#             raise ValueError, \
-#                 "Wrong number of values (given %d, expected %d)" \
-#                 % (len(values), self.count())
-#         BitFieldStruct.set_value(self, *values)
-
-#     def str_eng_value(self):
-#         '''
-#         Returns a human-readable representation for the engineering
-#         value.
-
-#         The engineering values is, by default, represented as an
-#         integer value.
-#         '''
-#         return ['%d' % value for value in self.eng_value()]
-
-# class BitFieldUInt16Variable(BitFieldIntegerVariable):
-
-#     def __init__(self, name, size, default = None):
-#         BitFieldIntegerVariable.__init__(self, name, size, __STRUCT_UINT16_FMT__, default)

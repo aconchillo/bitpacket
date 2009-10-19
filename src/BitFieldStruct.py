@@ -25,6 +25,9 @@
 from struct import *
 
 from BitFieldBase import BitFieldBase
+from BitFieldBase import _byte_aligned
+from BitFieldBase import _byte_start
+from BitFieldBase import _encode_string
 
 __ALLOWED_ENDIANNES__ = [ '@', '=', '<', '>', '!' ]
 
@@ -42,15 +45,18 @@ __BYTE_SIZE__ = 8
 
 class BitFieldStruct(BitFieldBase):
 
-    def __init__(self, name, format):
+    def __init__(self, name, size, format):
         BitFieldBase.__init__(self, name)
+
+        if size == 0:
+            raise ValueError, 'Number of element must be at least 1'
 
         # This will store the string of bytes
         self.__bytes = ""
 
         # Calculate bit size from struct type
-        self.__format = format
-        self.__size = calcsize(format)
+        self.__format = "%d%s" % (size, format)
+        self.__size = calcsize(self.__format)
 
         # Set default endianness
         self.set_endianness(__DEFAULT_ENDIANNESS__)
@@ -65,8 +71,17 @@ class BitFieldStruct(BitFieldBase):
     def string(self):
         return self.__bytes
 
-    def set_string(self, string):
-        self.__bytes = string[0:self.byte_size()]
+    def set_string(self, string, start = 0):
+        if _byte_aligned(start):
+            byte_start = _byte_start(start)
+            self.__bytes = string[byte_start:self.byte_size() + byte_start]
+        else:
+            bits = _encode_string(string, start, self.byte_size())
+            # If the bit start is byte aligned, _encode_string will
+            # return the first valid byte, so we need start from 0.
+            if _byte_aligned(start):
+                start = 0
+            self.set_binary(bits, start)
 
     def binary(self):
         return _encode_string(self.__bytes, self.byte_size())

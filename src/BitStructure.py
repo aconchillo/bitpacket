@@ -169,9 +169,6 @@ class BitStructure(BitFieldBase):
 
         self.__fields.append(field)
 
-    def string(self):
-        return "".join([field.string() for field in self.fields()])
-
     def set_string(self, string, start = 0):
         for field in self.fields():
             field.set_string(string, start)

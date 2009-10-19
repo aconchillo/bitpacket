@@ -296,7 +296,10 @@ def _encode_string(data, bit_start, width = 0):
 
 def _decode_string(data):
     data_size = len(data)
-    bit_size = (_byte_start(data_size) + 1) * __BYTE_SIZE__
+    byte_end = _byte_start(data_size)
+    if not _byte_aligned(data_size):
+        byte_end += 1
+    bit_size = byte_end * __BYTE_SIZE__
     bit_missing = bit_size - data_size
     data = data + '\x00' * bit_missing
     chars = ""
