@@ -39,7 +39,7 @@ __doc__ = '''
 
     A float value can be easily created with the BitFieldFloat class:
 
-    >>> value = BitFieldFloat('f', 1.967834)
+    >>> value = BFFloat('f', 1.967834)
     >>> print value
     (f = 1.96783)
 
@@ -51,7 +51,7 @@ __doc__ = '''
 
     The same might be applied for doubles:
 
-    >>> value = BitFieldDouble('f', 0.0087552)
+    >>> value = BFDouble('f', 0.0087552)
     >>> print value
     (f = 0.0087552)
 
@@ -170,4 +170,4 @@ class BFDoubleList(BitFieldRealList):
 
 if __name__ == '__main__':
     import doctest
-    doctest.testmod
+    doctest.testmod()
