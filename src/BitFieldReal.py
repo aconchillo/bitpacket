@@ -57,7 +57,11 @@ __doc__ = '''
 
 '''
 
+import struct
+
 from BitFieldStruct import BitFieldStruct
+
+from BitFieldBase import _hex_string
 
 
 __STRUCT_FLOAT_FMT__ = 'f'
@@ -69,9 +73,6 @@ class BitFieldReal(BitFieldStruct):
     def __init__(self, name, format, default = 0.0):
         BitFieldStruct.__init__(self, name, 1, format)
         self.set_value(default)
-
-    def value(self):
-        return BitFieldStruct.value(self)[0]
 
     def str_value(self):
         '''
@@ -100,17 +101,73 @@ class BitFieldReal(BitFieldStruct):
         return '%g' % self.eng_value()
 
 
-class BitFieldFloat(BitFieldReal):
+class BFFloat(BitFieldReal):
 
     def __init__(self, name, default = 0.0):
         BitFieldReal.__init__(self, name, __STRUCT_FLOAT_FMT__, default)
 
-class BitFieldDouble(BitFieldReal):
+class BFDouble(BitFieldReal):
 
     def __init__(self, name, default = 0.0):
         BitFieldReal.__init__(self, name, __STRUCT_DOUBLE_FMT__, default)
 
 
+
+
+class BitFieldRealList(BitFieldStruct):
+
+    def __init__(self, name, size, BFRealType, default = None):
+        # Create an instance of the base real type.
+        self.__object = BFRealType(name)
+
+        BitFieldStruct.__init__(self, name, size,
+                                self.__object._base_format())
+
+        if default:
+            self.set_value(default)
+
+    def set_value(self, values):
+        try:
+            BitFieldStruct.set_value(self, *values)
+        except struct.error, detail:
+            raise struct.error, "%s (%d given)" % (detail, len(values))
+
+    def str_value(self):
+        return ['%g' % value for value in self.value()]
+
+    def str_hex_value(self):
+        byte_size = self.__object.byte_size()
+        return [_hex_string(value, byte_size) for value in self.hex_value()]
+
+    def str_eng_value(self):
+        return ['%g' % value for value in self.eng_value()]
+
+    def write(self):
+        field = self.__object
+        field.set_calibration_curve(self.calibration_curve())
+        values = self.value()
+        s = self.writer().start_block(self)
+        for i in range(len(values)):
+            field.set_name("%s[%d]" % (self.name(), i))
+            field.set_value(values[i])
+            # Inherit parent writer
+            field.set_writer(self.writer())
+            s += '\n' + field.write()
+        s += self.writer().end_block(self)
+        return s
+
+
+class BFFloatList(BitFieldRealList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldRealList.__init__(self, name, size, BFFloat, default)
+
+class BFDoubleList(BitFieldRealList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldRealList.__init__(self, name, size, BFDouble, default)
+
+
 if __name__ == '__main__':
     import doctest
-    doctest.testmod()
+    doctest.testmod

@@ -51,10 +51,15 @@ class BitFieldStruct(BitFieldBase):
         if size == 0:
             raise ValueError, 'Number of element must be at least 1'
 
+        # Numer of elements in the struct
+        self.__count = size
+
         # This will store the string of bytes
         self.__bytes = ""
 
         # Calculate bit size from struct type
+        self.__base_format = format
+        self.__base_size = calcsize(format)
         self.__format = "%d%s" % (size, format)
         self.__size = calcsize(self.__format)
 
@@ -62,7 +67,11 @@ class BitFieldStruct(BitFieldBase):
         self.set_endianness(__DEFAULT_ENDIANNESS__)
 
     def value(self):
-        return unpack(self.__str_format(), self.string())
+        values = unpack(self.__str_format(), self.string())
+        if self.__count > 1:
+            return values
+        else:
+            return values[0]
 
     def set_value(self, *values):
         string = pack(self.__str_format(), *values)
@@ -90,10 +99,24 @@ class BitFieldStruct(BitFieldBase):
         self.set_string(_decode_string(bits))
 
     def hex_value(self):
-        value = 0
-        for c in self.__bytes:
-            value = (value << __BYTE_SIZE__) + ord(c)
-        return value
+        index = 0
+        hex_values = []
+        for i in range(self.__count):
+            value = 0
+            for k in range(self.__base_size):
+                value = (value << __BYTE_SIZE__) + ord(self.__bytes[index])
+                index += 1
+            hex_values.append(value)
+        if self.__count > 1:
+            return tuple(hex_values)
+        else:
+            return hex_values[0]
+
+    def eng_value(self):
+        if self.__count > 1:
+            return [self.calibration_curve()(value) for value in self.value()]
+        else:
+            return BitFieldBase.eng_value(self)
 
     def set_endianness(self, endianness):
         if endianness not in __ALLOWED_ENDIANNES__:
@@ -111,6 +134,9 @@ class BitFieldStruct(BitFieldBase):
         Returns the size of the field in bytes.
         '''
         return self.__size
+
+    def _base_format(self):
+        return self.__base_format
 
     def __str_format(self):
         return self.__endianness + self.__format

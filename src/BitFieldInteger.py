@@ -53,7 +53,11 @@ __doc__ = '''
 
 '''
 
+import struct
+
 from BitFieldStruct import BitFieldStruct
+
+from BitFieldBase import _hex_string
 
 
 __STRUCT_INT8_FMT__ = 'b'
@@ -71,9 +75,6 @@ class BitFieldInteger(BitFieldStruct):
     def __init__(self, name, format, default = 0):
         BitFieldStruct.__init__(self, name, 1, format)
         self.set_value(default)
-
-    def value(self):
-        return BitFieldStruct.value(self)[0]
 
     def str_value(self):
         '''
@@ -130,6 +131,91 @@ class BFUInt64(BitFieldInteger):
 
     def __init__(self, name, default = 0):
         BitFieldInteger.__init__(self, name, __STRUCT_UINT64_FMT__, default)
+
+
+
+class BitFieldIntegerList(BitFieldStruct):
+
+    def __init__(self, name, size, BFIntegerType, default = None):
+        # Create an instance of the base integer type.
+        self.__object = BFIntegerType(name)
+
+        BitFieldStruct.__init__(self, name, size,
+                                self.__object._base_format())
+
+        if default:
+            self.set_value(default)
+
+    def set_value(self, values):
+        try:
+            BitFieldStruct.set_value(self, *values)
+        except struct.error, detail:
+            raise struct.error, "%s (%d given)" % (detail, len(values))
+
+    def str_value(self):
+        return ['%d' % value for value in self.value()]
+
+    def str_hex_value(self):
+        byte_size = self.__object.byte_size()
+        return [_hex_string(value, byte_size) for value in self.hex_value()]
+
+    def str_eng_value(self):
+        return ['%d' % value for value in self.eng_value()]
+
+    def write(self):
+        field = self.__object
+        field.set_calibration_curve(self.calibration_curve())
+        values = self.value()
+        s = self.writer().start_block(self)
+        for i in range(len(values)):
+            field.set_name("%s[%d]" % (self.name(), i))
+            field.set_value(values[i])
+            # Inherit parent writer
+            field.set_writer(self.writer())
+            s += '\n' + field.write()
+        s += self.writer().end_block(self)
+        return s
+
+
+class BFInt8List(BitFieldIntegerList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldIntegerList.__init__(self, name, size, BFInt8, default)
+
+class BFUInt8List(BitFieldIntegerList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldIntegerList.__init__(self, name, size, BFUInt8, default)
+
+class BFInt16List(BitFieldIntegerList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldIntegerList.__init__(self, name, size, BFInt16, default)
+
+class BFUInt16List(BitFieldIntegerList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldIntegerList.__init__(self, name, size, BFUInt16, default)
+
+class BFInt32List(BitFieldIntegerList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldIntegerList.__init__(self, name, size, BFInt32, default)
+
+class BFUInt32List(BitFieldIntegerList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldIntegerList.__init__(self, name, size, BFUInt32, default)
+
+class BFInt64List(BitFieldIntegerList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldIntegerList.__init__(self, name, size, BFInt64, default)
+
+class BFUInt64List(BitFieldIntegerList):
+
+    def __init__(self, name, size, default = None):
+        BitFieldIntegerList.__init__(self, name, size, BFUInt64, default)
 
 
 if __name__ == '__main__':

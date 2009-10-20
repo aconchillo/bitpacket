@@ -57,7 +57,7 @@ class BitFieldBase:
         self.__writer = BitFieldWriterBasic()
 
         # Identity calibration
-        self.set_calibration_curve(lambda x: x.value())
+        self.set_calibration_curve(lambda x: x)
 
     def name(self):
         '''
@@ -113,6 +113,9 @@ class BitFieldBase:
         '''
         raise NotImplementedError
 
+    def calibration_curve(self):
+        return self.__calibration
+
     def set_calibration_curve(self, curve):
         '''
         Sets the calibration curve to be applied to this field value
@@ -141,7 +144,7 @@ class BitFieldBase:
         the conversion is done, that is, after applying the
         calibration curve.
         '''
-        return self.__calibration(self)
+        return self.__calibration(self.value())
 
     def str_value(self):
         '''
