@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-# @file    BitFieldWriterBasic.py
+# @file    FieldType.py
 # @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
-# @date    Wed Aug 05, 2009 17:37
+# @date    Fri Dec 11, 2009 11:58
 #
 # Copyright (C) 2007-2009 Aleix Conchillo Flaque
 #
@@ -22,21 +22,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
-from BitFieldWriter import BitFieldWriter
+__TYPE_BIT__  = 0x01
+__TYPE_BYTE__ = 0x02
+
+__TYPES__ = { __TYPE_BIT__  : 'bit',
+              __TYPE_BYTE__ : 'byte' }
+
+class FieldType:
+
+    def __init__(self, code):
+        if code not in __TYPES__:
+            raise KeyError, '%s is not a valid field type' % code
+
+        self.__code = code
+
+    def code(self):
+        return self.__code
+
+    def __str__(self):
+        return __TYPES__[self.code()]
 
 
-class BitFieldWriterBasic(BitFieldWriter):
-
-    def start_block(self, field):
-        s = BitFieldWriter.start_block(self, field)
-        s += '(%s =' % field.name()
-        return s
-
-    def write(self, field):
-        s = self.indentation()
-        s += '(%s = %s)' % (field.name(), field.str_value())
-        return s
-
-    def end_block(self, field):
-        BitFieldWriter.end_block(self, field)
-        return ')'
+FieldTypeBit = FieldType(__TYPE_BIT__)
+FieldTypeByte = FieldType(__TYPE_BYTE__)

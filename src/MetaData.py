@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-# @file    BitFieldWriter.py
+# @file    MetaData.py
 # @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
-# @date    Wed Aug 05, 2009 17:37
+# @date    Fri Dec 11, 2009 15:42
 #
 # Copyright (C) 2007-2009 Aleix Conchillo Flaque
 #
@@ -22,37 +22,34 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
+from stream import read_stream, write_stream
 
-__DEFAULT_INDENTATION__ = 3
+from Field import Field
 
+class MetaData(Field):
 
-class BitFieldWriter:
-    '''
-    This the abstract class for all bit fields sub-classes. All bit
-    fields must inherit from this class and implement the
-    non-implemented methods in it.
-    '''
+    def __init__(self, name, lengthfunc, data = ""):
+        Field.__init__(self, name)
+        self.__data = data
+        self.__lengthfunc = lengthfunc
 
-    def __init__(self):
-        self.__indent = 0
+    def _encode(self, stream, context):
+        write_stream(stream, self.__lengthfunc(context), self.__data)
 
-    def start_block(self, field):
-        s = self.indentation()
-        self.__indent += 1
-        return s
+    def _decode(self, stream, context):
+        self.__data = read_stream(stream, self.__lengthfunc(context))
 
-    def end_block(self, field):
-        self.__indent -= 1
-        return self.indentation()
+    def value(self):
+        return self.__data
 
-    def write(self, field):
-        '''
-        Returns the name of the field.
-        '''
-        raise NotImplementedError
+    def size(self):
+        return len(self.__data)
 
-    def indentation(self):
-        s = ''
-        for i in range(self.__indent):
-            s += ' ' * __DEFAULT_INDENTATION__
-        return s
+    def str_value(self):
+        return "0x" +  "".join(["%02X" % ord(c) for c in self.value()])
+
+    def str_hex_value(self):
+        return self.str_value()
+
+    def str_eng_value(self):
+        return self.str_value()

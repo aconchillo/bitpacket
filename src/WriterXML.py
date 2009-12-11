@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# @file    BitFieldWriterTable.py
+# @file    WriterXML.py
 # @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Aug 05, 2009 17:37
@@ -22,31 +22,27 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
-from BitFieldWriter import BitFieldWriter
+from Writer import Writer
 
 
-__TABLE_NAME_SIZE__ = 35
-__TABLE_HEX_SIZE__ = 20
-__TABLE_STR_SIZE__ = 20
-
-
-class BitFieldWriterTable(BitFieldWriter):
+class WriterXML(Writer):
 
     def start_block(self, field):
-        name_size = __TABLE_NAME_SIZE__ - len(self.indentation())
-        s = '| ' + BitFieldWriter.start_block(self, field)
-        s += '%-*s | %*s | %*s | %*s |' % (name_size, field.name(),
-                                           __TABLE_HEX_SIZE__, '',
-                                           __TABLE_STR_SIZE__, '',
-                                           __TABLE_STR_SIZE__, '')
+        s = Writer.start_block(self, field)
+        s += '<structure name="%s" class="%s" type="%s" size="%d">' \
+            % (field.name(), field.__class__.__name__,
+               field.type(), field.size())
+        return s
+
+    def end_block(self, field):
+        s = '\n'
+        s += Writer.end_block(self, field)
+        s += '</structure>'
         return s
 
     def write(self, field):
-        name_size = __TABLE_NAME_SIZE__ - len(self.indentation())
-        s = '| ' + self.indentation()
-        s += '%-*s | %*s | %*s | %*s |' \
-            % (name_size, field.name(),
-               __TABLE_HEX_SIZE__, field.str_hex_value(),
-               __TABLE_STR_SIZE__, field.str_value(),
-               __TABLE_STR_SIZE__, field.str_eng_value())
+        s = self.indentation()
+        s += '<field name="%s" class="%s" type="%s" size="%d" value="%s"/>' \
+            % (field.name(), field.__class__.__name__,
+               field.type(), field.size(), field.str_value())
         return s

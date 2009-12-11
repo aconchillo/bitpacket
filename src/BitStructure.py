@@ -133,14 +133,16 @@ __doc__ = '''
 
 '''
 
-import array
+from binary import byte_end, encode_bin, decode_bin
+from stream import read_stream, write_stream
 
-from BitFieldBase import BitFieldBase
-from BitFieldBase import _decode_string
+from Container import Container
 
-from BitField import BitField
+from FieldType import FieldTypeBit
+from FieldType import FieldTypeByte
 
-class BitStructure(BitFieldBase):
+
+class BitStructure(Container):
     '''
     This class represents an structure of bit fields to be used to
     build packets.
@@ -151,119 +153,37 @@ class BitStructure(BitFieldBase):
         Initializes the bit structure field with the given 'name'. By
         default an structure field does not contain any fields.
         '''
-        BitFieldBase.__init__(self, name)
+        Container.__init__(self, name, FieldTypeByte, FieldTypeBit)
 
-        self.__fields = []
-        self.__fields_name = {}
+    def _encode(self, stream, context):
+        binary = ""
+        for f in self.fields():
+            binary += f.binary()
+        try:
+            write_stream(stream, self.size(), decode_bin(binary))
+        except (AssertionError, ValueError), err:
+            raise ValueError('"%s" size error: %s' % (self.name(), err))
 
-    def append(self, field):
-        '''
-        Appends a new 'field' (of any derived BitFieldBase type) into
-        the structure.
-        '''
-        if field.name() in self.__fields_name:
-            raise NameError, 'field "%s" already exists in structure "%s"' \
-                % (field.name(), self.name())
-        else:
-            self.__fields_name[field.name()] = field
-
-        self.__fields.append(field)
-
-    def set_string(self, string, start = 0):
-        for field in self.fields():
-            field.set_string(string, start)
-            start += field.size()
-
-    def binary(self):
-        '''
-        Returns a binary string representing this structure, that is
-        the concatenated binary strings of all fields in the
-        structure. The binary string is a sequence of 0's and 1's.
-        '''
-        bits = []
-        for field in self.fields():
-            bits += field.binary()
-        return bits
-
-    def set_binary(self, bits, start = 0):
-        '''
-        Sets a binary string to the structure. The binary string is a
-        sequence of 0's and 1's.
-
-        This will unpack the given binary string in to the multiple
-        fields contained in this structure.
-        '''
-        string = _decode_string(bits)
-        self.set_string(string, start)
-
-    def field(self, name):
-        '''
-        Returns the structure field identified by 'name'.
-        '''
-        return self.__fields_name[name]
-
-    def fields(self):
-        '''
-        Returns the (ordered) list of fields that form this field.
-        '''
-        return self.__fields
-
-    def write(self):
-        '''
-        Returns a human-readable representation of the information of
-        this bit field. This function uses the writer set via
-        'set_writer' to obtain the final string.
-        '''
-        s = self.writer().start_block(self)
-        for field in self.fields():
-            # Save field writer
-            old_writer = field.writer()
-            # Inherit parent writer
-            field.set_writer(self.writer())
-            s += '\n' + field.write()
-            # Restore old field writer
-            field.set_writer(old_writer)
-        s += self.writer().end_block(self)
-        return s
+    def _decode(self, stream, context):
+        try:
+            binary = encode_bin(read_stream(stream, self.size()))
+        except ValueError, err:
+            raise ValueError('"%s" size error: %s ' % (self.name(), err))
+        start = 0
+        for f in self.fields():
+            f.set_binary(binary[start:])
+            start += f.size()
 
     def size(self):
         '''
-        Returns the size of the field in bits. That is, the sum of all
-        bit sizes of the fields in this structure.
+        Returns the size of the field in bytes. That is, the sum of
+        all sizes of the fields in this bit structure.
         '''
-        size = 0
-        for field in self.__fields:
-            size += field.size()
-        return size
+        return byte_end(self.bit_size())
 
-    def reset(self):
+    def bit_size(self):
         '''
-        Remove all added fields from this structure. This function
-        will loss all previous information stored in this field.
+        Returns the size of the field in bits. That is, the sum of
+        all sizes of the fields in this bit structure.
         '''
-        self.__fields = []
-        self.__fields_name = {}
-
-    def __len__(self):
-        '''
-        Returns the number of items in the structure.
-        '''
-        return len(self.__fields)
-
-    def __getitem__(self, name):
-        '''
-        Returns the structure field identified by 'name'.
-        '''
-        return self.field(name).value()
-
-    def __setitem__(self, name, value):
-        '''
-        Sets the given integer 'value' as the value of to the
-        structure field identified by 'name'.
-        '''
-        self.field(name).set_value(value)
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+        return Container.size(self)

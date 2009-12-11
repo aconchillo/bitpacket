@@ -27,22 +27,19 @@ __doc__ = '''
     Single bit fields.
 
     A packet might be formed by multiple fields that could be single
-    bit fields, integer fields, structure fields or variable structure
-    fields.
+    bit fields, integer fields, structure fields, etc.
 
     An example of a packet could be:
 
-    +-------+-----------+---------+------------------+
-    |  id   |  address  | nbytes  |       data       |
-    +-------+-----------+---------+------------------+
-     <- 1 -> <--- 4 ---> <-- 2 --> <---- nbytes ---->
+    +-------+-----------+
+    |  id   |  address  |
+    +-------+-----------+
+     <- 8 -> <--- 32 --->
 
-    That is, a packet with four fields:
+    That is, a packet with two fields:
 
-        - Identifier: 1 byte
-        - Memory address: 4 bytes
-        - Number of data bytes: 2 bytes
-        - Data: number of data bytes
+        - Identifier: 8 bits
+        - Memory address: 32 bits
 
     The first field could be constructed by the following piece of
     code:
@@ -54,31 +51,15 @@ __doc__ = '''
     that would create a BitField instance of a field named 'id' of 1
     byte size and value 0x54.
 
-
-    UNPACKING SINGLE BIT FIELDS
-
-    In order to unpack a single field from a data buffer, one would
-    create a BitField without any initialization and assign the data
-    buffer when ready:
-
-    >>> bf = BitField('id', 8)
-    >>> bf.set_string("\x35")
-    >>> print bf
-    (id = 0x35)
-    >>> bf.set_string(bf.string())
-    >>> bf.set_value(bf.value())
-    >>> print bf
-    (id = 0x35)
-
 '''
 
-from BitFieldBase import BitFieldBase
-from BitFieldBase import _bin_to_int
-from BitFieldBase import _int_to_bin
-from BitFieldBase import _encode_string
-from BitFieldBase import _byte_aligned
+from binary import hex_string, byte_end, bin_to_int, int_to_bin
 
-class BitField(BitFieldBase):
+from Field import Field
+
+from FieldType import FieldTypeBit
+
+class BitField(Field):
     '''
     This class represents a single bit field to be used together with
     other BitFieldBase sub-classes, such as BitStructure, in order to
@@ -91,12 +72,8 @@ class BitField(BitFieldBase):
         bits). By default the field's value will be initialized to 0
         or to 'default' if specified.
         '''
-        BitFieldBase.__init__(self, name)
+        Field.__init__(self, name, FieldTypeBit)
         self.__bits = []
-
-        if size == 0:
-            raise SizeError, 'Bit size must be at least 1'
-
         self.__size = size
         self.set_value(default)
 
@@ -108,26 +85,13 @@ class BitField(BitFieldBase):
 
         This is the same as calling 'hex_value'.
         '''
-        return self.hex_value()
+        return bin_to_int(self.__bits)
 
     def set_value(self, value):
         '''
         Sets a new integer 'value' to the field.
         '''
-        self.__bits = _int_to_bin(value, self.size())
-
-    def set_string(self, string, start = 0):
-        '''
-        Sets a string of bytes to the field. Note that if the field is
-        not aligned to byte, only the necessary bits from the last
-        byte will be read (starting from MSB).
-        '''
-        bits = _encode_string(string, start, self.byte_size())
-        # If the bit start is byte aligned, _encode_string will return
-        # the first valid byte, so we need start from 0.
-        if _byte_aligned(start):
-            start = 0
-        self.set_binary(bits, start)
+        self.__bits = int_to_bin(value, self.size())
 
     def binary(self):
         '''
@@ -136,26 +100,27 @@ class BitField(BitFieldBase):
         '''
         return self.__bits
 
-    def set_binary(self, bits, start = 0):
+    def set_binary(self, binary):
         '''
         Sets a binary string to the field. The binary string is a
         sequence of 0's and 1's.
         '''
-        self.__bits = bits[start:self.size() + start]
-
-    def hex_value(self):
-        '''
-        Returns the hexadecimal integer representation of this
-        field. That is, the bytes forming this field in its integer
-        representation.
-        '''
-        return _bin_to_int(self.__bits)
+        self.__bits = binary[:self.size()]
 
     def size(self):
         '''
         Returns the size of the field in bits.
         '''
         return self.__size
+
+    def str_value(self):
+        return str(self.value())
+
+    def str_hex_value(self):
+        return hex_string(self.hex_value(), byte_end(self.size()))
+
+    def str_eng_value(self):
+        return hex_string(self.eng_value(), byte_end(self.size()))
 
 
 if __name__ == '__main__':

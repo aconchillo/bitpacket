@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-# @file    BitVariableStructure.py
-# @brief   Variable structure depending on a counter field
+# @file    MetaStructure.py
+# @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
-# @date    Sun Aug 02, 2009 19:26
+# @date    Fri Dec 11, 2009 17:07
 #
 # Copyright (C) 2007-2009 Aleix Conchillo Flaque
 #
@@ -173,12 +173,9 @@ __doc__ = '''
 
 '''
 
-import array
+from Structure import Structure
 
-from BitField import BitField
-from BitStructure import BitStructure
-
-class BitVariableStructure(BitStructure):
+class MetaStructure(Structure):
     '''
     This class represents a variable structure of bit fields to be
     used to build packets. It inhertis from BitStructure, thus both
@@ -187,7 +184,7 @@ class BitVariableStructure(BitStructure):
     BitStructure or BitVariableStructure.
     '''
 
-    def __init__(self, name, counter_size, base_type):
+    def __init__(self, name, lengthfunc, base_type):
         '''
         Initializes the bit variable structure field with the given
         'name' as well as with the desired bit size ('counter_size')
@@ -196,72 +193,24 @@ class BitVariableStructure(BitStructure):
         it is only allowed to add fields of the same type and size of
         the base field.
         '''
-        BitStructure.__init__(self, name)
-
+        Structure.__init__(self, name)
         self.__base_type = base_type
-        self.__counter = BitField('counter', counter_size)
-        self.__fields = BitStructure('fields')
+        self.__lengthfunc = lengthfunc
 
-        BitStructure.append(self, self.__counter)
-        BitStructure.append(self, self.__fields)
-
-    def counter(self):
-        '''
-        Returns the number of sub-fields contained in this variable
-        structure.
-        '''
-        return self.__counter.value()
-
-    def subfields(self):
-        '''
-        Returns the list of sub-fields of this variable structure. The
-        number of sub-fields is determined by the counter field.
-        '''
-        return self.__fields.fields()
-
-    def append(self, field):
-        '''
-        Appends a new 'field' (of any derived BitFieldBase type) to
-        this variable structure. The 'field' being added must be of
-        the same type as the base field, otherwise a TypeError
-        exception will be raised.
-        '''
-        if not isinstance(field, self.__base_type):
-            raise TypeError, "Given field type differs from base type"
-
-        counter = self.counter()
-        field.set_name('%s%d' % (field.name(), counter))
-        self.__fields.append(field)
-        self.__counter.set_value(counter + 1)
-
-    def set_string(self, string, start = 0):
-        # We might be re-using the instance, so we need to reset it.
+    def _decode(self, stream, context):
+        # We might be re-using the instance, so we need to reset it
+        # and get rid of old fields.
         self.reset()
 
-        # Get counter from data. Note that this will only get the
-        # counter, as there are no sub-fields yet.
-        BitStructure.set_string(self, string, start)
-        counter = self.counter()
-
-        # We need to set counter to 0 again as it will be
-        # automatically incremented when appending fields.
-        self.__counter.set_value(0)
+        # Get the counter dynamically.
+        counter = self.__lengthfunc(context)
 
         # Append fields.
         for i in range(counter):
-            new_field = self.__base_type()
-            self.append(new_field)
+            self.append(self.__base_type("%d" % i))
 
-        # Fields have been only added, we need to set the value now.
-        BitStructure.set_string(self, string, start)
-
-    def reset(self):
-        '''
-        Remove all added sub-fields form this variable structure and
-        set counter to 0.
-        '''
-        self.__counter.set_value(0)
-        self.__fields.reset()
+        # Once the subfields have been added, parse the stream.
+        Structure._decode(self, stream, context)
 
 
 if __name__ == '__main__':

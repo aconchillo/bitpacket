@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# @file    BitFieldBase.py
+# @file    Field.py
 # @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 12:28
@@ -36,25 +36,30 @@ __doc__ = '''
 
 '''
 
-from BitFieldWriterBasic import BitFieldWriterBasic
+import array
 
-class BitFieldBase:
-    '''
-    This the abstract class for all bit fields sub-classes. All bit
-    fields must inherit from this class and implement the
-    non-implemented methods in it.
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
-    As this is an abstract class, most of the methods are not
-    implemented, so it can not be used as is.
-    '''
+from FieldType import FieldTypeByte
 
-    def __init__(self, name):
+from WriterBasic import WriterBasic
+from WriterXML import WriterXML
+from WriterTable import WriterTable
+
+class Field:
+
+    def __init__(self, name, type = FieldTypeByte):
         '''
-        Initialize this abstract class with the given 'name'.
+        Initialize this abstract class with the given 'name' and field
+        'type'.
         '''
         self.__name = name
+        self.__type = type
         self.__calibration = None
-        self.__writer = BitFieldWriterBasic()
+        self.__writer = WriterBasic()
 
         # Identity calibration
         self.set_calibration_curve(lambda x: x)
@@ -64,14 +69,6 @@ class BitFieldBase:
         Returns the name of the field.
         '''
         return self.__name
-
-    def set_name(self, name):
-        '''
-        Sets a new 'name' to this field. This fuction should be used
-        with caution as could cause problems with already running
-        code.
-        '''
-        self.__name = name
 
     def value(self):
         '''
@@ -85,33 +82,33 @@ class BitFieldBase:
         '''
         raise NotImplementedError
 
+    def array(self, array):
+        return array.fromstring(self.string())
+
+    def set_array(self, array):
+        self.set_string(array.tostring())
+
     def string(self):
         '''
         Returns a string of bytes representing this field. Note that
         if the field is not byte aligned, the last byte starts from
         the MSB.
         '''
-        return _decode_string(self.binary())
+        stream = StringIO()
+        self.stream(stream)
+        return stream.getvalue()
 
-    def set_string(self, string, start):
+    def set_string(self, string):
         '''
         Sets a string of bytes to the field.
         '''
-        raise NotImplementedError
+        self.set_stream(StringIO(string))
 
-    def binary(self):
-        '''
-        Returns a binary string representing this field. The binary
-        string is a sequence of 0's and 1's.
-        '''
-        raise NotImplementedError
+    def stream(self, stream):
+        self._encode(stream, self)
 
-    def set_binary(self, bits, start):
-        '''
-        Sets a binary string to the field. The binary string is a
-        sequence of 0's and 1's.
-        '''
-        raise NotImplementedError
+    def set_stream(self, stream):
+        self._decode(stream, self)
 
     def calibration_curve(self):
         return self.__calibration
@@ -132,7 +129,7 @@ class BitFieldBase:
         field. That is, the bytes forming this field in its integer
         representation.
         '''
-        raise NotImplementedError
+        return self.value()
 
     def eng_value(self):
         '''
@@ -146,50 +143,12 @@ class BitFieldBase:
         '''
         return self.__calibration(self.value())
 
-    def str_value(self):
-        '''
-        Returns a human-readable representation of the value of this
-        field. Note that the type of the field can be a float,
-        integer, etc. So, the representation might be different for
-        each type.
-
-        By default, this is the same as calling 'str_hex_value'.
-        '''
-        return self.str_hex_value()
-
-    def str_hex_value(self):
-        '''
-        Returns a human-readable representation of the hexadecimal
-        values of this field. Note that the type of the field can be a
-        float, integer, etc. This is the real representation (in
-        memory) of the value.
-        '''
-        return _hex_string(self.hex_value(), self.byte_size())
-
-    def str_eng_value(self):
-        '''
-        Returns a human-readable representation of the engineering
-        value. This function will first calculate the engineering
-        value (by applying the calibration curve) and will return the
-        string representation of it.
-        '''
-        return _hex_string(self.eng_value(), self.byte_size())
-
-    def fields(self):
-        '''
-        Returns the (ordered) list of fields that form this field. A
-        BitFieldBase subclass, such as BitStructure, might be formed
-        by multiple fields. This function will return a list of these
-        fields.
-        '''
-        return []
-
     def writer(self):
         '''
         Returns the writer to be used by this field in order to print
         the field information.
 
-        By default, the BitFieldWriterBasic is used.
+        By default, the WriterBasic is used.
         '''
         return self.__writer
 
@@ -213,21 +172,47 @@ class BitFieldBase:
 
         return self.writer().write(self)
 
+    def _encode(self, stream, context):
+        raise NotImplementedError
+
+    def _decode(self, stream, context):
+        raise NotImplementedError
+
     def size(self):
         '''
-        Returns the size of the field in bits.
+        Returns the size of the field.
         '''
         raise NotImplementedError
 
-    def byte_size(self):
+    def type(self):
+        return self.__type
+
+    def str_value(self):
         '''
-        Returns the size of the field in bytes.
+        Returns a human-readable representation of the value of this
+        field. Note that the type of the field can be a float,
+        integer, etc. So, the representation might be different for
+        each type.
         '''
-        bit_size = self.size()
-        byte_size = bit_size >> 3
-        if not _byte_aligned(bit_size):
-            byte_size += 1
-        return byte_size
+        raise NotImplementedError
+
+    def str_hex_value(self):
+        '''
+        Returns a human-readable representation of the hexadecimal
+        values of this field. Note that the type of the field can be a
+        float, integer, etc. This is the real representation (in
+        memory) of the value.
+        '''
+        raise NotImplementedError
+
+    def str_eng_value(self):
+        '''
+        Returns a human-readable representation of the engineering
+        value. This function will first calculate the engineering
+        value (by applying the calibration curve) and will return the
+        string representation of it.
+        '''
+        raise NotImplementedError
 
     def __str__(self):
         '''
@@ -238,76 +223,3 @@ class BitFieldBase:
         It has the same effect than calling the 'write' method.
         '''
         return self.write()
-
-
-
-# Private
-
-__BYTE_SIZE__ = 8
-
-def _byte_aligned(number):
-    return (number & 0x07) == 0
-
-def _byte_start(bit_start):
-    return (bit_start >> 3)
-
-def _hex_string(number, byte_size):
-    hex_size = byte_size * 2
-    return '0x%0*X' % (hex_size, number)
-
-def _int_to_bin(number, width = 32):
-    if number < 0:
-        number += 1 << width
-    i = width - 1
-    bits = ["\x00"] * width
-    while number and i >= 0:
-        bits[i] = "\x00\x01"[number & 1]
-        number >>= 1
-        i -= 1
-    return "".join(bits)
-
-_bit_values = {"\x00" : 0, "\x01" : 1, "0" : 0, "1" : 1}
-def _bin_to_int(bits, signed = False):
-    number = 0
-    bias = 0
-    if signed and _bit_values[bits[0]] == 1:
-        bits = bits[1:]
-        bias = 1 << len(bits)
-    for b in bits:
-        number <<= 1
-        number |= _bit_values[b]
-    return number - bias
-
-_char_to_bin = {}
-_bin_to_char = {}
-for _i in range(256):
-    _ch = chr(_i)
-    _bin = _int_to_bin(_i, __BYTE_SIZE__)
-    _char_to_bin[_ch] = _bin
-    _bin_to_char[_bin] = _ch
-
-def _encode_string(data, bit_start, width = 0):
-    byte_start = _byte_start(bit_start)
-    if width == 0:
-        data_aux = data[byte_start:]
-    else:
-        byte_end = width + byte_start
-        if bit_start > 0:
-            byte_end += 1
-        data_aux = data[byte_start:byte_end]
-    return "".join(_char_to_bin[ch] for ch in data_aux)
-
-def _decode_string(data):
-    data_size = len(data)
-    byte_end = _byte_start(data_size)
-    if not _byte_aligned(data_size):
-        byte_end += 1
-    bit_size = byte_end * __BYTE_SIZE__
-    bit_missing = bit_size - data_size
-    data = data + '\x00' * bit_missing
-    chars = ""
-    i = 0
-    while i < bit_size:
-        chars += _bin_to_char[data[i:i + __BYTE_SIZE__]]
-        i += 8
-    return chars
