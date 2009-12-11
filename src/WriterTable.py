@@ -22,6 +22,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
+from utils.string import wrap_string
+
 from Writer import Writer
 
 
@@ -38,7 +40,7 @@ class WriterTable(Writer):
         s = '| ' + Writer.start_block(self, field)
         s += '%-*s | %4d %-4s | %*s | %*s | %*s |' \
             % (name_size,
-               _wrap_string(field.name(), name_size),
+               wrap_string(field.name(), name_size),
                field.size(), field.type(),
                __TABLE_HEX_SIZE__, '',
                __TABLE_STR_SIZE__, '',
@@ -50,21 +52,12 @@ class WriterTable(Writer):
         s = '| ' + self.indentation()
         s += '%-*s | %4d %-4s | %*s | %*s | %*s |' \
             % (name_size,
-               _wrap_string(field.name(), name_size),
+               wrap_string(field.name(), name_size),
                field.size(), field.type(),
                __TABLE_HEX_SIZE__,
-               _wrap_string(field.str_hex_value(), __TABLE_HEX_SIZE__),
+               wrap_string(field.str_hex_value(), __TABLE_HEX_SIZE__),
                __TABLE_STR_SIZE__,
-               _wrap_string(field.str_value(), __TABLE_STR_SIZE__),
+               wrap_string(field.str_value(), __TABLE_STR_SIZE__),
                __TABLE_STR_SIZE__,
-               _wrap_string(field.str_eng_value(), __TABLE_STR_SIZE__))
+               wrap_string(field.str_eng_value(), __TABLE_STR_SIZE__))
         return s
-
-
-def _wrap_string(string, length):
-    if len(string) > length:
-        output = string[0:length - 3]
-        output += '...'
-    else:
-        output = string
-    return output

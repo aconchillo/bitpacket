@@ -53,7 +53,8 @@ __doc__ = '''
 
 '''
 
-from binary import hex_string, byte_end, bin_to_int, int_to_bin
+from utils.binary import byte_end, bin_to_int, int_to_bin
+from utils.string import hex_string
 
 from Field import Field
 

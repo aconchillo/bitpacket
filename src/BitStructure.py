@@ -133,8 +133,8 @@ __doc__ = '''
 
 '''
 
-from binary import byte_end, encode_bin, decode_bin
-from stream import read_stream, write_stream
+from utils.binary import byte_end, encode_bin, decode_bin
+from utils.stream import read_stream, write_stream
 
 from Container import Container
 

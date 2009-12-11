@@ -46,8 +46,6 @@ except ImportError:
 from FieldType import FieldTypeByte
 
 from WriterBasic import WriterBasic
-from WriterXML import WriterXML
-from WriterTable import WriterTable
 
 class Field:
 

@@ -24,8 +24,8 @@
 
 from struct import *
 
-from binary import hex_string
-from stream import read_stream, write_stream
+from utils.string import hex_string
+from utils.stream import read_stream, write_stream
 
 from Field import Field
 

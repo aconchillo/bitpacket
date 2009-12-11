@@ -33,10 +33,6 @@ def byte_end(bit_size):
         byte_end += 1
     return byte_end
 
-def hex_string(number, byte_size):
-    hex_size = byte_size * 2
-    return '0x%0*X' % (hex_size, number)
-
 def int_to_bin(number, width = 32):
     if number < 0:
         number += 1 << width

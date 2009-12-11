@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-# @file    MetaData.py
+# @file    string.py
 # @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
-# @date    Fri Dec 11, 2009 15:42
+# @date    Fri Dec 11, 2009 18:07
 #
 # Copyright (C) 2007-2009 Aleix Conchillo Flaque
 #
@@ -22,34 +22,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
-from utils.stream import read_stream, write_stream
+def hex_string(number, byte_size):
+    hex_size = byte_size * 2
+    return '0x%0*X' % (hex_size, number)
 
-from Field import Field
-
-class MetaData(Field):
-
-    def __init__(self, name, lengthfunc, data = ""):
-        Field.__init__(self, name)
-        self.__data = data
-        self.__lengthfunc = lengthfunc
-
-    def _encode(self, stream, context):
-        write_stream(stream, self.__lengthfunc(context), self.__data)
-
-    def _decode(self, stream, context):
-        self.__data = read_stream(stream, self.__lengthfunc(context))
-
-    def value(self):
-        return self.__data
-
-    def size(self):
-        return len(self.__data)
-
-    def str_value(self):
-        return "0x" +  "".join(["%02X" % ord(c) for c in self.value()])
-
-    def str_hex_value(self):
-        return self.str_value()
-
-    def str_eng_value(self):
-        return self.str_value()
+def wrap_string(string, length):
+    if len(string) > length:
+        output = string[0:length - 3]
+        output += '...'
+    else:
+        output = string
+    return output
