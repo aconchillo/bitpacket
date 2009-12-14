@@ -2,7 +2,7 @@
 from distutils.core import setup
 
 setup(name = 'BitPacket',
-      version = '0.2.0',
+      version = '1.0.0',
       author = 'Aleix Conchillo Flaque',
       author_email = 'aleix@member.fsf.org',
       license = 'GPL',
@@ -13,14 +13,16 @@ setup(name = 'BitPacket',
       packages = ['BitPacket', 'BitPacket.utils'],
       package_dir = {'BitPacket': 'src',
                      'BitPacket.utils': 'src/utils'},
-      description = 'A Python representation for bit field structures',
+      description = 'A Python object-oriented representation of packets',
       long_description =
       '''
-      This module presents an objected-oriented representation for bit
-      field structures.
+      This module provides a simple objected-oriented representation
+      of packets. The main purpose is to provide an easy and
+      extensible interface for constructing packets (or field
+      structures) from or to byte strings.
       ''',
       classifiers = [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',
