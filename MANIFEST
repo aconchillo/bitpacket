@@ -13,8 +13,8 @@ src/MetaStructure.py
 src/Real.py
 src/Structure.py
 src/Value.py
-src/WriterBasic.py
 src/Writer.py
+src/WriterBasic.py
 src/WriterTable.py
 src/WriterXML.py
 src/utils/__init__.py

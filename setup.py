@@ -10,8 +10,9 @@ setup(name = 'BitPacket',
       maintainer_email='aleix@member.fsf.org',
       url='http://hacks-galore.org/aleix/BitPacket',
       requires = [],
-      packages = ['BitPacket'],
-      package_dir = {'BitPacket': 'src'},
+      packages = ['BitPacket', 'BitPacket.utils'],
+      package_dir = {'BitPacket': 'src',
+                     'BitPacket.utils': 'src/utils'},
       description = 'A Python representation for bit field structures',
       long_description =
       '''

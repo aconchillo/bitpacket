@@ -1,1 +1,1 @@
-# Dummy file to load utils package
+# Dummy file to load BitPacket utils package
