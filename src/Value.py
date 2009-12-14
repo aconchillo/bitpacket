@@ -93,7 +93,7 @@ class Value(Field):
         return hex_string(self.hex_value(), self.size())
 
     def str_eng_value(self):
-        return hex_string(self.eng_value(), self.size())
+        return str(self.eng_value())
 
     def __str_format(self):
         return self.__endianness + self.__format

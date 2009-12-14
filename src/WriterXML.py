@@ -29,9 +29,8 @@ class WriterXML(Writer):
 
     def start_block(self, field):
         s = Writer.start_block(self, field)
-        s += '<structure name="%s" class="%s" type="%s" size="%d">' \
-            % (field.name(), field.__class__.__name__,
-               field.type(), field.size())
+        s += '<structure name="%s" class="%s" size="%d">' \
+            % (field.name(), field.__class__.__name__, field.size())
         return s
 
     def end_block(self, field):
@@ -42,7 +41,13 @@ class WriterXML(Writer):
 
     def write(self, field):
         s = self.indentation()
-        s += '<field name="%s" class="%s" type="%s" size="%d" value="%s"/>' \
-            % (field.name(), field.__class__.__name__,
-               field.type(), field.size(), field.str_value())
+        s += '<field name="%s" class="%s" size="%d">\n' \
+            % (field.name(), field.__class__.__name__, field.size())
+
+        Writer.start_block(self, field)
+        value_indent = self.indentation()
+        s += value_indent + '<value>%s</value>\n' % field.str_value()
+        s += Writer.end_block(self, field)
+
+        s += '</field>'
         return s

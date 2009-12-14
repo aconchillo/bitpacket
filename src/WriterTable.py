@@ -28,9 +28,9 @@ from Writer import Writer
 
 
 __TABLE_NAME_SIZE__ = 25
-__TABLE_TYPE_SIZE__ = 8
-__TABLE_HEX_SIZE__ = 25
-__TABLE_STR_SIZE__ = 25
+__TABLE_CLASS_SIZE__ = 15
+__TABLE_HEX_SIZE__ = 20
+__TABLE_STR_SIZE__ = 20
 
 
 class WriterTable(Writer):
@@ -38,10 +38,12 @@ class WriterTable(Writer):
     def start_block(self, field):
         name_size = __TABLE_NAME_SIZE__ - len(self.indentation())
         s = '| ' + Writer.start_block(self, field)
-        s += '%-*s | %4d %-4s | %*s | %*s | %*s |' \
+        s += '%-*s | %-*s | %4d | %*s | %*s | %*s |' \
             % (name_size,
                wrap_string(field.name(), name_size),
-               field.size(), field.type(),
+               __TABLE_CLASS_SIZE__,
+               wrap_string(field.__class__.__name__, __TABLE_CLASS_SIZE__),
+               field.size(),
                __TABLE_HEX_SIZE__, '',
                __TABLE_STR_SIZE__, '',
                __TABLE_STR_SIZE__, '')
@@ -50,10 +52,12 @@ class WriterTable(Writer):
     def write(self, field):
         name_size = __TABLE_NAME_SIZE__ - len(self.indentation())
         s = '| ' + self.indentation()
-        s += '%-*s | %4d %-4s | %*s | %*s | %*s |' \
+        s += '%-*s | %-*s | %4d | %*s | %*s | %*s |' \
             % (name_size,
                wrap_string(field.name(), name_size),
-               field.size(), field.type(),
+               __TABLE_CLASS_SIZE__,
+               wrap_string(field.__class__.__name__, __TABLE_CLASS_SIZE__),
+               field.size(),
                __TABLE_HEX_SIZE__,
                wrap_string(field.str_hex_value(), __TABLE_HEX_SIZE__),
                __TABLE_STR_SIZE__,
