@@ -229,10 +229,10 @@ class Test(Structure):
         Structure.__init__(self, name)
         self.append(UInt8('counter'))
         self.append(MetaStructure('address',
-                                  lambda ctx: self['counter'].value(),
+                                  lambda ctx: self['counter'],
                                   UInt32))
 
-s.append(MetaStructure('struct', lambda ctx: ctx['counter'].value(), Test))
+s.append(MetaStructure('struct', lambda ctx: ctx['counter'], Test))
 
 s.set_array(array.array('B', [2,
                              1, 1, 2, 3, 4,

@@ -61,10 +61,10 @@ __doc__ = '''
     BitStructure fields can be obtained as in a dictionary, as in any
     Container subclass. Following the last example:
 
-    >>> print bs['version']
-    (version = 0x0E)
-    >>> print bs['hlen']
-    (hlen = 0x0C)
+    >>> bs['version']
+    14
+    >>> bs['hlen']
+    12
 
 
     UNPACKING BIT STRUCTURES

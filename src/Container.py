@@ -134,6 +134,12 @@ class Container(Field):
         self.__fields = []
         self.__fields_name = {}
 
+    def field(self, name):
+        '''
+        Returns the field identified by 'name'.
+        '''
+        return self.__fields_name[name]
+
     def __len__(self):
         '''
         Returns the number of fields in this container.
@@ -142,15 +148,17 @@ class Container(Field):
 
     def __getitem__(self, name):
         '''
-        Returns the field identified by 'name'.
+        Returns the value of the field identified by 'name'. This is
+        the same as calling container.field(name).value().
         '''
-        return self.__fields_name[name]
+        return self.field(name).value()
 
-    def __getattr__(self, name):
+    def __setitem__(self, name, value):
         '''
-        Access the field identified by 'name' as a class attribute.
+        Sets the given 'value' to the field identified by 'name'. This
+        is the same as calling container.field(name).set_value(value).
         '''
-        return self[name]
+        self.field(name).set_value(value)
 
 
 if __name__ == '__main__':
