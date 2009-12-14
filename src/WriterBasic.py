@@ -32,11 +32,11 @@ class WriterBasic(Writer):
         s += '(%s =' % field.name()
         return s
 
+    def end_block(self, field):
+        Writer.end_block(self, field)
+        return ')'
+
     def write(self, field):
         s = self.indentation()
         s += '(%s = %s)' % (field.name(), field.str_value())
         return s
-
-    def end_block(self, field):
-        Writer.end_block(self, field)
-        return ')'
