@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Container.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Field containers
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 11:57
 #
@@ -22,26 +22,71 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
+__doc__ = '''
+
+    FIELD CONTAINERS
+
+    Packets can be seen as field containers. That is, a packet is
+    formed by a sequence of fields. The Container class provides this
+    vision. A Container is also a Field itself. Therefore, a Container
+    might accomodate Containers.
+
+    Consider the first three bytes of the IP header:
+
+    +---------+---------+---------+---------------+
+    | version |   hlen  |   tos   |    length     |
+    +---------+---------+---------+---------------+
+     <-- 4 --> <-- 4 -->
+     <------- 1 -------> <-- 1 --> <----- 2 ----->
+
+    These are the field descriptions and their sizes:
+
+      - Version (version): 4 bits
+      - Header length (hlen): 4 bits
+      - Type Of Service (tos): 1 byte
+      - Total length (length): 2 bytes
+
+    We can see the IP header as a Container with a sub-Container
+    holding two bit fields (version and hlen) and two more fields (tos
+    and length).
+
+    The Container class is just an abstract class that allows adding
+    fields of a given FieldType. The FieldType of all the sub-fields
+    is defined at construction time.
+
+    Currently, there are three Container implementations: Structure,
+    BitStructure and MetaStructure.
+
+'''
+
 from Field import Field
 
 class Container(Field):
+    '''
+    This is an abstrat class to create containers. A container is just
+    a field that might contain a sequence of fields, thus forming a
+    bigger field.
 
-    def __init__(self, name, type, fields_type):
-        Field.__init__(self, name, type)
+    Fields added to a Container must have the same type, that is, it
+    is not possible to mix byte with bit fields.
+    '''
+
+    def __init__(self, name):
+        '''
+        Initializes the container with the given 'name' and 'type' and
+        'fields_type'. The 'type' is the type of this container, while
+        'fields_type' is the allowed type for the fields to be added
+        to this container.
+        '''
+        Field.__init__(self, name)
         self.__fields = []
         self.__fields_name = {}
-        self.__fields_type = fields_type
 
     def append(self, field):
         '''
-        Appends a new 'field' into the structure. The new field type
-        must match the one given at Container's creation time.
+        Appends a new 'field' into the container. The new field type
+        must match the one given at Container's constructor.
         '''
-        # We do not allow appending fields of different types.
-        if field.type().code() != self.__fields_type.code():
-            raise TypeError, 'field "%s" is not of type "%s" ("%s" given)' \
-                % (field.name(), self.__fields_type, field.type())
-
         # Only one field with the same name is allowed.
         if field.name() in self.__fields_name:
             raise NameError, 'field "%s" already exists in "%s"' \
@@ -51,22 +96,17 @@ class Container(Field):
 
         self.__fields.append(field)
 
-    def field(self, name):
-        '''
-        Returns the structure field identified by 'name'.
-        '''
-        return self.__fields_name[name]
-
     def fields(self):
         '''
-        Returns the (ordered) list of fields that form this field.
+        Returns the (ordered) list of subfields that form this field.
         '''
         return self.__fields
 
     def size(self):
         '''
         Returns the size of the field. That is, the sum of all sizes
-        of the fields in this container.
+        of the fields in this container. The size can be in bits or
+        bytes depending on the subfields type.
         '''
         size = 0
         for f in self.fields():
@@ -74,11 +114,6 @@ class Container(Field):
         return size
 
     def write(self):
-        '''
-        Returns a human-readable representation of the information of
-        this bit field. This function uses the writer set via
-        'set_writer' to obtain the final string.
-        '''
         s = self.writer().start_block(self)
         for field in self.fields():
             # Save field writer
@@ -93,7 +128,7 @@ class Container(Field):
 
     def reset(self):
         '''
-        Remove all existent fields from this structure. This function
+        Remove all existent fields from this container. This function
         will loss all previous information stored in this field.
         '''
         self.__fields = []
@@ -107,9 +142,17 @@ class Container(Field):
 
     def __getitem__(self, name):
         '''
-        Returns the structure field identified by 'name'.
+        Returns the field identified by 'name'.
         '''
-        return self.field(name)
+        return self.__fields_name[name]
 
     def __getattr__(self, name):
+        '''
+        Access the field identified by 'name' as a class attribute.
+        '''
         return self[name]
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()

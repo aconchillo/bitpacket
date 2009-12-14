@@ -6,16 +6,13 @@ See the end for copying conditions.
 
 ------------------------------------------------------------------------
 
-* Version 0.2.0 (09/10/??)
+* Version 0.2.0 (2009/12/??)
 
 ** Changes:
 
    - BitVector is not needed anymore. Internal encoding and decoding
      of bits has been copied from the Construct project, thanks!
      (http://construct.wikispaces.com/)
-
-   - BitField and BitStructure now inherit from the BitFieldBase
-     abstract class.
 
    - Multiple outputs are now available as BitWriters. Basic text (old
      output), text tables and XML formats are available. Users can
@@ -28,19 +25,14 @@ See the end for copying conditions.
      BitFieldBase instance.
 
    - BitPacket sizes (BIT_SIZE, INTEGER_SIZE...) have been removed in
-     favour of the BitFieldReal and BitFieldInteger classes.
+     favour of the Real and Integer classes (which are Value
+     subclasses).
 
-   - BitFieldReal has floats and doubles subclasses.
-
-   - BitFieldInteger has integer subclasses for 8 to 64 bit integers.
-
-   - BitFieldStruct subclasses (BitFieldReal and BitFieldInteger)
-     support endianness (using the built-in Pyhton struct module). By
-     default network endianness is used (i.e. big-endian).
+   - Value subclasses support endianness.
 
 ------------------------------------------------------------------------
 
-* Version 0.1.0 (07/06/10)
+* Version 0.1.0 (2007/06/10)
 
 ** Initial release
 

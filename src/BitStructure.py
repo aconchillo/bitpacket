@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    BitStructure.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Bit field structures
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 19:25
 #
@@ -24,58 +24,53 @@
 
 __doc__ = '''
 
-    FIXED STRUCTURES
+    BIT STRUCTURES
 
-    A packet is built by many fields which could form an
-    structure. This structure can be represented using the
-    BitStructure class.
+    A packet field might be formed by bit fields. The BitStructure
+    class must be used, in conjunction with BitField, to create these
+    byte-aligned fields formed, internally, by bit fields.
 
-    An example of a simple packet could be:
+    It is really important to understand that BitPacket is byte
+    oriented, therefore, a BitStructure must be byte-aligned.
 
-    +-------+-----------+
-    |  id   |  address  |
-    +-------+-----------+
-     <- 1 -> <--- 4 --->
+    Now, consider the first byte of the IP header:
 
-    That is, a packet (structure) with two fields:
-
-        - Indetifier: 1 byte
-        - Memory address: 4 bytes
+    +---------+----------+
+    | version |   hlen   |
+    +---------+----------+
+     <-- 4 --> <-- 4 -->
 
     This packet could be constructed by:
 
-    >>> bs = BitStructure('mystructure')
+    >>> bs = BitStructure('IP')
 
-    The line above creates an empty packet named 'mystructure'. So,
-    now we need to add fields to it. This can be done by calling the
-    append() method:
+    The line above creates an empty structure named 'IP'. So, now we
+    need to add fields to it. As BitStructure is a Container subclass
+    the append() method can be used:
 
-    >>> bs.append(BitField('id', 8, 0x54))
-    >>> bs.append(BitField('address', 32, 0x10203040))
+    >>> bs.append(BitField('version', 4, 0x0E))
+    >>> bs.append(BitField('hlen', 4, 0x0C))
     >>> print bs
-    (mystructure =
-       (id = 0x54)
-       (address = 0x10203040))
-
-    As you can see, this has added two fields of different sizes into
-    our packet.
+    (IP =
+      (version = 0x0E)
+      (hlen = 0x0C))
 
 
-    ACCESSING FIXED STRUCTRES MEMBERS
+    ACCESSING BIT STRUCTRES MEMBERS
 
-    Structure fields can be obtained as in a dictionary, that is, by
-    its name. Following the last example:
+    BitStructure fields can be obtained as in a dictionary, as in any
+    Container subclass. Following the last example:
 
-    >>> print '0x%X' % bs['id']
-    0x54
-    >>> print '0x%X' % bs['address']
-    0x10203040
+    >>> print bs['version']
+    (version = 0x0E)
+    >>> print bs['hlen']
+    (hlen = 0x0C)
 
 
-    UNPACKING STRUCTURES
+    UNPACKING BIT STRUCTURES
 
     To be able to unpack an integer value or a string of bytes into a
-    BitStructure, we only need to create the desired packet without
+    BitStructure, we only need to create the desired structure without
     initializing any field and assign the integer value or string of
     bytes to it.
 
@@ -84,8 +79,8 @@ __doc__ = '''
     >>> bs.append(BitField('address', 32))
     >>> print bs
     (mypacket =
-       (id = 0x00)
-       (address = 0x00000000))
+      (id = 0x00)
+      (address = 0x00000000))
 
     So, now we can unpack the following array of bytes:
 
@@ -93,59 +88,26 @@ __doc__ = '''
 
     into our previously defined structure:
 
-    >>> bs.set_string(data.tostring())
+    >>> bs.set_array(data)
     >>> print bs
     (mypacket =
-       (id = 0x38)
-       (address = 0x87342140))
-
-
-    STRUCTURES AS CLASSES
-
-    An interesting, and obvious, use, is to subclass BitStructure to
-    create your own reusable structures. Then, we could create the
-    structure defined in the previous section as a new class:
-
-    >>> class MyStructure(BitStructure):
-    ...    def __init__(self, id = 0, address = 0):
-    ...        BitStructure.__init__(self, 'mystructure')
-    ...        self.append(BitField('id', 8, id))
-    ...        self.append(BitField('address', 32, address))
-    ...
-    ...    def id(self):
-    ...        return self['id']
-    ...
-    ...    def address(self):
-    ...        return self['address']
-    ...
-    >>> ms = MyStructure(0x33, 0x50607080)
-    >>> print ms
-    (mystructure =
-       (id = 0x33)
-       (address = 0x50607080))
-
-    We can now use the accessors of our class to print its content:
-
-    >>> print '0x%X' % ms.id()
-    0x33
-    >>> print '0x%X' % ms.address()
-    0x50607080
+      (id = 0x38)
+      (address = 0x87342140))
 
 '''
+
+import array
 
 from utils.binary import byte_end, encode_bin, decode_bin
 from utils.stream import read_stream, write_stream
 
+from BitField import BitField
 from Container import Container
-
-from FieldType import FieldTypeBit
-from FieldType import FieldTypeByte
-
 
 class BitStructure(Container):
     '''
     This class represents an structure of bit fields to be used to
-    build packets.
+    build byte-aligned fields.
     '''
 
     def __init__(self, name):
@@ -153,13 +115,11 @@ class BitStructure(Container):
         Initializes the bit structure field with the given 'name'. By
         default an structure field does not contain any fields.
         '''
-        Container.__init__(self, name, FieldTypeByte, FieldTypeBit)
+        Container.__init__(self, name)
 
     def _encode(self, stream, context):
-        binary = ""
-        for f in self.fields():
-            binary += f.binary()
         try:
+            binary = self.binary()
             write_stream(stream, self.size(), decode_bin(binary))
         except (AssertionError, ValueError), err:
             raise ValueError('"%s" size error: %s' % (self.name(), err))
@@ -167,8 +127,26 @@ class BitStructure(Container):
     def _decode(self, stream, context):
         try:
             binary = encode_bin(read_stream(stream, self.size()))
+            self.set_binary(binary)
         except ValueError, err:
             raise ValueError('"%s" size error: %s ' % (self.name(), err))
+
+    def binary(self):
+        '''
+        Returns a binary string representing this field. The binary
+        string is a sequence of 0's and 1's.
+        '''
+        binary = ""
+        for f in self.fields():
+            binary += f.binary()
+        return binary
+
+    def set_binary(self, binary):
+        '''
+        Sets a binary string to the field. The binary string is a
+        sequence of 0's and 1's. The binary string can be longer than
+        the real size of this field.
+        '''
         start = 0
         for f in self.fields():
             f.set_binary(binary[start:])
@@ -187,3 +165,8 @@ class BitStructure(Container):
         all sizes of the fields in this bit structure.
         '''
         return Container.size(self)
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()

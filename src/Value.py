@@ -58,6 +58,17 @@ class Value(Field):
         # Finally set default value
         self.set_value(value)
 
+    def _encode(self, stream, context):
+        write_stream(stream, self.size(), self.__bytes)
+
+    def _decode(self, stream, context):
+        self.__bytes = read_stream(stream, self.size())
+
+    def set_endianness(self, endianness):
+        if endianness not in __ALLOWED_ENDIANNES__:
+            raise KeyError, "'%s' is not an allowed endianness" % endianness
+        self.__endianness = endianness
+
     def value(self):
         value = unpack(self.__str_format(), self.__bytes)
         return value[0]
@@ -66,19 +77,14 @@ class Value(Field):
         string = pack(self.__str_format(), value)
         self.set_string(string)
 
-    def set_endianness(self, endianness):
-        if endianness not in __ALLOWED_ENDIANNES__:
-            raise KeyError, "'%s' is not an allowed endianness" % endianness
-        self.__endianness = endianness
+    def hex_value(self):
+        value = 0
+        for c in self.__bytes:
+            value = (value << 8) + ord(c)
+        return value
 
     def size(self):
         return self.__size
-
-    def _encode(self, stream, context):
-        write_stream(stream, self.size(), self.__bytes)
-
-    def _decode(self, stream, context):
-        self.__bytes = read_stream(stream, self.size())
 
     def str_value(self):
         return str(self.value())

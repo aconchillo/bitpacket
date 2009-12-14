@@ -37,30 +37,33 @@ __doc__ = '''
      <- 1 -> <- 1 -> <--- 4 ---> <- 1 -> <--- 4 --->
              <--------------- count --------------->
 
-    We can achieve this by using the BitVariableStructure class which
-    is a subclass of BitStructure. This class already contains a
-    counter field of a given size and at the beginning the structure
-    does not contain any more fields, thus the counter is set to
-    zero. The fields which will form the variable structure need to be
-    added as in BitStructure and the counter will be automatically
-    increased.
+    We can achieve this by using the MetaStructure class which is a
+    subclass of Structure. This class already contains a counter field
+    of a given size and at the beginning the structure does not
+    contain any more fields, thus the counter is set to zero. The
+    fields which will form the variable structure need to be added as
+    in BitStructure and the counter will be automatically increased.
 
     In order to create a BitVariableStructure it is necessary to
     define the base type of the fields (all of the same type) that
     this variable structure will contain.
 
-    >>> class MyStructure(BitStructure):
-    ...    def __init__(self, id = 0, address = 0):
-    ...        BitStructure.__init__(self, 'mystructure')
-    ...        self.append(BitField('id', 8, id))
-    ...        self.append(BitField('address', 32, address))
+    >>> class MyStructure(Structure):
+    ...    def __init__(self, name = 'mystructure', id = 0, address = 0):
+    ...        Structure.__init__(self, name)
+    ...        self.append(UInt8('id', id))
+    ...        self.append(UInt32('address', address))
 
     Following the first depicted packet, we have created a MyStructure
     class that contains two fields. Now, we are ready to define a new
     variable structure that will contain a variable number of
     MyStructure fields.
 
-    >>> packet = BitVariableStructure('mypacket', 8, MyStructure)
+    >>> packet = Structure('mypacket')
+    >>> packet.append(UInt8('counter'))
+    >>> packet.append(MetaStructure('mypacket',
+    ...                             lambda ctx: ctx['counter'].value(),
+    ...                             MyStructure))
 
     Finally, we can try to add a MyStrcuture instance and see how the
     final packet looks like.
@@ -213,6 +216,31 @@ class MetaStructure(Structure):
         Structure._decode(self, stream, context)
 
 
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+import array
+
+from Integer import *
+
+s = Structure('a')
+s.append(UInt8('counter'))
+
+class Test(Structure):
+
+    def __init__(self, name = "test"):
+        Structure.__init__(self, name)
+        self.append(UInt8('counter'))
+        self.append(MetaStructure('address',
+                                  lambda ctx: self['counter'].value(),
+                                  UInt32))
+
+s.append(MetaStructure('struct', lambda ctx: ctx['counter'].value(), Test))
+
+s.set_array(array.array('B', [2,
+                             1, 1, 2, 3, 4,
+                             2, 1, 2, 3, 4, 5, 6, 7, 8]))
+
+print s
+
+
+#if __name__ == '__main__':
+#    import doctest
+#    doctest.testmod()

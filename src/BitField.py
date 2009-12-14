@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    BitField.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Single bit fields
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 12:34
 #
@@ -27,44 +27,72 @@ __doc__ = '''
     Single bit fields.
 
     A packet might be formed by multiple fields that could be single
-    bit fields, integer fields, structure fields, etc.
+    bit fields, integer fields, etc. Sometimes, byte-aligned fields
+    are formed by bit fields internally. The purpose of BitField is to
+    provide these single bit fields that, at the end, will be used
+    inside a BitStructure to form byte-aligned fields.
 
-    An example of a packet could be:
+    For example, the first byte of the IP header is:
 
-    +-------+-----------+
-    |  id   |  address  |
-    +-------+-----------+
-     <- 8 -> <--- 32 --->
+    +---------+---------+
+    | version |  hlen   |
+    +---------+---------+
+     <-- 4 --> <-- 4 -->
 
-    That is, a packet with two fields:
+    That is, a byte formed by two nibbles. The first nibble, version,
+    can be constructed by the following piece of code:
 
-        - Identifier: 8 bits
-        - Memory address: 32 bits
+    >>> bf = BitField('version', 4, 15)
+    >>> print bf
+    (version = 0x0F)
 
-    The first field could be constructed by the following piece of
-    code:
+    A default, optional, value has been also assigned at creation
+    time.
 
-    >>> bf = BitField('id', 8, 0x54)
-    >>> bf.value() == 0x54
-    True
 
-    that would create a BitField instance of a field named 'id' of 1
-    byte size and value 0x54.
+    ASSIGNING BYTES
+
+    The main purpose of BitField is to work together with BitStructure
+    to form byte-aligned fields. When used with BitStructure, the
+    binary and set_binary functions are used, which allows working
+    with single bits. But, as a Field subclass a byte string can still
+    be used with BitField. However, two special considerations need to
+    be taken into account:
+
+      - The MSB bit of the byte string will also be the MSB of the
+        BitField.
+      - When a byte string is returned from a BitField, the byte
+        string will be byte-aligned. This means that the last byte
+        could have bit zero-padding.
+
+    Following the example above, we can assign a byte array to the
+    'version' field:
+
+    >>> data = array.array('B', [0x34])
+    >>> bf.set_array(data)
+    >>> print bf
+    (version = 0x03)
+
+    With the first rule, we see that the
 
 '''
 
-from utils.binary import byte_end, bin_to_int, int_to_bin
+import array
+
+from utils.binary import bin_to_int, int_to_bin
+from utils.binary import byte_end, encode_bin, decode_bin
+from utils.stream import read_stream, write_stream
 from utils.string import hex_string
 
 from Field import Field
 
-from FieldType import FieldTypeBit
-
 class BitField(Field):
     '''
-    This class represents a single bit field to be used together with
-    other BitFieldBase sub-classes, such as BitStructure, in order to
-    build bigger fields.
+    This class represents bit fields to be used by BitStructure in
+    order to build byte-aligned fields. Remember that BitPacket only
+    works with byte-aligned fields, so it is not possible to create
+    mixed (bit and byte) fields, that's why BitField can only be used
+    by BitStructure.
     '''
 
     def __init__(self, name, size, default = 0):
@@ -73,24 +101,36 @@ class BitField(Field):
         bits). By default the field's value will be initialized to 0
         or to 'default' if specified.
         '''
-        Field.__init__(self, name, FieldTypeBit)
+        Field.__init__(self, name)
         self.__bits = []
         self.__size = size
         self.set_value(default)
+
+    def _encode(self, stream, context):
+        try:
+            binary = self.binary()
+            write_stream(stream, byte_end(self.size()), decode_bin(binary))
+        except (AssertionError, ValueError), err:
+            raise ValueError('"%s" size error: %s' % (self.name(), err))
+
+    def _decode(self, stream, context):
+        try:
+            binary = encode_bin(read_stream(stream, byte_end(self.size())))
+            self.set_binary(binary)
+        except ValueError, err:
+            raise ValueError('"%s" size error: %s ' % (self.name(), err))
 
     def value(self):
         '''
         Returns the value of this field. As single bit fields do not
         have a concrete type (signed integers, float...) this will
-        return the hexadecimal integer representation of this field.
-
-        This is the same as calling 'hex_value'.
+        return the unsigned integer representation of this field.
         '''
         return bin_to_int(self.__bits)
 
     def set_value(self, value):
         '''
-        Sets a new integer 'value' to the field.
+        Sets a new unsigned integer 'value' to the field.
         '''
         self.__bits = int_to_bin(value, self.size())
 
@@ -104,7 +144,8 @@ class BitField(Field):
     def set_binary(self, binary):
         '''
         Sets a binary string to the field. The binary string is a
-        sequence of 0's and 1's.
+        sequence of 0's and 1's. The binary string can be longer than
+        the real size of this field.
         '''
         self.__bits = binary[:self.size()]
 
@@ -115,7 +156,7 @@ class BitField(Field):
         return self.__size
 
     def str_value(self):
-        return str(self.value())
+        return hex_string(self.value(), byte_end(self.size()))
 
     def str_hex_value(self):
         return hex_string(self.hex_value(), byte_end(self.size()))

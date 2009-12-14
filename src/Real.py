@@ -41,7 +41,7 @@ __doc__ = '''
 
     >>> value = Float('f', 1.967834)
     >>> print value
-    (f = 1.96783)
+    (f = 1.96783399582)
 
     Some times, it is also useful to see the hexadecimal value that
     forms this float number.

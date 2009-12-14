@@ -43,19 +43,16 @@ try:
 except ImportError:
     from StringIO import StringIO
 
-from FieldType import FieldTypeByte
-
 from WriterBasic import WriterBasic
 
 class Field:
 
-    def __init__(self, name, type = FieldTypeByte):
+    def __init__(self, name):
         '''
         Initialize this abstract class with the given 'name' and field
         'type'.
         '''
         self.__name = name
-        self.__type = type
         self.__calibration = None
         self.__writer = WriterBasic()
 
@@ -181,9 +178,6 @@ class Field:
         Returns the size of the field.
         '''
         raise NotImplementedError
-
-    def type(self):
-        return self.__type
 
     def str_value(self):
         '''
