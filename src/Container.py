@@ -120,7 +120,7 @@ class Container(Field):
             old_writer = field.writer()
             # Inherit parent writer
             field.set_writer(self.writer())
-            s += '\n' + field.write()
+            s += field.write()
             # Restore old field writer
             field.set_writer(old_writer)
         s += self.writer().end_block(self)
