@@ -29,8 +29,8 @@ __doc__ = '''
     A packet might be formed by multiple fields that could be single
     bit fields, integer fields, etc. Sometimes, byte-aligned fields
     are formed by bit fields internally. The purpose of BitField is to
-    provide these single bit fields that, at the end, will be used
-    inside a BitStructure to form byte-aligned fields.
+    provide these single bit fields that, at the end, will be used to
+    form byte-aligned fields.
 
     For example, the first byte of the IP header is:
 
@@ -53,14 +53,14 @@ __doc__ = '''
     ASSIGNING BYTES
 
     The main purpose of BitField is to work together with BitStructure
-    to form byte-aligned fields. When used with BitStructure, the
+    to form byte-aligned fields. When used with BitStructure the
     binary and set_binary functions are used, which allows working
     with single bits. But, as a Field subclass a byte string can still
-    be used with BitField. However, two special considerations need to
+    be set to a BitField. However, two special considerations need to
     be taken into account:
 
-      - The MSB bit of the byte string will also be the MSB of the
-        BitField.
+      - The MSB bit of the given byte string will also be the MSB of
+        the BitField.
       - When a byte string is returned from a BitField, the byte
         string will be byte-aligned. This means that the last byte
         could have bit zero-padding.
@@ -73,7 +73,18 @@ __doc__ = '''
     >>> print bf
     (version = 0x03)
 
-    With the first rule, we see that the
+    As a consequence of the first rule, we see that only the first
+    four MSB have been used. Now, if we ask for this BitField array:
+
+    >>> data = array.array('B')
+    >>> bf.array(data)
+    >>> print "0x%02X" % data[0]
+    0x30
+
+    we can see, because of the second rule, that the second nibble is
+    padded with zeros. Again, this is because the "version" field is
+    not byte-aligned. For these two reasons, BitFields need to be used
+    with BitStructures to form byte-aligned fields.
 
 '''
 

@@ -68,14 +68,14 @@ def encode_bin(data):
     return "".join(_char_to_bin[ch] for ch in data)
 
 def decode_bin(data):
-    assert len(data) & 7 == 0, \
-        "data length must be a multiple of 8 (%d given)" % len(data)
+    data_size = len(data)
+    end = byte_end(data_size)
+    bit_size = end * __BYTE_SIZE__
+    bit_missing = bit_size - data_size
+    data += '\x00' * bit_missing
+    chars = ""
     i = 0
-    j = 0
-    l = len(data) // 8
-    chars = [""] * l
-    while j < l:
-        chars[j] = _bin_to_char[data[i:i+8]]
-        i += 8
-        j += 1
-    return "".join(chars)
+    while i < bit_size:
+        chars += _bin_to_char[data[i:i + __BYTE_SIZE__]]
+        i += __BYTE_SIZE__
+    return chars
