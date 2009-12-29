@@ -25,7 +25,8 @@
 
 __doc__ = '''
 
-    Float and double bit fields.
+    Real fields
+    ===========
 
     This module provides classes to define float (32-bit) and double
     (64-bit) bit fields.
@@ -35,7 +36,8 @@ __doc__ = '''
     depends on that module.
 
 
-    32-BIT and 64-BIT REAL VALUES
+    Floats and doubles
+    ------------------
 
     A float value can be easily created with the BitFieldFloat class:
 

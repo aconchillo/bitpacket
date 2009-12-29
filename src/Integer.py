@@ -25,7 +25,8 @@
 
 __doc__ = '''
 
-    Signed and unsigned integer bit fields.
+    Integer fields
+    ==============
 
     This module provides classes to define signed and unsigned
     integers bit fields, from 8-bit to 64-bit.
@@ -35,7 +36,8 @@ __doc__ = '''
     integer values depends on that module.
 
 
-    SIGNED AND UNSIGNED INTEGERS
+    Signed and unsigned
+    -------------------
 
     Multiple signed and unsigned integer classes are available. It is,
     for example, very easy to create a new 16-bit signed integer bit

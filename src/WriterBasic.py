@@ -23,6 +23,13 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    Basic text
+    ==========
+
+'''
+
 from Writer import Writer
 
 

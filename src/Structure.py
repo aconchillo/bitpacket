@@ -25,7 +25,10 @@
 
 __doc__ = '''
 
-    FIELD CONTAINERS
+    Byte-aligned container
+    ======================
+
+    **API reference**: :class:`Structure`
 
     A packet field might be formed by bit fields. The BitStructure
     class must be used, in conjunction with BitField, to create
@@ -35,8 +38,9 @@ __doc__ = '''
 
     +---------+----------+
     | version |   hlen   |
+    +=========+==========+
+    | 4 bits  |  4 bits  |
     +---------+----------+
-     <-- 4 --> <-- 4 -->
 
     This packet could be constructed by:
 
@@ -54,7 +58,8 @@ __doc__ = '''
        (hlen = 12))
 
 
-    ACCESSING CONTAINER FIELDS
+    Accessing container fields
+    --------------------------
 
     Structure fields can be obtained as in a dictionary, that is, by
     its name. Following the last example:
@@ -65,7 +70,8 @@ __doc__ = '''
     0x10203040
 
 
-    UNPACKING STRUCTURES
+    Unpacking structures
+    --------------------
 
     To be able to unpack an integer value or a string of bytes into a
     BitStructure, we only need to create the desired packet without
@@ -93,7 +99,8 @@ __doc__ = '''
        (address = 0x87342140))
 
 
-    STRUCTURES AS CLASSES
+    Structures as classes
+    ---------------------
 
     An interesting, and obvious, use, is to subclass BitStructure to
     create your own reusable structures. Then, we could create the

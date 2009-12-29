@@ -8,7 +8,7 @@ setup(name = 'BitPacket',
       license = 'GPL',
       maintainer = 'Aleix Conchillo Flaque',
       maintainer_email='aleix@member.fsf.org',
-      url='http://hacks-galore.org/aleix/BitPacket',
+      url='http://www.nongnu.org/bitpacket',
       requires = [],
       packages = ['BitPacket', 'BitPacket.utils'],
       package_dir = {'BitPacket': 'src',
@@ -18,8 +18,7 @@ setup(name = 'BitPacket',
       '''
       This module provides a simple objected-oriented representation
       of packets. The main purpose is to provide an easy and
-      extensible interface for constructing packets (or field
-      structures) from or to byte strings.
+      extensible interface for building and parsing packets.
       ''',
       classifiers = [
         'Development Status :: 5 - Production/Stable',

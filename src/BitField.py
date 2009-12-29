@@ -25,23 +25,27 @@
 
 __doc__ = '''
 
-    Single bit fields.
+    Single bit fields
+    =================
+
+    **API reference**: :class:`BitField`
 
     A packet might be formed by multiple fields that could be single
     bit fields, integer fields, etc. Sometimes, byte-aligned fields
-    are formed by bit fields internally. The purpose of BitField is to
-    provide these single bit fields that, at the end, will be used to
-    form byte-aligned fields.
+    are formed by bit fields internally. The purpose of
+    :mod:`BitField` is to provide these single bit fields that, at the
+    end, will be used to form byte-aligned fields.
 
     For example, the first byte of the IP header is:
 
     +---------+---------+
     | version |  hlen   |
+    +=========+=========+
+    | 4 bits  | 4 bits  |
     +---------+---------+
-     <-- 4 --> <-- 4 -->
 
-    That is, a byte formed by two nibbles. The first nibble, version,
-    can be constructed by the following piece of code:
+    That is, a byte formed by two nibbles. The first nibble,
+    *version*, can be constructed by the following piece of code:
 
     >>> bf = BitField('version', 4, 15)
     >>> print bf
@@ -51,23 +55,25 @@ __doc__ = '''
     time.
 
 
-    ASSIGNING BYTES
+    Assigning bytes
+    ---------------
 
-    The main purpose of BitField is to work together with BitStructure
-    to form byte-aligned fields. When used with BitStructure the
-    binary and set_binary functions are used, which allows working
-    with single bits. But, as a Field subclass a byte string can still
-    be set to a BitField. However, two special considerations need to
-    be taken into account:
+    The main purpose of :mod:`BitField` is to work together with
+    :mod:`BitStructure` to form byte-aligned fields. When used with
+    :mod:`BitStructure` the :func:`BitField.binary` and
+    :func:`BitField.set_binary` functions are used, which allow
+    working with single bits. But, as a :mod:`Field` subclass a byte
+    string can still be set to a :mod:`BitField`. However, two special
+    considerations need to be taken into account:
 
       - The MSB bit of the given byte string will also be the MSB of
-        the BitField.
-      - When a byte string is returned from a BitField, the byte
-        string will be byte-aligned. This means that the last byte
-        could have bit zero-padding.
+        the :mod:`BitField`.
+      - When a byte string is returned from a :mod:`BitField`, the
+        byte string will be byte-aligned. This means that the last
+        byte could have bit zero-padding.
 
     Following the example above, we can assign a byte array to the
-    'version' field:
+    *version* field:
 
     >>> data = array.array('B', [0x34])
     >>> bf.set_array(data)
@@ -83,9 +89,9 @@ __doc__ = '''
     0x30
 
     we can see, because of the second rule, that the second nibble is
-    padded with zeros. Again, this is because the "version" field is
-    not byte-aligned. For these two reasons, BitFields need to be used
-    with BitStructures to form byte-aligned fields.
+    padded with zeros. Again, this is because the *version* field is
+    not byte-aligned. For these two reasons, :mod:`BitField` needs to
+    be used with :mod:`BitStructure` to form byte-aligned fields.
 
 '''
 

@@ -25,7 +25,10 @@
 
 __doc__ = '''
 
-    FIELD CONTAINERS
+    Containers
+    ==========
+
+    **API reference**: :class:`Container`
 
     Packets can be seen as field containers. That is, a packet is
     formed by a sequence of fields. The Container class provides this
@@ -36,16 +39,16 @@ __doc__ = '''
 
     +---------+---------+---------+---------------+
     | version |   hlen  |   tos   |    length     |
+    +=========+=========+=========+===============+
+    | 4 bits  |  4 bits | 1 byte  |    2 bytes    |
     +---------+---------+---------+---------------+
-     <-- 4 --> <-- 4 -->
-     <------- 1 -------> <-- 1 --> <----- 2 ----->
 
-    These are the field descriptions and their sizes:
+    These are the field descriptions:
 
-      - Version (version): 4 bits
-      - Header length (hlen): 4 bits
-      - Type Of Service (tos): 1 byte
-      - Total length (length): 2 bytes
+      - **version**: Version
+      - **hlen**: Header length
+      - **tos**: Type Of Service
+      - **length**: Total length
 
     We can see the IP header as a Container with a sub-Container
     holding two bit fields (version and hlen) and two more fields (tos

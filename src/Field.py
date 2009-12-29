@@ -25,6 +25,9 @@
 
 __doc__ = '''
 
+    Fields
+    ======
+
     An object-oriented representation of bit field structures.
 
     These classes represent simple bit fields, and fixed and variable

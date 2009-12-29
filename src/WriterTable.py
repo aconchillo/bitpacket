@@ -23,6 +23,13 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    Text tables
+    ===========
+
+'''
+
 from utils.string import wrap_string
 
 from Writer import Writer

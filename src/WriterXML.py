@@ -23,6 +23,13 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    XML
+    ===
+
+'''
+
 from Writer import Writer
 
 

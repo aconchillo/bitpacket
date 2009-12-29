@@ -23,6 +23,23 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    Numeric fields
+    ==============
+
+    An object-oriented representation of bit field structures.
+
+    These classes represent simple bit fields, and fixed and variable
+    structures of bit fields which might be used to construct
+    packets. BitField, BitStructure and BitVariableStructure implement
+    the BitFieldBase abstract class, so all of them can be used
+    together. This means that, for example, we can add any
+    BitFieldBase sub-class into a BitStructure or
+    BitVariableStructure.
+
+'''
+
 from struct import *
 
 from utils.string import hex_string
