@@ -10,13 +10,15 @@ See the end for copying conditions.
 
 ** Changes:
 
+   - Added documentation using the Sphinx documentation system.
+
    - BitVector is not needed anymore. Internal encoding and decoding
      of bits has been copied from the Construct project, thanks!
      (http://construct.wikispaces.com/)
 
-   - Multiple outputs are now available as BitWriters. Basic text (old
+   - Multiple outputs are now available as Writers. Basic text (old
      output), text tables and XML formats are available. Users can
-     define new formats easily by implementing a new BitWriter.
+     define new formats easily by implementing a new Writer.
 
    - Engineering values have been added. Engineering values are
      extracted from the real value by applying a calibration
