@@ -8,24 +8,8 @@ Field
    :undoc-members:
 
 .. toctree::
-   :maxdepth: 3
 
    api-field
-
-
-Container
----------
-
-.. currentmodule:: Container
-.. autoclass:: Container
-   :show-inheritance:
-   :members:
-   :undoc-members:
-
-.. toctree::
-   :maxdepth: 3
-
-   api-container
 
 Writer
 -------
@@ -37,6 +21,5 @@ Writer
    :undoc-members:
 
 .. toctree::
-   :maxdepth: 3
 
    api-writer

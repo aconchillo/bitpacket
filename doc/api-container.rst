@@ -1,4 +1,13 @@
 
+BitStructure
+------------
+
+.. currentmodule:: BitStructure
+.. autoclass:: BitStructure
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
 Structure
 ------------
 
@@ -8,11 +17,6 @@ Structure
    :members:
    :undoc-members:
 
-BitStructure
-------------
+.. toctree::
 
-.. currentmodule:: BitStructure
-.. autoclass:: BitStructure
-   :show-inheritance:
-   :members:
-   :undoc-members:
+   api-structure

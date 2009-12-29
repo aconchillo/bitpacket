@@ -8,6 +8,28 @@ BitField
    :members:
    :undoc-members:
 
+Container
+---------
+
+.. currentmodule:: Container
+.. autoclass:: Container
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
+.. toctree::
+
+   api-container
+
+MetaData
+--------
+
+.. currentmodule:: MetaData
+.. autoclass:: MetaData
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
 Value
 -----
 
@@ -18,6 +40,5 @@ Value
    :undoc-members:
 
 .. toctree::
-   :maxdepth: 3
 
    api-value
