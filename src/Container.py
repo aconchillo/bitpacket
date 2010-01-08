@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 11:57
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -117,18 +117,18 @@ class Container(Field):
             size += f.size()
         return size
 
-    def write(self):
-        s = self.writer().start_block(self)
+    def write(self, stream):
+        self.writer().start_block(self, stream)
         for field in self.fields():
             # Save field writer
             old_writer = field.writer()
             # Inherit parent writer
             field.set_writer(self.writer())
-            s += '\n' + field.write()
+            stream.write('\n')
+            field.write(stream)
             # Restore old field writer
             field.set_writer(old_writer)
-        s += self.writer().end_block(self)
-        return s
+        self.writer().end_block(self, stream)
 
     def reset(self):
         '''

@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Aug 05, 2009 17:37
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -35,27 +35,28 @@ from Writer import Writer
 
 class WriterXML(Writer):
 
-    def start_block(self, field):
-        s = Writer.start_block(self, field)
-        s += '<structure name="%s" class="%s" size="%d">' \
+    def start_block(self, field, stream):
+        self.indent(stream)
+        Writer.start_block(self, field, stream)
+        s = '<structure name="%s" class="%s" size="%d">' \
             % (field.name(), field.__class__.__name__, field.size())
-        return s
+        stream.write(s)
 
-    def end_block(self, field):
-        s = '\n'
-        s += Writer.end_block(self, field)
-        s += '</structure>'
-        return s
+    def end_block(self, field, stream):
+        stream.write('\n')
+        Writer.end_block(self, field, stream)
+        self.indent(stream)
+        stream.write('</structure>')
 
-    def write(self, field):
-        s = self.indentation()
-        s += '<field name="%s" class="%s" size="%d">\n' \
+    def write(self, field, stream):
+        self.indent(stream)
+        s = '<field name="%s" class="%s" size="%d">\n' \
             % (field.name(), field.__class__.__name__, field.size())
+        stream.write(s)
 
-        Writer.start_block(self, field)
-        value_indent = self.indentation()
-        s += value_indent + '<value>%s</value>\n' % field.str_value()
-        s += Writer.end_block(self, field)
-
-        s += '</field>'
-        return s
+        Writer.start_block(self, field, stream)
+        self.indent(stream)
+        stream.write('<value>%s</value>\n' % field.str_value())
+        Writer.end_block(self, field, stream)
+        self.indent(stream)
+        stream.write('</field>')

@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 12:28
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -158,7 +158,7 @@ class Field:
         '''
         self.__writer = writer
 
-    def write(self):
+    def write(self, stream):
         '''
         Returns a human-readable representation of the information of
         this bit field. This function uses the writer set via
@@ -169,7 +169,7 @@ class Field:
         '''
         assert self.writer() != None, "No default writer set for this field"
 
-        return self.writer().write(self)
+        return self.writer().write(self, stream)
 
     def _encode(self, stream, context):
         raise NotImplementedError
@@ -218,4 +218,6 @@ class Field:
 
         It has the same effect than calling the 'write' method.
         '''
-        return self.write()
+        stream = StringIO()
+        self.write(stream)
+        return stream.getvalue()

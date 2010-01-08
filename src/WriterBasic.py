@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Aug 05, 2009 17:37
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -35,16 +35,15 @@ from Writer import Writer
 
 class WriterBasic(Writer):
 
-    def start_block(self, field):
-        s = Writer.start_block(self, field)
-        s += '(%s =' % field.name()
-        return s
+    def start_block(self, field, stream):
+        self.indent(stream)
+        Writer.start_block(self, field, stream)
+        stream.write('(%s =' % field.name())
 
-    def end_block(self, field):
-        Writer.end_block(self, field)
-        return ')'
+    def end_block(self, field, stream):
+        Writer.end_block(self, field, stream)
+        stream.write(')')
 
-    def write(self, field):
-        s = self.indentation()
-        s += '(%s = %s)' % (field.name(), field.str_value())
-        return s
+    def write(self, field, stream):
+        self.indent(stream)
+        stream.write('(%s = %s)' % (field.name(), field.str_value()))

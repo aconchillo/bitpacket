@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Aug 05, 2009 17:37
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -43,23 +43,20 @@ class Writer:
     def __init__(self):
         self.__indent = 0
 
-    def start_block(self, field):
-        s = self.indentation()
+    def start_block(self, field, stream):
         self.__indent += 1
-        return s
 
-    def end_block(self, field):
+    def end_block(self, field, stream):
         self.__indent -= 1
-        return self.indentation()
 
-    def write(self, field):
+    def write(self, field, stream):
         '''
         Returns the name of the field.
         '''
         raise NotImplementedError
 
+    def indent(self, stream):
+        return stream.write(' ' * self.indentation())
+
     def indentation(self):
-        s = ''
-        for i in range(self.__indent):
-            s += ' ' * __DEFAULT_INDENTATION__
-        return s
+        return __DEFAULT_INDENTATION__ * self.__indent

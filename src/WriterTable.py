@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Aug 05, 2009 17:37
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -43,10 +43,12 @@ __TABLE_STR_SIZE__ = 20
 
 class WriterTable(Writer):
 
-    def start_block(self, field):
-        name_size = __TABLE_NAME_SIZE__ - len(self.indentation())
-        s = '| ' + Writer.start_block(self, field)
-        s += '%-*s | %-*s | %4d | %*s | %*s | %*s |' \
+    def start_block(self, field, stream):
+        name_size = __TABLE_NAME_SIZE__ - self.indentation()
+        stream.write('| ')
+        self.indent(stream)
+        Writer.start_block(self, field, stream)
+        s = '%-*s | %-*s | %4d | %*s | %*s | %*s |' \
             % (name_size,
                wrap_string(field.name(), name_size),
                __TABLE_CLASS_SIZE__,
@@ -55,12 +57,13 @@ class WriterTable(Writer):
                __TABLE_HEX_SIZE__, '',
                __TABLE_STR_SIZE__, '',
                __TABLE_STR_SIZE__, '')
-        return s
+        stream.write(s)
 
-    def write(self, field):
-        name_size = __TABLE_NAME_SIZE__ - len(self.indentation())
-        s = '| ' + self.indentation()
-        s += '%-*s | %-*s | %4d | %*s | %*s | %*s |' \
+    def write(self, field, stream):
+        name_size = __TABLE_NAME_SIZE__ - self.indentation()
+        stream.write('| ')
+        self.indent(stream)
+        s = '%-*s | %-*s | %4d | %*s | %*s | %*s |' \
             % (name_size,
                wrap_string(field.name(), name_size),
                __TABLE_CLASS_SIZE__,
@@ -72,4 +75,4 @@ class WriterTable(Writer):
                wrap_string(field.str_value(), __TABLE_STR_SIZE__),
                __TABLE_STR_SIZE__,
                wrap_string(field.str_eng_value(), __TABLE_STR_SIZE__))
-        return s
+        stream.write(s)
