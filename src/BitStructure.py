@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 19:25
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -30,12 +30,12 @@ __doc__ = '''
 
     **API reference**: :class:`BitStructure`
 
-    A packet field might be formed by bit fields. The BitStructure
-    class must be used, in conjunction with BitField, to create these
-    byte-aligned fields formed, internally, by bit fields.
+    The :mod:`BitStructure` class must be used, in conjunction with
+    :mod:`BitField`, to create these byte-aligned fields formed,
+    internally, by bit fields.
 
     It is really important to understand that BitPacket is byte
-    oriented, therefore, a BitStructure must be byte-aligned.
+    oriented, therefore, a :mod:`BitStructure` must be byte-aligned.
 
     Now, consider the first byte of the IP header:
 
@@ -49,9 +49,9 @@ __doc__ = '''
 
     >>> bs = BitStructure('IP')
 
-    The line above creates an empty structure named 'IP'. So, now we
-    need to add fields to it. As BitStructure is a Container subclass
-    the append() method can be used:
+    The line above creates an empty structure named 'IP'. Now, we need
+    to add fields to it. As :mod:`BitStructure` is a :mod:`Container`
+    subclass the :func:`Container.append` function can be used:
 
     >>> bs.append(BitField('version', 4, 0x0E))
     >>> bs.append(BitField('hlen', 4, 0x0C))
@@ -61,8 +61,8 @@ __doc__ = '''
       (hlen = 0x0C))
 
 
-    Accessing bit structres members
-    -------------------------------
+    Accessing fields
+    ----------------
 
     BitStructure fields can be obtained as in a dictionary, as in any
     Container subclass. Following the last example:

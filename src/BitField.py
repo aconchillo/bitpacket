@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 12:34
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -30,11 +30,11 @@ __doc__ = '''
 
     **API reference**: :class:`BitField`
 
-    A packet might be formed by multiple fields that could be single
-    bit fields, integer fields, etc. Sometimes, byte-aligned fields
-    are formed by bit fields internally. The purpose of
-    :mod:`BitField` is to provide these single bit fields that, at the
-    end, will be used to form byte-aligned fields.
+    A packet might be formed by multiple fields that can be single bit
+    fields, numeric fields, etc. Sometimes, byte-aligned fields are
+    formed by bit fields internally. The purpose of :mod:`BitField` is
+    to provide these single bit fields that, at the end, will be used
+    to form byte-aligned fields.
 
     For example, the first byte of the IP header is:
 
@@ -51,8 +51,7 @@ __doc__ = '''
     >>> print bf
     (version = 0x0F)
 
-    A default, optional, value has been also assigned at creation
-    time.
+    That is, a 4 bits field with a default, optional, value 15.
 
 
     Assigning bytes
@@ -62,9 +61,10 @@ __doc__ = '''
     :mod:`BitStructure` to form byte-aligned fields. When used with
     :mod:`BitStructure` the :func:`BitField.binary` and
     :func:`BitField.set_binary` functions are used, which allow
-    working with single bits. But, as a :mod:`Field` subclass a byte
-    string can still be set to a :mod:`BitField`. However, two special
-    considerations need to be taken into account:
+    working with bit strings (i.e. a string with 0 and 1). However, as
+    a :mod:`Field` subclass, a byte string can still be set to a
+    :mod:`BitField`. Two special considerations need to be taken into
+    account:
 
       - The MSB bit of the given byte string will also be the MSB of
         the :mod:`BitField`.

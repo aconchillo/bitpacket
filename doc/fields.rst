@@ -1,6 +1,7 @@
 .. automodule:: Field
 
-   .. automodule:: BitField
-   .. automodule:: Value
-   .. automodule:: Integer
-   .. automodule:: Real
+   .. toctree::
+      :maxdepth: 2
+
+      fields-bit
+      fields-value

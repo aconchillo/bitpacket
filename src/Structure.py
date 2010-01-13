@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 11:57
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -30,43 +30,45 @@ __doc__ = '''
 
     **API reference**: :class:`Structure`
 
-    A packet field might be formed by bit fields. The BitStructure
-    class must be used, in conjunction with BitField, to create
-    byte-aligned fields formed, internally, by bit fields.
+    The :class:`Structure` class provides a byte-aligned
+    :mod:`Container`. This means that all the fields added to a
+    :mod:`Structure` should be byte-aligned, otherwise wrong results
+    would be given. This does not mean that a :mod:`BitFeild` can not
+    be added, but if added, it should have a byte-aligned size.
 
-    Consider the first byte of the IP header:
+    Consider the first three bytes of the IP header:
 
-    +---------+----------+
-    | version |   hlen   |
-    +=========+==========+
-    | 4 bits  |  4 bits  |
-    +---------+----------+
+    +---------+---------+---------+---------------+
+    | version |   hlen  |   tos   |    length     |
+    +=========+=========+=========+===============+
+    | 4 bits  |  4 bits | 1 byte  |    2 bytes    |
+    +---------+---------+---------+---------------+
 
-    This packet could be constructed by:
+    For simplicity, we can create only a :mod:`Structure` with the
+    last two fields, *tos* and *length*.
 
-    >>> bs = BitStructure('IP1st')
+    >>> ip = Structure('IP')
 
-    The line above creates an empty packet named 'IP1st'. So, now we
-    need to add fields to it. As BitStructure is a Container subclass
-    the append() method can be used:
+    The line above creates an empty packet named 'IP'. Now, we need to
+    add the two fields to it:
 
-    >>> bs.append(BitField('version', 4, 14))
-    >>> bs.append(BitField('hlen', 4, 12))
-    >>> print bs
-    (IP1st =
-       (version = 14)
-       (hlen = 12))
+    >>> ip.append(UInt8('tos', 3))
+    >>> ip.append(UInt16('length', 146))
+    >>> print ip
+    (IP =
+      (tos = 3)
+      (length = 146))
 
 
-    Accessing container fields
-    --------------------------
+    Accessing fields
+    ----------------
 
     Structure fields can be obtained as in a dictionary, that is, by
     its name. Following the last example:
 
-    >>> print '0x%X' % bs['id']
+    >>> print '0x%X' % ip['tos']
     0x54
-    >>> print '0x%X' % bs['address']
+    >>> print '0x%X' % ip['length']
     0x10203040
 
 
@@ -133,6 +135,8 @@ __doc__ = '''
 
 '''
 
+from Integer import UInt8, UInt16
+
 from Container import Container
 
 class Structure(Container):
@@ -147,3 +151,8 @@ class Structure(Container):
     def _decode(self, stream, context):
         for f in self.fields():
             f._decode(stream, context)
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()

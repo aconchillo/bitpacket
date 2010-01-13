@@ -31,9 +31,10 @@ __doc__ = '''
     **API reference**: :class:`Container`
 
     Packets can be seen as field containers. That is, a packet is
-    formed by a sequence of fields. The Container class provides this
-    vision. A Container is also a Field itself. Therefore, a Container
-    might accomodate Containers.
+    formed by a sequence of fields. The :class:`Container` class
+    provides this vision. A :mod:`Container` is also a :mod:`Field`
+    itself. Therefore, a :mod:`Container` might accomodate other
+    Containers.
 
     Consider the first three bytes of the IP header:
 
@@ -43,23 +44,16 @@ __doc__ = '''
     | 4 bits  |  4 bits | 1 byte  |    2 bytes    |
     +---------+---------+---------+---------------+
 
-    These are the field descriptions:
+    We can see the IP header as a :mod:`Container` with a
+    sub-:mod:`Container` holding two bit fields (*version* and *hlen*)
+    and two more fields (*tos* and *length*).
 
-      - **version**: Version
-      - **hlen**: Header length
-      - **tos**: Type Of Service
-      - **length**: Total length
+    The :class:`Container` class is just an abstract class that allows
+    adding fields. That is, it provides the base methods to build
+    Containers.
 
-    We can see the IP header as a Container with a sub-Container
-    holding two bit fields (version and hlen) and two more fields (tos
-    and length).
-
-    The Container class is just an abstract class that allows adding
-    fields of a given FieldType. The FieldType of all the sub-fields
-    is defined at construction time.
-
-    Currently, there are three Container implementations: Structure,
-    BitStructure and MetaStructure.
+    Currently, there are three :mod:`Container` implementations:
+    :mod:`Structure`, :mod:`BitStructure` and :mod:`MetaStructure`.
 
 '''
 

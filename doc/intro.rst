@@ -45,7 +45,11 @@ the following command:
 
 .. _distutils: http://docs.python.org/distutils/
 
-Now, you can use BitPacket in your application:
+Usage
+-----
+
+Using BitPacket in your application is straightforward. You only need
+to add the following import in your Python scripts:
 
 ::
 

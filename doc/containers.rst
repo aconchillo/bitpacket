@@ -1,4 +1,6 @@
 .. automodule:: Container
 
-  .. automodule:: BitStructure
-  .. automodule:: Structure
+   .. toctree::
+      :maxdepth: 2
+
+      containers-impl
