@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 17:07
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -211,7 +211,11 @@ class MetaStructure(Structure):
 
         # Append fields.
         for i in range(counter):
-            self.append(self.__base_type("%d" % i))
+            try:
+                self.append(self.__base_type("%d" % i))
+            except TypeError, err:
+                raise TypeError('%s constructor needs a name parameter (%s)' \
+                                    % (self.__base_type, err))
 
         # Once the subfields have been added, parse the stream.
         Structure._decode(self, stream, context)
