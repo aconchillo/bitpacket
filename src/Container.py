@@ -149,15 +149,28 @@ class Container(Field):
         Returns the value of the field identified by 'name'. This is
         the same as calling container.field(name).value().
         '''
-        return self.field(name).value()
+        names = name.split('.', 1)
+        try:
+            if len(names) < 2:
+                return self.field(name).value()
+            else:
+                return self.__fields_name[names[0]][names[1]]
+        except KeyError:
+            raise KeyError, 'field "%s" does not exist' % name
 
     def __setitem__(self, name, value):
         '''
         Sets the given 'value' to the field identified by 'name'. This
         is the same as calling container.field(name).set_value(value).
         '''
-        self.field(name).set_value(value)
-
+        names = name.split('.', 1)
+        try:
+            if len(names) < 2:
+                self.field(name).set_value(value)
+            else:
+                self.__fields_name[names[0]][names[1]] = value
+        except KeyError:
+            raise KeyError, 'field "%s" does not exist' % name
 
 if __name__ == '__main__':
     import doctest
