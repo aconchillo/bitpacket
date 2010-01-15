@@ -28,8 +28,10 @@ from Container import Container
 from Field import Field
 from Integer import *
 from MetaData import MetaData
+from MetaField import MetaField
 from MetaStructure import MetaStructure
 from Real import *
+from Structure import Structure
 from Value import Value
 from Writer import Writer
 from WriterBasic import WriterBasic
@@ -45,8 +47,10 @@ __all__ = [ 'BitField',
             'Int32', 'UInt32',
             'Int64', 'UInt64',
             'MetaData',
+            'MetaField',
             'MetaStructure',
             'Float', 'Double',
+            'Structure',
             'Value',
             'Writer',
             'WriterBasic',
