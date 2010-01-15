@@ -27,47 +27,72 @@ from Field import Field
 
 class MetaField(Field):
 
+    @staticmethod
+    def raise_error(instance):
+        raise TypeError, "No field created for MetaField '%s'" % instance.name()
+
     def __init__(self, name,  fieldfunc):
         Field.__init__(self, name)
         self.__fieldfunc = fieldfunc
         self.__field = None
 
     def _encode(self, stream, context):
-        if self.__field:
-            self.__field._encode(stream, context)
+        self.__create_field(context)
+        self.__field._encode(stream, context)
 
     def _decode(self, stream, context):
-        self.__field = self.__fieldfunc(context)
+        self.__create_field(context)
         self.__field._decode(stream, context)
+
+    def field(self):
+        return self.__field
 
     def value(self):
         if self.__field:
             return self.__field.value()
-        return None
+        self.raise_error(self)
 
     def size(self):
         if self.__field:
             return self.__field.size()
-        return 0
+        self.raise_error(self)
 
     def write(self, stream):
         if self.__field:
+            self.__field.set_writer(self.writer())
             self.__field.write(stream)
+            return
+        self.raise_error(self)
 
     def str_value(self):
         if self.__field:
             return self.__field.str_value()
-        return ""
+        self.raise_error(self)
 
     def str_hex_value(self):
         if self.__field:
             return self.__field.str_hex_value()
-        return ""
+        self.raise_error(self)
 
     def str_eng_value(self):
         if self.__field:
             return self.__field.str_eng_value()
-        return ""
+        self.raise_error(self)
+
+    def __getitem__(self, name):
+        if self.__field:
+            return self.__field[name]
+        self.raise_error(self)
+
+    def __setitem__(self, name, value):
+        if self.__field:
+            self.__field[name] = value
+            return
+        self.raise_error(self)
+
+    def __create_field(self, context):
+        if not self.__field:
+            self.__field = self.__fieldfunc(context)
 
 # import array
 
@@ -80,9 +105,16 @@ class MetaField(Field):
 #         Structure.__init__(self, "test")
 #         self.append(UInt8("value"))
 
+# s = Structure("metastruct")
+# ss = Structure("substruct")
+# s.append(ss)
+
 # f = MetaField("test", lambda ctx: Test())
-# f.set_array(array.array('B', [123]))
-# print f
+# ss.append(f)
+
+# s.set_array(array.array('B', [123]))
+
+# print s
 
 #if __name__ == '__main__':
 #    import doctest
