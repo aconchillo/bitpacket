@@ -50,6 +50,10 @@ class MetaField(Field):
             return self.__field.size()
         return 0
 
+    def write(self, stream):
+        if self.__field:
+            self.__field.write(stream)
+
     def str_value(self):
         if self.__field:
             return self.__field.str_value()
@@ -67,9 +71,16 @@ class MetaField(Field):
 
 # import array
 
+# from Structure import Structure
 # from Integer import *
 
-# f = MetaField("test", lambda ctx: UInt8('value'))
+# class Test(Structure):
+
+#     def __init__(self):
+#         Structure.__init__(self, "test")
+#         self.append(UInt8("value"))
+
+# f = MetaField("test", lambda ctx: Test())
 # f.set_array(array.array('B', [123]))
 # print f
 
