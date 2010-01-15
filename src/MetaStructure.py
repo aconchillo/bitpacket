@@ -188,7 +188,7 @@ class MetaStructure(Structure):
     BitStructure or BitVariableStructure.
     '''
 
-    def __init__(self, name, lengthfunc, typefunc):
+    def __init__(self, name, lengthfunc, fieldfunc):
         '''
         Initializes the bit variable structure field with the given
         'name' as well as with the desired bit size ('counter_size')
@@ -198,7 +198,7 @@ class MetaStructure(Structure):
         the base field.
         '''
         Structure.__init__(self, name)
-        self.__typefunc = typefunc
+        self.__fieldfunc = fieldfunc
         self.__lengthfunc = lengthfunc
 
     def _decode(self, stream, context):
@@ -210,10 +210,11 @@ class MetaStructure(Structure):
         counter = self.__lengthfunc(context)
 
         # Append fields.
-        base_type = self.__typefunc(context)
         for i in range(counter):
             try:
-                self.append(base_type("%d" % i))
+                new_field = self.__fieldfunc(context)
+                new_field.set_name("%d" % i)
+                self.append(new_field)
             except TypeError, err:
                 raise TypeError('%s constructor needs a name parameter (%s)' \
                                     % (base_type, err))
@@ -231,17 +232,19 @@ class MetaStructure(Structure):
 
 # class Test(Structure):
 
-#     def __init__(self, name = "test"):
-#         Structure.__init__(self, name)
+#     def __init__(self):
+#         Structure.__init__(self, 'test')
 #         self.append(UInt8('counter'))
 #         self.append(MetaStructure('address',
 #                                   lambda ctx: self['counter'],
-#                                   lambda ctx: UInt64))
+#                                   lambda ctx: UInt64('value')))
 
 # s = Structure('a')
 # s.set_writer(WriterTable())
 # s.append(UInt8('counter'))
-# s.append(MetaStructure('struct', lambda ctx: ctx['counter'], lambda ctx: Test))
+# s.append(MetaStructure('struct',
+#                        lambda ctx: ctx['counter'],
+#                        lambda ctx: Test()))
 
 # s.set_array(array.array('B', [2,
 #                               1,

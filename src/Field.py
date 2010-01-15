@@ -69,6 +69,9 @@ class Field:
         '''
         return self.__name
 
+    def set_name(self, name):
+        self.__name = name
+
     def value(self):
         '''
         Returns the value (integer, float...) of the field.

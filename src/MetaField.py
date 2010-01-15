@@ -27,9 +27,9 @@ from Field import Field
 
 class MetaField(Field):
 
-    def __init__(self, name,  typefunc):
+    def __init__(self, name,  fieldfunc):
         Field.__init__(self, name)
-        self.__typefunc = typefunc
+        self.__fieldfunc = fieldfunc
         self.__field = None
 
     def _encode(self, stream, context):
@@ -37,8 +37,7 @@ class MetaField(Field):
             self.__field._encode(stream, context)
 
     def _decode(self, stream, context):
-        base_type = self.__typefunc(context)
-        self.__field = base_type(self.name())
+        self.__field = self.__fieldfunc(context)
         self.__field._decode(stream, context)
 
     def value(self):
@@ -70,7 +69,7 @@ class MetaField(Field):
 
 # from Integer import *
 
-# f = MetaField("test", lambda ctx: UInt8)
+# f = MetaField("test", lambda ctx: UInt8('value'))
 # f.set_array(array.array('B', [123]))
 # print f
 
