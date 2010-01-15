@@ -93,28 +93,29 @@ class MetaField(Field):
     def __create_field(self, context):
         if not self.__field:
             self.__field = self.__fieldfunc(context)
+            self.__field.set_name(self.name())
 
-# import array
+import array
 
-# from Structure import Structure
-# from Integer import *
+from Structure import Structure
+from Integer import *
 
-# class Test(Structure):
+class Test(Structure):
 
-#     def __init__(self):
-#         Structure.__init__(self, "test")
-#         self.append(UInt8("value"))
+    def __init__(self):
+        Structure.__init__(self, "tesbabat")
+        self.append(UInt8("value"))
 
-# s = Structure("metastruct")
-# ss = Structure("substruct")
-# s.append(ss)
+s = Structure("metastruct")
+ss = Structure("substruct")
+s.append(ss)
 
-# f = MetaField("test", lambda ctx: Test())
-# ss.append(f)
+f = MetaField("test", lambda ctx: Test())
+ss.append(f)
 
-# s.set_array(array.array('B', [123]))
+s.set_array(array.array('B', [123]))
 
-# print s
+print s
 
 #if __name__ == '__main__':
 #    import doctest
