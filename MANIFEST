@@ -9,6 +9,7 @@ src/Container.py
 src/Field.py
 src/Integer.py
 src/MetaData.py
+src/MetaField.py
 src/MetaStructure.py
 src/Real.py
 src/Structure.py

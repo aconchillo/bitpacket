@@ -188,7 +188,7 @@ class MetaStructure(Structure):
     BitStructure or BitVariableStructure.
     '''
 
-    def __init__(self, name, lengthfunc, base_type):
+    def __init__(self, name, lengthfunc, typefunc):
         '''
         Initializes the bit variable structure field with the given
         'name' as well as with the desired bit size ('counter_size')
@@ -198,7 +198,7 @@ class MetaStructure(Structure):
         the base field.
         '''
         Structure.__init__(self, name)
-        self.__base_type = base_type
+        self.__typefunc = typefunc
         self.__lengthfunc = lengthfunc
 
     def _decode(self, stream, context):
@@ -210,12 +210,13 @@ class MetaStructure(Structure):
         counter = self.__lengthfunc(context)
 
         # Append fields.
+        base_type = self.__typefunc(context)
         for i in range(counter):
             try:
-                self.append(self.__base_type("%d" % i))
+                self.append(base_type("%d" % i))
             except TypeError, err:
                 raise TypeError('%s constructor needs a name parameter (%s)' \
-                                    % (self.__base_type, err))
+                                    % (base_type, err))
 
         # Once the subfields have been added, parse the stream.
         Structure._decode(self, stream, context)
@@ -234,12 +235,13 @@ class MetaStructure(Structure):
 #         Structure.__init__(self, name)
 #         self.append(UInt8('counter'))
 #         self.append(MetaStructure('address',
-#                                   lambda ctx: self['counter'], UInt64))
+#                                   lambda ctx: self['counter'],
+#                                   lambda ctx: UInt64))
 
 # s = Structure('a')
 # s.set_writer(WriterTable())
 # s.append(UInt8('counter'))
-# s.append(MetaStructure('struct', lambda ctx: ctx['counter'], Test))
+# s.append(MetaStructure('struct', lambda ctx: ctx['counter'], lambda ctx: Test))
 
 # s.set_array(array.array('B', [2,
 #                               1,
