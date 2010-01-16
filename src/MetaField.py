@@ -65,6 +65,18 @@ class MetaField(Field):
             self._field = self._fieldfunc(context)
             self._field.set_name(name)
 
+    def __getitem__(self, name):
+        if self._field:
+            return self._field[name]
+        else:
+            self._raise_error(self)
+
+    def __setitem__(self, name, value):
+        if self._field:
+            self._field[name] = value
+        else:
+            self._raise_error(self)
+
     def __getattribute__(self, name):
         try:
             # We'll get an exception due to _field access in __init__,
