@@ -60,17 +60,24 @@ class MetaField(Field):
 
     def _create_field(self, context):
         if not self._field:
-            # call name() before proxy is available
+            # Call name() before proxy is available.
             name = self.name()
             self._field = self._fieldfunc(context)
             self._field.set_name(name)
 
     def __getattribute__(self, name):
         try:
+            # We'll get an exception due to _field access in __init__,
+            # as _field attribute does not exist yet.
             field = object.__getattribute__(self, '_field')
         except AttributeError:
             field = None
+
+        # Get the list of methods that should not be forwarded.
         non_proxyable = object.__getattribute__(self, '_non_proxyable')()
+
+        # If _field is created and we are accessing a proxyable
+        # attribute, then forward it to _field.
         if field and name not in non_proxyable:
             return object.__getattribute__(field, name)
         else:
