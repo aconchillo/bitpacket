@@ -28,72 +28,53 @@ from Field import Field
 class MetaField(Field):
 
     @staticmethod
-    def raise_error(instance):
+    def _raise_error(instance):
         raise TypeError, "No field created for MetaField '%s'" % instance.name()
+
+    @staticmethod
+    def _non_proxyable():
+        return ['_field', '_fieldfunc', '_create_field',
+                '_encode', '_decode', 'write']
 
     def __init__(self, name,  fieldfunc):
         Field.__init__(self, name)
-        self.__fieldfunc = fieldfunc
-        self.__field = None
+        self._fieldfunc = fieldfunc
+        self._field = None
 
     def _encode(self, stream, context):
-        self.__create_field(context)
-        self.__field._encode(stream, context)
+        if self._field:
+            self._field._encode(stream, context)
+        else:
+            self._raise_error(self)
 
     def _decode(self, stream, context):
-        self.__create_field(context)
-        self.__field._decode(stream, context)
-
-    def field(self):
-        return self.__field
-
-    def value(self):
-        if self.__field:
-            return self.__field.value()
-        self.raise_error(self)
-
-    def size(self):
-        if self.__field:
-            return self.__field.size()
-        self.raise_error(self)
+        self._create_field(context)
+        self._field._decode(stream, context)
 
     def write(self, stream):
-        if self.__field:
-            self.__field.set_writer(self.writer())
-            self.__field.write(stream)
-            return
-        self.raise_error(self)
+        if self._field:
+            self._field.set_writer(self.writer())
+            self._field.write(stream)
+        else:
+            self._raise_error(self)
 
-    def str_value(self):
-        if self.__field:
-            return self.__field.str_value()
-        self.raise_error(self)
+    def _create_field(self, context):
+        if not self._field:
+            # call name() before proxy is available
+            name = self.name()
+            self._field = self._fieldfunc(context)
+            self._field.set_name(name)
 
-    def str_hex_value(self):
-        if self.__field:
-            return self.__field.str_hex_value()
-        self.raise_error(self)
-
-    def str_eng_value(self):
-        if self.__field:
-            return self.__field.str_eng_value()
-        self.raise_error(self)
-
-    def __getitem__(self, name):
-        if self.__field:
-            return self.__field[name]
-        self.raise_error(self)
-
-    def __setitem__(self, name, value):
-        if self.__field:
-            self.__field[name] = value
-            return
-        self.raise_error(self)
-
-    def __create_field(self, context):
-        if not self.__field:
-            self.__field = self.__fieldfunc(context)
-            self.__field.set_name(self.name())
+    def __getattribute__(self, name):
+        try:
+            field = object.__getattribute__(self, '_field')
+        except AttributeError:
+            field = None
+        non_proxyable = object.__getattribute__(self, '_non_proxyable')()
+        if field and name not in non_proxyable:
+            return object.__getattribute__(field, name)
+        else:
+            return object.__getattribute__(self, name)
 
 # import array
 

@@ -49,7 +49,7 @@ except ImportError:
 
 from WriterBasic import WriterBasic
 
-class Field:
+class Field(object):
 
     def __init__(self, name):
         '''
