@@ -65,6 +65,12 @@ class MetaField(Field):
             self._field = self._fieldfunc(context)
             self._field.set_name(name)
 
+    def __len__(self):
+        if self._field:
+            return len(self._field)
+        else:
+            self._raise_error(self)
+
     def __getitem__(self, name):
         if self._field:
             return self._field[name]
@@ -104,7 +110,8 @@ class MetaField(Field):
 
 #     def __init__(self):
 #         Structure.__init__(self, "tesbabat")
-#         self.append(UInt8("value"))
+#         self.append(UInt8("value1"))
+#         self.append(UInt8("value2"))
 
 # s = Structure("metastruct")
 # ss = Structure("substruct")
@@ -113,7 +120,7 @@ class MetaField(Field):
 # f = MetaField("test", lambda ctx: Test())
 # ss.append(f)
 
-# s.set_array(array.array('B', [123]))
+# s.set_array(array.array('B', [123, 124]))
 
 # print s
 
