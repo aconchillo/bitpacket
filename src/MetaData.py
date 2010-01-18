@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 15:42
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -45,6 +45,9 @@ class MetaData(Field):
 
     def size(self):
         return len(self.__data)
+
+    def bit_size(self):
+        return self.size() << 3
 
     def str_value(self):
         return "0x" +  "".join(["%02X" % ord(c) for c in self.value()])

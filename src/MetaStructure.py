@@ -202,22 +202,14 @@ class MetaStructure(Structure):
         self.__lengthfunc = lengthfunc
 
     def _decode(self, stream, context):
-        # We might be re-using the instance, so we need to reset it
-        # and get rid of old fields.
-        self.reset()
-
         # Get the counter dynamically.
-        counter = self.__lengthfunc(context)
+        length = self.__lengthfunc(context)
 
         # Append fields.
-        for i in range(counter):
-            try:
-                new_field = self.__fieldfunc(context)
-                new_field.set_name("%d" % i)
-                self.append(new_field)
-            except TypeError, err:
-                raise TypeError('%s constructor needs a name parameter (%s)' \
-                                    % (base_type, err))
+        for i in range(length):
+            new_field = self.__fieldfunc(context)
+            new_field.set_name("%d" % i)
+            self.append(new_field)
 
         # Once the subfields have been added, parse the stream.
         Structure._decode(self, stream, context)

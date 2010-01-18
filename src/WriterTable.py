@@ -48,12 +48,12 @@ class WriterTable(Writer):
         stream.write('| ')
         self.indent(stream)
         Writer.start_block(self, field, stream)
-        s = '%-*s | %-*s | %4d | %*s | %*s | %*s |' \
+        s = '%-*s | %-*s | %4d | %4d | %*s | %*s | %*s |' \
             % (name_size,
                wrap_string(field.name(), name_size),
                __TABLE_CLASS_SIZE__,
                wrap_string(field.__class__.__name__, __TABLE_CLASS_SIZE__),
-               field.size(),
+               field.size(), field.bit_size(),
                __TABLE_HEX_SIZE__, '',
                __TABLE_STR_SIZE__, '',
                __TABLE_STR_SIZE__, '')
@@ -63,12 +63,12 @@ class WriterTable(Writer):
         name_size = __TABLE_NAME_SIZE__ - self.indentation()
         stream.write('| ')
         self.indent(stream)
-        s = '%-*s | %-*s | %4d | %*s | %*s | %*s |' \
+        s = '%-*s | %-*s | %4d | %4d | %*s | %*s | %*s |' \
             % (name_size,
                wrap_string(field.name(), name_size),
                __TABLE_CLASS_SIZE__,
                wrap_string(field.__class__.__name__, __TABLE_CLASS_SIZE__),
-               field.size(),
+               field.size(), field.bit_size(),
                __TABLE_HEX_SIZE__,
                wrap_string(field.str_hex_value(), __TABLE_HEX_SIZE__),
                __TABLE_STR_SIZE__,

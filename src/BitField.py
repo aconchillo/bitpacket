@@ -127,13 +127,13 @@ class BitField(Field):
     def _encode(self, stream, context):
         try:
             binary = self.binary()
-            write_stream(stream, byte_end(self.size()), decode_bin(binary))
+            write_stream(stream, self.size(), decode_bin(binary))
         except (AssertionError, ValueError), err:
             raise ValueError('"%s" size error: %s' % (self.name(), err))
 
     def _decode(self, stream, context):
         try:
-            binary = encode_bin(read_stream(stream, byte_end(self.size())))
+            binary = encode_bin(read_stream(stream, self.size()))
             self.set_binary(binary)
         except ValueError, err:
             raise ValueError('"%s" size error: %s ' % (self.name(), err))
@@ -150,7 +150,7 @@ class BitField(Field):
         '''
         Sets a new unsigned integer 'value' to the field.
         '''
-        self.__bits = int_to_bin(value, self.size())
+        self.__bits = int_to_bin(value, self.bit_size())
 
     def binary(self):
         '''
@@ -165,22 +165,28 @@ class BitField(Field):
         sequence of 0's and 1's. The binary string can be longer than
         the real size of this field.
         '''
-        self.__bits = binary[:self.size()]
+        self.__bits = binary[:self.bit_size()]
 
     def size(self):
+        '''
+        Returns the size of the field in bytes.
+        '''
+        return byte_end(self.bit_size())
+
+    def bit_size(self):
         '''
         Returns the size of the field in bits.
         '''
         return self.__size
 
     def str_value(self):
-        return hex_string(self.value(), byte_end(self.size()))
+        return hex_string(self.value(), self.size())
 
     def str_hex_value(self):
-        return hex_string(self.hex_value(), byte_end(self.size()))
+        return hex_string(self.hex_value(), self.size())
 
     def str_eng_value(self):
-        return hex_string(self.eng_value(), byte_end(self.size()))
+        return hex_string(self.eng_value(), self.size())
 
 
 if __name__ == '__main__':

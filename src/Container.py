@@ -102,13 +102,22 @@ class Container(Field):
 
     def size(self):
         '''
-        Returns the size of the field. That is, the sum of all sizes
-        of the fields in this container. The size can be in bits or
-        bytes depending on the subfields type.
+        Returns the size of the field in bytes. That is, the sum of
+        all byte sizes of the fields in this container.
         '''
         size = 0
         for f in self.fields():
             size += f.size()
+        return size
+
+    def bit_size(self):
+        '''
+        Returns the size of the field in bits. That is, the sum of all
+        bit sizes of the fields in this container.
+        '''
+        size = 0
+        for f in self.fields():
+            size += f.bit_size()
         return size
 
     def write(self, stream):
@@ -123,14 +132,6 @@ class Container(Field):
             # Restore old field writer
             field.set_writer(old_writer)
         self.writer().end_block(self, stream)
-
-    def reset(self):
-        '''
-        Remove all existent fields from this container. This function
-        will loss all previous information stored in this field.
-        '''
-        self.__fields = []
-        self.__fields_name = {}
 
     def field(self, name):
         '''

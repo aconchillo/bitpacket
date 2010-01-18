@@ -110,6 +110,7 @@ from utils.stream import read_stream, write_stream
 
 from BitField import BitField
 from Container import Container
+from Structure import Structure
 
 class BitStructure(Container):
     '''
@@ -157,21 +158,15 @@ class BitStructure(Container):
         start = 0
         for f in self.fields():
             f.set_binary(binary[start:])
-            start += f.size()
+            start += f.bit_size()
 
     def size(self):
         '''
-        Returns the size of the field in bytes. That is, the sum of
-        all sizes of the fields in this bit structure.
+        Returns the size of the field in bytes. This function will add
+        all the bit field sizes in order to calculate the byte size of
+        the container.
         '''
         return byte_end(self.bit_size())
-
-    def bit_size(self):
-        '''
-        Returns the size of the field in bits. That is, the sum of
-        all sizes of the fields in this bit structure.
-        '''
-        return Container.size(self)
 
 
 if __name__ == '__main__':
