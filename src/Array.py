@@ -29,34 +29,34 @@ class Array(Structure):
 
     def __init__(self, name, lengthtype, basetype):
         Structure.__init__(self, name)
-        self.__length = lengthtype('Length')
+        self.__length = lengthtype("Length")
         self.__basetype = basetype
 
         Structure.append(self, self.__length)
 
     def append(self, field):
         if isinstance(field, self.__basetype):
-            value = self['Length']
+            value = self["Length"]
             field.set_name(value)
-            self['Length'] = value + 1
+            self["Length"] = value + 1
             Structure.append(self, field)
         else:
-            raise TypeError, 'Invalid field type for array "%s"' % self.name()
+            raise TypeError("Invalid field type for array '%s'" % self.name())
 
 # from Integer import *
 
 # class Sub32(UInt32):
 
 #     def __init__(self, value):
-#         UInt32.__init__(self, 'foo', value)
+#         UInt32.__init__(self, "foo", value)
 
-# a = Array('test', UInt8, UInt32)
-# a.append(UInt32('value', 23))
+# a = Array("test", UInt8, UInt32)
+# a.append(UInt32("value", 23))
 # a.append(Sub32(34))
 
 # print a
 
 
-# if __name__ == '__main__':
+# if __name__ == "__main__":
 #     import doctest
 #     doctest.testmod()

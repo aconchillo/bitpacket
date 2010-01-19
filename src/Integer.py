@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Tue Oct 13, 2009 12:03
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -43,13 +43,13 @@ __doc__ = '''
     for example, very easy to create a new 16-bit signed integer bit
     field:
 
-    >>> value = Int16('int16', -1345)
+    >>> value = Int16("int16", -1345)
     >>> print value
     (int16 = -1345)
 
     or a 16-bit unsigned one:
 
-    >>> value = UInt16('uint16', 0x8000)
+    >>> value = UInt16("uint16", 0x8000)
     >>> print value
     (uint16 = 32768)
 

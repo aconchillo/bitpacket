@@ -87,8 +87,8 @@ class Container(Field):
         '''
         # Only one field with the same name is allowed.
         if field.name() in self.__fields_name:
-            raise NameError, 'field "%s" already exists in "%s"' \
-                % (field.name(), self.name())
+            raise NameError("field '%s' already exists in '%s'" \
+                                % (field.name(), self.name()))
         else:
             self.__fields_name[field.name()] = field
 
@@ -117,7 +117,7 @@ class Container(Field):
             old_writer = field.writer()
             # Inherit parent writer
             field.set_writer(self.writer())
-            stream.write('\n')
+            stream.write("\n")
             field.write(stream)
             # Restore old field writer
             field.set_writer(old_writer)
@@ -140,29 +140,29 @@ class Container(Field):
         Returns the value of the field identified by 'name'. This is
         the same as calling container.field(name).value().
         '''
-        names = name.split('.', 1)
+        names = name.split(".", 1)
         try:
             if len(names) < 2:
                 return self.field(name).value()
             else:
                 return self.__fields_name[names[0]][names[1]]
         except KeyError:
-            raise KeyError, 'field "%s" does not exist' % name
+            raise KeyError("field '%s' does not exist" % name)
 
     def __setitem__(self, name, value):
         '''
         Sets the given 'value' to the field identified by 'name'. This
         is the same as calling container.field(name).set_value(value).
         '''
-        names = name.split('.', 1)
+        names = name.split(".", 1)
         try:
             if len(names) < 2:
                 self.field(name).set_value(value)
             else:
                 self.__fields_name[names[0]][names[1]] = value
         except KeyError:
-            raise KeyError, 'field "%s" does not exist' % name
+            raise KeyError("field '%s' does not exist" % name)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
     doctest.testmod()

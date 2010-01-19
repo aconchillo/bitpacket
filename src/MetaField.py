@@ -29,12 +29,12 @@ class MetaField(Field):
 
     @staticmethod
     def _raise_error(instance):
-        raise TypeError, "No field created for MetaField '%s'" % instance.name()
+        raise TypeError("No field created for MetaField '%s'" % instance.name())
 
     @staticmethod
     def _non_proxyable():
-        return ['_field', '_fieldfunc', '_create_field',
-                '_encode', '_decode', 'write']
+        return ["_field", "_fieldfunc", "_create_field",
+                "_encode", "_decode", "write"]
 
     def __init__(self, name,  fieldfunc):
         Field.__init__(self, name)
@@ -87,12 +87,12 @@ class MetaField(Field):
         try:
             # We'll get an exception due to _field access in __init__,
             # as _field attribute does not exist yet.
-            field = object.__getattribute__(self, '_field')
+            field = object.__getattribute__(self, "_field")
         except AttributeError:
             field = None
 
         # Get the list of methods that should not be forwarded.
-        non_proxyable = object.__getattribute__(self, '_non_proxyable')()
+        non_proxyable = object.__getattribute__(self, "_non_proxyable")()
 
         # If _field is created and we are accessing a proxyable
         # attribute, then forward it to _field.
@@ -120,10 +120,10 @@ class MetaField(Field):
 # f = MetaField("test", lambda ctx: Test())
 # ss.append(f)
 
-# s.set_array(array.array('B', [123, 124]))
+# s.set_array(array.array("B", [123, 124]))
 
 # print s
 
-#if __name__ == '__main__':
+#if __name__ == "__main__":
 #    import doctest
 #    doctest.testmod()

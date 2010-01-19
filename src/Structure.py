@@ -47,13 +47,13 @@ __doc__ = '''
     For simplicity, we can create only a :mod:`Structure` with the
     last two fields, *tos* and *length*.
 
-    >>> ip = Structure('IP')
+    >>> ip = Structure("IP")
 
     The line above creates an empty packet named 'IP'. Now, we need to
     add the two fields to it:
 
-    >>> ip.append(UInt8('tos', 3))
-    >>> ip.append(UInt16('length', 146))
+    >>> ip.append(UInt8("tos", 3))
+    >>> ip.append(UInt16("length", 146))
     >>> print ip
     (IP =
       (tos = 3)
@@ -66,9 +66,9 @@ __doc__ = '''
     Structure fields can be obtained as in a dictionary, that is, by
     its name. Following the last example:
 
-    >>> print '0x%X' % ip['tos']
+    >>> print "0x%X" % ip["tos"]
     0x54
-    >>> print '0x%X' % ip['length']
+    >>> print "0x%X" % ip["length"]
     0x10203040
 
 
@@ -80,9 +80,9 @@ __doc__ = '''
     initializing any field and assign the integer value or string of
     bytes to it.
 
-    >>> bs = BitStructure('mypacket')
-    >>> bs.append(BitField('id', 8))
-    >>> bs.append(BitField('address', 32))
+    >>> bs = BitStructure("mypacket")
+    >>> bs.append(BitField("id", 8))
+    >>> bs.append(BitField("address", 32))
     >>> print bs
     (mypacket =
        (id = 0x00)
@@ -90,7 +90,7 @@ __doc__ = '''
 
     So, now we can unpack the following array of bytes:
 
-    >>> data = array.array('B', [0x38, 0x87, 0x34, 0x21, 0x40])
+    >>> data = array.array("B", [0x38, 0x87, 0x34, 0x21, 0x40])
 
     into our previously defined structure:
 
@@ -110,15 +110,15 @@ __doc__ = '''
 
     >>> class MyStructure(BitStructure):
     ...    def __init__(self, id = 0, address = 0):
-    ...        BitStructure.__init__(self, 'mystructure')
-    ...        self.append(BitField('id', 8, id))
-    ...        self.append(BitField('address', 32, address))
+    ...        BitStructure.__init__(self, "mystructure")
+    ...        self.append(BitField("id", 8, id))
+    ...        self.append(BitField("address", 32, address))
     ...
     ...    def id(self):
-    ...        return self['id']
+    ...        return self["id"]
     ...
     ...    def address(self):
-    ...        return self['address']
+    ...        return self["address"]
     ...
     >>> ms = MyStructure(0x33, 0x50607080)
     >>> print ms
@@ -128,9 +128,9 @@ __doc__ = '''
 
     We can now use the accessors of our class to print its content:
 
-    >>> print '0x%X' % ms.id()
+    >>> print "0x%X" % ms.id()
     0x33
-    >>> print '0x%X' % ms.address()
+    >>> print "0x%X" % ms.address()
     0x50607080
 
 '''
@@ -153,6 +153,6 @@ class Structure(Container):
             f._decode(stream, context)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
     doctest.testmod()

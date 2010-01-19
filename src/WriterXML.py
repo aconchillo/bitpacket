@@ -43,10 +43,10 @@ class WriterXML(Writer):
         stream.write(s)
 
     def end_block(self, field, stream):
-        stream.write('\n')
+        stream.write("\n")
         Writer.end_block(self, field, stream)
         self.indent(stream)
-        stream.write('</structure>')
+        stream.write("</structure>")
 
     def write(self, field, stream):
         self.indent(stream)
@@ -56,7 +56,7 @@ class WriterXML(Writer):
 
         Writer.start_block(self, field, stream)
         self.indent(stream)
-        stream.write('<value>%s</value>\n' % field.str_value())
+        stream.write("<value>%s</value>\n" % field.str_value())
         Writer.end_block(self, field, stream)
         self.indent(stream)
-        stream.write('</field>')
+        stream.write("</field>")

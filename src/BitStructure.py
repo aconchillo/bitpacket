@@ -47,14 +47,14 @@ __doc__ = '''
 
     This packet could be constructed by:
 
-    >>> bs = BitStructure('IP')
+    >>> bs = BitStructure("IP")
 
     The line above creates an empty structure named 'IP'. Now, we need
     to add fields to it. As :mod:`BitStructure` is a :mod:`Container`
     subclass the :func:`Container.append` function can be used:
 
-    >>> bs.append(BitField('version', 4, 0x0E))
-    >>> bs.append(BitField('hlen', 4, 0x0C))
+    >>> bs.append(BitField("version", 4, 0x0E))
+    >>> bs.append(BitField("hlen", 4, 0x0C))
     >>> print bs
     (IP =
       (version = 0x0E)
@@ -67,9 +67,9 @@ __doc__ = '''
     BitStructure fields can be obtained as in a dictionary, as in any
     Container subclass. Following the last example:
 
-    >>> bs['version']
+    >>> bs["version"]
     14
-    >>> bs['hlen']
+    >>> bs["hlen"]
     12
 
 
@@ -81,9 +81,9 @@ __doc__ = '''
     initializing any field and assign the integer value or string of
     bytes to it.
 
-    >>> bs = BitStructure('mypacket')
-    >>> bs.append(BitField('id', 8))
-    >>> bs.append(BitField('address', 32))
+    >>> bs = BitStructure("mypacket")
+    >>> bs.append(BitField("id", 8))
+    >>> bs.append(BitField("address", 32))
     >>> print bs
     (mypacket =
       (id = 0x00)
@@ -91,7 +91,7 @@ __doc__ = '''
 
     So, now we can unpack the following array of bytes:
 
-    >>> data = array.array('B', [0x38, 0x87, 0x34, 0x21, 0x40])
+    >>> data = array.array("B", [0x38, 0x87, 0x34, 0x21, 0x40])
 
     into our previously defined structure:
 
@@ -144,6 +144,6 @@ class BitStructure(Container):
         return byte_end(Container.size(self))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
     doctest.testmod()

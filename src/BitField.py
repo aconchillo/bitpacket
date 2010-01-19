@@ -47,7 +47,7 @@ __doc__ = '''
     That is, a byte formed by two nibbles. The first nibble,
     *version*, can be constructed by the following piece of code:
 
-    >>> bf = BitField('version', 4, 15)
+    >>> bf = BitField("version", 4, 15)
     >>> print bf
     (version = 0x0F)
 
@@ -88,15 +88,15 @@ class BitField(Field):
         if isinstance(stream, BitStreamWriter):
             write_stream(stream, self.size(), self.__bits)
         else:
-            raise TypeError('stream for bit fields should be bit oriented '
-                            '(hint: enclose it in a BitStructure)')
+            raise TypeError("Stream for bit fields should be bit oriented "
+                            "(hint: enclose it in a BitStructure)")
 
     def _decode(self, stream, context):
         if isinstance(stream, BitStreamReader):
             self.__bits = read_stream(stream, self.size())
         else:
-            raise TypeError('stream for bit fields should be bit oriented '
-                            '(hint: enclose it in a BitStructure)')
+            raise TypeError("Stream for bit fields should be bit oriented "
+                            "(hint: enclose it in a BitStructure)")
 
     def value(self):
         '''
@@ -128,6 +128,6 @@ class BitField(Field):
         return hex_string(self.eng_value(), byte_end(self.size()))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
     doctest.testmod()

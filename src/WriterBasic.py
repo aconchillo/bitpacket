@@ -38,12 +38,12 @@ class WriterBasic(Writer):
     def start_block(self, field, stream):
         self.indent(stream)
         Writer.start_block(self, field, stream)
-        stream.write('(%s =' % field.name())
+        stream.write("(%s =" % field.name())
 
     def end_block(self, field, stream):
         Writer.end_block(self, field, stream)
-        stream.write(')')
+        stream.write(")")
 
     def write(self, field, stream):
         self.indent(stream)
-        stream.write('(%s = %s)' % (field.name(), field.str_value()))
+        stream.write("(%s = %s)" % (field.name(), field.str_value()))

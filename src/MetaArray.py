@@ -30,7 +30,7 @@ class MetaArray(Structure):
     def __init__(self, name, lengthtype, fieldfunc):
         Structure.__init__(self, name)
         self.__fieldfunc = fieldfunc
-        self.__length = lengthtype('Length')
+        self.__length = lengthtype("Length")
 
         self.append(self.__length)
 
@@ -45,18 +45,44 @@ class MetaArray(Structure):
             new_field._decode(stream, context)
             self.append(new_field)
 
+    def __setitem__(self, name, value):
+        '''
+        Sets the given 'value' to the field identified by 'name'.
+
+        If the names[0] does not exists in the array the function
+        will instantiate a new field automatically (only if the index is  
+        consecutive to the length of the array).
+        '''
+        names = name.split(".", 1)
+        length = self.__length.value()
+    
+        if int(names[0]) < length:
+            # Normal access
+            pass
+        elif int(names[0]) > length:
+            raise IndexError("Index %s must be <= %s" % (names[0], length))
+        else: # int(names[0]) == length
+            new_field = self.__fieldfunc(None)
+            new_field.set_name("%d" % length)
+
+            Structure.append(self,new_field)
+
+            self.__length.set_value (length + 1)
+
+        Structure.__setitem__(self, name, value)
+
 # import array
 
 # from Integer import *
 
-# ma = MetaArray('memory', UInt8, 
-#                lambda ctx: MetaArray('address', UInt8, lambda ctx: UInt32('value')))
-# ma.set_array(array.array('B', [1,
+# ma = MetaArray("memory", UInt8, 
+#                lambda ctx: MetaArray("address", UInt8, lambda ctx: UInt32("value")))
+# ma.set_array(array.array("B", [1,
 #                                2,
 #                                0x12, 0x34, 0x56, 0x78, 
 #                                0x9A, 0xBC, 0xDE, 0xFF]))
 # print ma
 
-# if __name__ == '__main__':
+# if __name__ == "__main__":
 #     import doctest
 #     doctest.testmod()

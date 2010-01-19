@@ -34,8 +34,8 @@ class BitStreamReader(object):
 
     def close(self):
         if self.__total_size % 8 != 0:
-            raise ValueError("total size of read data must be a multiple of 8",
-                self.__total_size)
+            raise ValueError("Total size of read data must be a multiple "
+                             "of 8 (%d given)" % self.__total_size)
 
     def tell(self):
         return self.__substream.tell()
@@ -93,5 +93,5 @@ class BitStreamWriter(object):
         if not data:
             return
         if type(data) is not str:
-            raise TypeError("data must be a string, not %r" % (type(data),))
+            raise TypeError("Data must be a string, not %r" % type(data))
         self.__buffer.append(data)

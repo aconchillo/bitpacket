@@ -25,17 +25,17 @@
 
 def read_stream(stream, length):
     if length < 0:
-        raise ValueError("data length to read must be >= 0")
+        raise ValueError("Data length to read must be >= 0")
     data = stream.read(length)
     if len(data) != length:
-        raise ValueError("data length mismatch (%d expected, %d read)" \
+        raise ValueError("Data length mismatch (%d expected, %d read)" \
                              % (length, len(data)))
     return data
 
 def write_stream(stream, length, data):
     if length < 0:
-        raise ValueError("data length to write must be >= 0")
+        raise ValueError("Data length to write must be >= 0")
     if len(data) != length:
-        raise ValueError("data length mismatch (%d expected, %d found)" \
+        raise ValueError("Data length mismatch (%d expected, %d found)" \
                              % (length, len(data)))
     stream.write(data)

@@ -56,7 +56,7 @@ class Writer:
         raise NotImplementedError
 
     def indent(self, stream):
-        return stream.write(' ' * self.indentation())
+        return stream.write(" " * self.indentation())
 
     def indentation(self):
         return __DEFAULT_INDENTATION__ * self.__indent

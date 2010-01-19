@@ -47,9 +47,9 @@ from utils.stream import read_stream, write_stream
 
 from Field import Field
 
-__ALLOWED_ENDIANNES__ = [ '@', '=', '<', '>', '!' ]
+__ALLOWED_ENDIANNES__ = [ "@", "=", "<", ">", "!" ]
 
-__DEFAULT_ENDIANNESS__ = '>'
+__DEFAULT_ENDIANNESS__ = ">"
 
 # Character     Byte order               Size and alignment
 # @             native                   native
@@ -84,7 +84,7 @@ class Value(Field):
 
     def set_endianness(self, endianness):
         if endianness not in __ALLOWED_ENDIANNES__:
-            raise KeyError, "'%s' is not an allowed endianness" % endianness
+            raise KeyError("'%s' is not an allowed endianness" % endianness)
         self.__endianness = endianness
 
     def value(self):

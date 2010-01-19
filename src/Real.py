@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Tue Oct 13, 2009 12:03
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -41,7 +41,7 @@ __doc__ = '''
 
     A float value can be easily created with the BitFieldFloat class:
 
-    >>> value = Float('f', 1.967834)
+    >>> value = Float("f", 1.967834)
     >>> print value
     (f = 1.96783399582)
 
@@ -53,7 +53,7 @@ __doc__ = '''
 
     The same might be applied for doubles:
 
-    >>> value = Double('f', 0.0087552)
+    >>> value = Double("f", 0.0087552)
     >>> print value
     (f = 0.0087552)
 
@@ -62,8 +62,8 @@ __doc__ = '''
 from Value import Value
 
 
-__STRUCT_FLOAT_FMT__ = 'f'
-__STRUCT_DOUBLE_FMT__ = 'd'
+__STRUCT_FLOAT_FMT__ = "f"
+__STRUCT_DOUBLE_FMT__ = "d"
 
 
 class Float(Value):
@@ -77,6 +77,6 @@ class Double(Value):
         Value.__init__(self, name, __STRUCT_DOUBLE_FMT__, default)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
     doctest.testmod()

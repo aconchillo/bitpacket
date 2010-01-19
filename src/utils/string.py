@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 18:07
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -25,12 +25,12 @@
 
 def hex_string(number, byte_size):
     hex_size = byte_size * 2
-    return '0x%0*X' % (hex_size, number)
+    return "0x%0*X" % (hex_size, number)
 
 def wrap_string(string, length):
     if len(string) > length:
         output = string[0:length - 3]
-        output += '...'
+        output += "..."
     else:
         output = string
     return output

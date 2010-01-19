@@ -22,11 +22,13 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+from Array import Array
 from BitField import BitField
 from BitStructure import BitStructure
 from Container import Container
 from Field import Field
 from Integer import *
+from MetaArray import MetaArray
 from MetaData import MetaData
 from MetaField import MetaField
 from MetaStructure import MetaStructure
@@ -38,21 +40,23 @@ from WriterBasic import WriterBasic
 from WriterTable import WriterTable
 from WriterXML import WriterXML
 
-__all__ = [ 'BitField',
-            'BitStructure',
-            'Container',
-            'Field',
-            'Int8', 'UInt8',
-            'Int16', 'UInt16',
-            'Int32', 'UInt32',
-            'Int64', 'UInt64',
-            'MetaData',
-            'MetaField',
-            'MetaStructure',
-            'Float', 'Double',
-            'Structure',
-            'Value',
-            'Writer',
-            'WriterBasic',
-            'WriterTable',
-            'WriterXML' ]
+__all__ = [ "Array",
+            "BitField",
+            "BitStructure",
+            "Container",
+            "Field",
+            "Int8", "UInt8",
+            "Int16", "UInt16",
+            "Int32", "UInt32",
+            "Int64", "UInt64",
+            "MetaArray",
+            "MetaData",
+            "MetaField",
+            "MetaStructure",
+            "Float", "Double",
+            "Structure",
+            "Value",
+            "Writer",
+            "WriterBasic",
+            "WriterTable",
+            "WriterXML" ]

@@ -50,20 +50,20 @@ __doc__ = '''
     this variable structure will contain.
 
     >>> class MyStructure(Structure):
-    ...    def __init__(self, name = 'mystructure', id = 0, address = 0):
+    ...    def __init__(self, name = "mystructure", id = 0, address = 0):
     ...        Structure.__init__(self, name)
-    ...        self.append(UInt8('id', id))
-    ...        self.append(UInt32('address', address))
+    ...        self.append(UInt8("id", id))
+    ...        self.append(UInt32("address", address))
 
     Following the first depicted packet, we have created a MyStructure
     class that contains two fields. Now, we are ready to define a new
     variable structure that will contain a variable number of
     MyStructure fields.
 
-    >>> packet = Structure('mypacket')
-    >>> packet.append(UInt8('counter'))
-    >>> packet.append(MetaStructure('mypacket',
-    ...                             lambda ctx: ctx['counter'].value(),
+    >>> packet = Structure("mypacket")
+    >>> packet.append(UInt8("counter"))
+    >>> packet.append(MetaStructure("mypacket",
+    ...                             lambda ctx: ctx["counter"].value(),
     ...                             MyStructure))
 
     Finally, we can try to add a MyStrcuture instance and see how the
@@ -101,17 +101,17 @@ __doc__ = '''
 
     >>> class Address(BitField):
     ...    def __init__(self, address = 0):
-    ...        BitField.__init__(self, 'address', 32, address)
+    ...        BitField.__init__(self, "address", 32, address)
 
     >>> class AddressList(BitVariableStructure):
     ...    def __init__(self):
-    ...        BitVariableStructure.__init__(self, 'addresses', 8, Address)
+    ...        BitVariableStructure.__init__(self, "addresses", 8, Address)
 
     >>> class IdAddresses(BitStructure):
     ...    def __init__(self, id = 0):
-    ...        BitStructure.__init__(self, 'ids')
+    ...        BitStructure.__init__(self, "ids")
     ...        self.__list = AddressList()
-    ...        self.append(BitField('id', 8, id))
+    ...        self.append(BitField("id", 8, id))
     ...        self.append(self.__list)
     ...
     ...    def add(self, address):
@@ -121,7 +121,7 @@ __doc__ = '''
     >>> ids.add(0x10203040)
     >>> ids.add(0x50607080)
 
-    >>> vs = BitVariableStructure('packet', 8, IdAddresses)
+    >>> vs = BitVariableStructure("packet", 8, IdAddresses)
     >>> vs.append(ids)
     >>> print vs
     (packet =
@@ -144,16 +144,16 @@ __doc__ = '''
     contain. Then, we only need to set new data to the structure and
     everything will be built automatically.
 
-    >>> vs = BitVariableStructure('packet', 8, base_type = IdAddresses)
+    >>> vs = BitVariableStructure("packet", 8, base_type = IdAddresses)
     >>> print vs
     (packet =
        (counter = 0x00)
        (fields =))
 
-    The BitVariableStructure 'packet' is empty, so, now we can unpack
+    The BitVariableStructure "packet" is empty, so, now we can unpack
     the following array of bytes:
 
-    >>> data = array.array('B', [0x01, 0x34, 0x02, 0x10, 0x20, 0x30, 0x40,
+    >>> data = array.array("B", [0x01, 0x34, 0x02, 0x10, 0x20, 0x30, 0x40,
     ...                          0x50, 0x60, 0x70, 0x80])
 
     into our previously defined variable structure:
@@ -225,20 +225,20 @@ class MetaStructure(Structure):
 # class Test(Structure):
 
 #     def __init__(self):
-#         Structure.__init__(self, 'test')
-#         self.append(UInt8('counter'))
-#         self.append(MetaStructure('address',
-#                                   lambda ctx: self['counter'],
-#                                   lambda ctx: UInt64('value')))
+#         Structure.__init__(self, "test")
+#         self.append(UInt8("counter"))
+#         self.append(MetaStructure("address",
+#                                   lambda ctx: self["counter"],
+#                                   lambda ctx: UInt64("value")))
 
-# s = Structure('a')
+# s = Structure("a")
 # s.set_writer(WriterTable())
-# s.append(UInt8('counter'))
-# s.append(MetaStructure('struct',
-#                        lambda ctx: ctx['counter'],
+# s.append(UInt8("counter"))
+# s.append(MetaStructure("struct",
+#                        lambda ctx: ctx["counter"],
 #                        lambda ctx: Test()))
 
-# s.set_array(array.array('B', [2,
+# s.set_array(array.array("B", [2,
 #                               1,
 #                               1, 2, 3, 4, 1, 2, 3, 4,
 #                               2,
@@ -248,6 +248,6 @@ class MetaStructure(Structure):
 # print s
 
 
-#if __name__ == '__main__':
+#if __name__ == "__main__":
 #    import doctest
 #    doctest.testmod()
