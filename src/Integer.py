@@ -58,14 +58,14 @@ __doc__ = '''
 from Value import Value
 
 
-__STRUCT_INT8_FMT__ = 'b'
-__STRUCT_UINT8_FMT__ = 'B'
-__STRUCT_INT16_FMT__ = 'h'
-__STRUCT_UINT16_FMT__ = 'H'
-__STRUCT_INT32_FMT__ = 'i'
-__STRUCT_UINT32_FMT__ = 'I'
-__STRUCT_INT64_FMT__ = 'q'
-__STRUCT_UINT64_FMT__ = 'Q'
+__STRUCT_INT8_FMT__ = "b"
+__STRUCT_UINT8_FMT__ = "B"
+__STRUCT_INT16_FMT__ = "h"
+__STRUCT_UINT16_FMT__ = "H"
+__STRUCT_INT32_FMT__ = "i"
+__STRUCT_UINT32_FMT__ = "I"
+__STRUCT_INT64_FMT__ = "q"
+__STRUCT_UINT64_FMT__ = "Q"
 
 
 class Int8(Value):
@@ -109,6 +109,6 @@ class UInt64(Value):
         Value.__init__(self, name, __STRUCT_UINT64_FMT__, default)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest
     doctest.testmod()

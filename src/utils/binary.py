@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Aug 05, 2009 17:37
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -73,7 +73,7 @@ def decode_bin(data):
     end = byte_end(data_size)
     bit_size = end * __BYTE_SIZE__
     bit_missing = bit_size - data_size
-    data += '\x00' * bit_missing
+    data += "\x00" * bit_missing
     chars = ""
     i = 0
     while i < bit_size:
