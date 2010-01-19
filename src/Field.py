@@ -182,13 +182,7 @@ class Field(object):
 
     def size(self):
         '''
-        Returns the size of the field in bytes.
-        '''
-        raise NotImplementedError
-
-    def bit_size(self):
-        '''
-        Returns the size of the field in bits.
+        Returns the size of the field.
         '''
         raise NotImplementedError
 

@@ -69,7 +69,6 @@ class Value(Field):
         # Calculate bit size from struct type
         self.__format = format
         self.__size = calcsize(self.__format)
-        self.__bitsize = self.__size << 3
 
         # Set default endianness
         self.set_endianness(__DEFAULT_ENDIANNESS__)
@@ -104,9 +103,6 @@ class Value(Field):
 
     def size(self):
         return self.__size
-
-    def bit_size(self):
-        return self.__bitsize
 
     def str_value(self):
         return str(self.value())

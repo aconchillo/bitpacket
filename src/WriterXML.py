@@ -38,9 +38,8 @@ class WriterXML(Writer):
     def start_block(self, field, stream):
         self.indent(stream)
         Writer.start_block(self, field, stream)
-        s = '<structure name="%s" class="%s" size="%d" bit_size="%d">' \
-            % (field.name(), field.__class__.__name__, 
-               field.size(), field.bit_size())
+        s = '<structure name="%s" class="%s" size="%d">' \
+            % (field.name(), field.__class__.__name__, field.size())
         stream.write(s)
 
     def end_block(self, field, stream):
@@ -51,9 +50,8 @@ class WriterXML(Writer):
 
     def write(self, field, stream):
         self.indent(stream)
-        s = '<field name="%s" class="%s" size="%d" bit_size="%d">\n' \
-            % (field.name(), field.__class__.__name__, 
-               field.size(), field.bit_size())
+        s = '<field name="%s" class="%s" size="%d">\n' \
+            % (field.name(), field.__class__.__name__, field.size())
         stream.write(s)
 
         Writer.start_block(self, field, stream)

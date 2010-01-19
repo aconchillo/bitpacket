@@ -46,9 +46,6 @@ class MetaData(Field):
     def size(self):
         return len(self.__data)
 
-    def bit_size(self):
-        return self.size() << 3
-
     def str_value(self):
         return "0x" +  "".join(["%02X" % ord(c) for c in self.value()])
 

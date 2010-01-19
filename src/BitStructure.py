@@ -105,12 +105,12 @@ __doc__ = '''
 
 import array
 
-from utils.binary import byte_end, encode_bin, decode_bin
+from utils.binary import byte_end
+from utils.bitstream import BitStreamReader, BitStreamWriter
 from utils.stream import read_stream, write_stream
 
 from BitField import BitField
 from Container import Container
-from Structure import Structure
 
 class BitStructure(Container):
     '''
@@ -126,39 +126,14 @@ class BitStructure(Container):
         Container.__init__(self, name)
 
     def _encode(self, stream, context):
-        try:
-            binary = self.binary()
-            write_stream(stream, self.size(), decode_bin(binary))
-        except (AssertionError, ValueError), err:
-            raise ValueError('"%s" size error: %s' % (self.name(), err))
+        bitstream = BitStreamWriter(stream)
+        for f in self.fields():
+            f._encode(bitstream, context)
 
     def _decode(self, stream, context):
-        try:
-            binary = encode_bin(read_stream(stream, self.size()))
-            self.set_binary(binary)
-        except ValueError, err:
-            raise ValueError('"%s" size error: %s ' % (self.name(), err))
-
-    def binary(self):
-        '''
-        Returns a binary string representing this field. The binary
-        string is a sequence of 0's and 1's.
-        '''
-        binary = ""
+        bitstream = BitStreamReader(stream)
         for f in self.fields():
-            binary += f.binary()
-        return binary
-
-    def set_binary(self, binary):
-        '''
-        Sets a binary string to the field. The binary string is a
-        sequence of 0's and 1's. The binary string can be longer than
-        the real size of this field.
-        '''
-        start = 0
-        for f in self.fields():
-            f.set_binary(binary[start:])
-            start += f.bit_size()
+            f._decode(bitstream, context)
 
     def size(self):
         '''
@@ -166,7 +141,7 @@ class BitStructure(Container):
         all the bit field sizes in order to calculate the byte size of
         the container.
         '''
-        return byte_end(self.bit_size())
+        return byte_end(Container.size(self))
 
 
 if __name__ == '__main__':

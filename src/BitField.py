@@ -53,52 +53,12 @@ __doc__ = '''
 
     That is, a 4 bits field with a default, optional, value 15.
 
-
-    Assigning bytes
-    ---------------
-
-    The main purpose of :mod:`BitField` is to work together with
-    :mod:`BitStructure` to form byte-aligned fields. When used with
-    :mod:`BitStructure` the :func:`BitField.binary` and
-    :func:`BitField.set_binary` functions are used, which allow
-    working with bit strings (i.e. a string with 0 and 1). However, as
-    a :mod:`Field` subclass, a byte string can still be set to a
-    :mod:`BitField`. Two special considerations need to be taken into
-    account:
-
-      - The MSB bit of the given byte string will also be the MSB of
-        the :mod:`BitField`.
-      - When a byte string is returned from a :mod:`BitField`, the
-        byte string will be byte-aligned. This means that the last
-        byte could have bit zero-padding.
-
-    Following the example above, we can assign a byte array to the
-    *version* field:
-
-    >>> data = array.array('B', [0x34])
-    >>> bf.set_array(data)
-    >>> print bf
-    (version = 0x03)
-
-    As a consequence of the first rule, we see that only the first
-    four MSB have been used. Now, if we ask for this BitField array:
-
-    >>> data = array.array('B')
-    >>> bf.array(data)
-    >>> print "0x%02X" % data[0]
-    0x30
-
-    we can see, because of the second rule, that the second nibble is
-    padded with zeros. Again, this is because the *version* field is
-    not byte-aligned. For these two reasons, :mod:`BitField` needs to
-    be used with :mod:`BitStructure` to form byte-aligned fields.
-
 '''
 
 import array
 
-from utils.binary import bin_to_int, int_to_bin
-from utils.binary import byte_end, encode_bin, decode_bin
+from utils.binary import byte_end, bin_to_int, int_to_bin
+from utils.bitstream import BitStreamReader, BitStreamWriter
 from utils.stream import read_stream, write_stream
 from utils.string import hex_string
 
@@ -125,18 +85,18 @@ class BitField(Field):
         self.set_value(default)
 
     def _encode(self, stream, context):
-        try:
-            binary = self.binary()
-            write_stream(stream, self.size(), decode_bin(binary))
-        except (AssertionError, ValueError), err:
-            raise ValueError('"%s" size error: %s' % (self.name(), err))
+        if isinstance(stream, BitStreamWriter):
+            write_stream(stream, self.size(), self.__bits)
+        else:
+            raise TypeError('stream for bit fields should be bit oriented '
+                            '(hint: enclose it in a BitStructure)')
 
     def _decode(self, stream, context):
-        try:
-            binary = encode_bin(read_stream(stream, self.size()))
-            self.set_binary(binary)
-        except ValueError, err:
-            raise ValueError('"%s" size error: %s ' % (self.name(), err))
+        if isinstance(stream, BitStreamReader):
+            self.__bits = read_stream(stream, self.size())
+        else:
+            raise TypeError('stream for bit fields should be bit oriented '
+                            '(hint: enclose it in a BitStructure)')
 
     def value(self):
         '''
@@ -150,43 +110,22 @@ class BitField(Field):
         '''
         Sets a new unsigned integer 'value' to the field.
         '''
-        self.__bits = int_to_bin(value, self.bit_size())
-
-    def binary(self):
-        '''
-        Returns a binary string representing this field. The binary
-        string is a sequence of 0's and 1's.
-        '''
-        return self.__bits
-
-    def set_binary(self, binary):
-        '''
-        Sets a binary string to the field. The binary string is a
-        sequence of 0's and 1's. The binary string can be longer than
-        the real size of this field.
-        '''
-        self.__bits = binary[:self.bit_size()]
+        self.__bits = int_to_bin(value, self.size())
 
     def size(self):
-        '''
-        Returns the size of the field in bytes.
-        '''
-        return byte_end(self.bit_size())
-
-    def bit_size(self):
         '''
         Returns the size of the field in bits.
         '''
         return self.__size
 
     def str_value(self):
-        return hex_string(self.value(), self.size())
+        return hex_string(self.value(), byte_end(self.size()))
 
     def str_hex_value(self):
-        return hex_string(self.hex_value(), self.size())
+        return hex_string(self.hex_value(), byte_end(self.size()))
 
     def str_eng_value(self):
-        return hex_string(self.eng_value(), self.size())
+        return hex_string(self.eng_value(), byte_end(self.size()))
 
 
 if __name__ == '__main__':

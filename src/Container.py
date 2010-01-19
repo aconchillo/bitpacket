@@ -110,16 +110,6 @@ class Container(Field):
             size += f.size()
         return size
 
-    def bit_size(self):
-        '''
-        Returns the size of the field in bits. That is, the sum of all
-        bit sizes of the fields in this container.
-        '''
-        size = 0
-        for f in self.fields():
-            size += f.bit_size()
-        return size
-
     def write(self, stream):
         self.writer().start_block(self, stream)
         for field in self.fields():
