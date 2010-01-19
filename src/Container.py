@@ -87,7 +87,7 @@ class Container(Field):
         '''
         # Only one field with the same name is allowed.
         if field.name() in self.__fields_name:
-            raise NameError("field '%s' already exists in '%s'" \
+            raise NameError("Field '%s' already exists in '%s'" \
                                 % (field.name(), self.name()))
         else:
             self.__fields_name[field.name()] = field
@@ -147,7 +147,7 @@ class Container(Field):
             else:
                 return self.__fields_name[names[0]][names[1]]
         except KeyError:
-            raise KeyError("field '%s' does not exist" % name)
+            raise KeyError("Field '%s' does not exist" % name)
 
     def __setitem__(self, name, value):
         '''
@@ -161,7 +161,7 @@ class Container(Field):
             else:
                 self.__fields_name[names[0]][names[1]] = value
         except KeyError:
-            raise KeyError("field '%s' does not exist" % name)
+            raise KeyError("Field '%s' does not exist" % name)
 
 if __name__ == "__main__":
     import doctest
