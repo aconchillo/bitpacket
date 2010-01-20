@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 #
-# @file    MetaData.py
+# @file    Data.py
 # @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
-# @date    Fri Dec 11, 2009 15:42
+# @date    Wed Jan 20, 2010 11:30
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -23,17 +23,18 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from utils.stream import read_stream, write_stream
-
 from Structure import Structure
 from String import String
 
-class MetaData(Structure):
-
-    def __init__(self, name, lengthtype, wsizefunc):
+class Data(Structure):
+    def __init__(self, name, lengthtype, wsizefunc = lambda ctx: 1, data = ""):
         Structure.__init__(self, name)
         self.__length = lengthtype("Length")
-        self.__data = String("Data", lengthfunc = lambda ctx: ctx["Length"] * wsizefunc(ctx))
-        self.append(self.__length)
-        self.append(self.__data)
+        self.__data = String("Data",
+                             lambda ctx: self.__length.value() * wsizefunc(ctx),
+                             data)
+
+        Structure.append(self, self.__length)
+        Structure.append(self, self.__data)
+
 

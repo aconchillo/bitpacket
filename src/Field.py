@@ -224,3 +224,4 @@ class Field(object):
         stream = StringIO()
         self.write(stream)
         return stream.getvalue()
+

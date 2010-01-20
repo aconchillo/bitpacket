@@ -129,6 +129,7 @@ class BitStructure(Container):
         bitstream = BitStreamWriter(stream)
         for f in self.fields():
             f._encode(bitstream, context)
+        bitstream.flush()
 
     def _decode(self, stream, context):
         bitstream = BitStreamReader(stream)

@@ -26,6 +26,7 @@ from Array import Array
 from BitField import BitField
 from BitStructure import BitStructure
 from Container import Container
+from Data import Data
 from Field import Field
 from Integer import *
 from MetaArray import MetaArray
@@ -33,6 +34,7 @@ from MetaData import MetaData
 from MetaField import MetaField
 from MetaStructure import MetaStructure
 from Real import *
+from String import String
 from Structure import Structure
 from Value import Value
 from Writer import Writer
@@ -44,6 +46,7 @@ __all__ = [ "Array",
             "BitField",
             "BitStructure",
             "Container",
+            "Data",
             "Field",
             "Int8", "UInt8",
             "Int16", "UInt16",
@@ -54,6 +57,7 @@ __all__ = [ "Array",
             "MetaField",
             "MetaStructure",
             "Float", "Double",
+            "String",
             "Structure",
             "Value",
             "Writer",

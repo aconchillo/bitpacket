@@ -43,6 +43,31 @@ class Array(Structure):
         else:
             raise TypeError("Invalid field type for array '%s'" % self.name())
 
+    def __setitem__(self, name, value):
+        '''
+        Sets the given 'value' to the field identified by 'name'.
+
+        If the names[0] does not exists in the array the function
+        will instantiate a new field automatically (only if the index is  
+        consecutive to the length of the array).
+        '''
+        names = name.split(".", 1)
+        length = self.__length.value()
+    
+        if int(names[0]) < length:
+            # Normal access
+            pass
+        elif int(names[0]) > length:
+            raise IndexError("Index %s must be <= %s" % (names[0], length))
+        else: # int(names[0]) == length
+            new_field = self.__basetype("%d" % length)
+            #new_field.set_name("%d" % length)
+
+            Structure.append(self,new_field)
+
+            self.__length.set_value (length + 1)
+
+        Structure.__setitem__(self, name, value)
 # from Integer import *
 
 # class Sub32(UInt32):
