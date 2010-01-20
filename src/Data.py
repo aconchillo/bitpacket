@@ -37,4 +37,10 @@ class Data(Structure):
         Structure.append(self, self.__length)
         Structure.append(self, self.__data)
 
+    def value(self):
+        return self.__data.value()
 
+    def set_value(self, value):
+        self.__length.set_value(len(value))
+        self.__data.set_value(value)
+        
