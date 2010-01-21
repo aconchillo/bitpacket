@@ -23,8 +23,6 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from utils.stream import read_stream, write_stream
-
 from Structure import Structure
 from String import String
 
@@ -33,7 +31,7 @@ class MetaData(Structure):
     def __init__(self, name, lengthtype, wsizefunc):
         Structure.__init__(self, name)
         self.__length = lengthtype("Length")
-        self.__data = String("Data", lengthfunc = lambda ctx: ctx["Length"] * wsizefunc(ctx))
+        self.__data = String("Data", 
+                             lengthfunc = lambda ctx: ctx["Length"] * wsizefunc(ctx))
         self.append(self.__length)
         self.append(self.__data)
-

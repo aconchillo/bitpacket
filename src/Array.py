@@ -68,6 +68,7 @@ class Array(Structure):
             self.__length.set_value (length + 1)
 
         Structure.__setitem__(self, name, value)
+
 # from Integer import *
 
 # class Sub32(UInt32):

@@ -70,43 +70,43 @@ __STRUCT_UINT64_FMT__ = "Q"
 
 class Int8(Value):
 
-    def __init__(self, name, default = 0):
-        Value.__init__(self, name, __STRUCT_INT8_FMT__, default)
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT8_FMT__, value)
 
 class UInt8(Value):
 
-    def __init__(self, name, default = 0):
-        Value.__init__(self, name, __STRUCT_UINT8_FMT__, default)
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT8_FMT__, value)
 
 class Int16(Value):
 
-    def __init__(self, name, default = 0):
-        Value.__init__(self, name, __STRUCT_INT16_FMT__, default)
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT16_FMT__, value)
 
 class UInt16(Value):
 
-    def __init__(self, name, default = 0):
-        Value.__init__(self, name, __STRUCT_UINT16_FMT__, default)
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT16_FMT__, value)
 
 class Int32(Value):
 
-    def __init__(self, name, default = 0):
-        Value.__init__(self, name, __STRUCT_INT32_FMT__, default)
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT32_FMT__, value)
 
 class UInt32(Value):
 
-    def __init__(self, name, default = 0):
-        Value.__init__(self, name, __STRUCT_UINT32_FMT__, default)
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT32_FMT__, value)
 
 class Int64(Value):
 
-    def __init__(self, name, default = 0):
-        Value.__init__(self, name, __STRUCT_INT64_FMT__, default)
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT64_FMT__, value)
 
 class UInt64(Value):
 
-    def __init__(self, name, default = 0):
-        Value.__init__(self, name, __STRUCT_UINT64_FMT__, default)
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT64_FMT__, value)
 
 
 if __name__ == "__main__":

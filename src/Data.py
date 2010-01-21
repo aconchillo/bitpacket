@@ -27,8 +27,9 @@ from Structure import Structure
 from String import String
 
 class Data(Structure):
-    def __init__(self, name, lengthtype, wsizefunc = lambda ctx: 1, data = ""):
+    def __init__(self, name, lengthtype, data = "", wsizefunc = lambda ctx: 1):
         Structure.__init__(self, name)
+
         self.__length = lengthtype("Length")
         self.__data = String("Data",
                              lambda ctx: self.__length.value() * wsizefunc(ctx),
@@ -43,4 +44,3 @@ class Data(Structure):
     def set_value(self, value):
         self.__length.set_value(len(value))
         self.__data.set_value(value)
-        

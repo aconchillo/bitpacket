@@ -68,13 +68,13 @@ __STRUCT_DOUBLE_FMT__ = "d"
 
 class Float(Value):
 
-    def __init__(self, name, default = 0.0):
-        Value.__init__(self, name, __STRUCT_FLOAT_FMT__, default)
+    def __init__(self, name, value = 0.0):
+        Value.__init__(self, name, __STRUCT_FLOAT_FMT__, value)
 
 class Double(Value):
 
-    def __init__(self, name, default = 0.0):
-        Value.__init__(self, name, __STRUCT_DOUBLE_FMT__, default)
+    def __init__(self, name, value = 0.0):
+        Value.__init__(self, name, __STRUCT_DOUBLE_FMT__, value)
 
 
 if __name__ == "__main__":

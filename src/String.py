@@ -28,10 +28,11 @@ from utils.stream import read_stream, write_stream
 from Field import Field
 
 class String(Field):
-    def __init__(self, name, lengthfunc = lambda ctx: len(data), data = ""):
+
+    def __init__(self, name, data = "", lengthfunc = lambda ctx: len(data)):
         Field.__init__(self, name)
-        self.__lengthfunc = lengthfunc
         self.__data = data
+        self.__lengthfunc = lengthfunc
 
     def _encode(self, stream, context):
         write_stream(stream, self.__lengthfunc(context), self.__data)
@@ -60,4 +61,3 @@ class String(Field):
 
     def str_eng_value(self):
         return self.str_value()
-

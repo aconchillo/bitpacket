@@ -73,16 +73,16 @@ class BitField(Field):
     by BitStructure.
     '''
 
-    def __init__(self, name, size, default = 0):
+    def __init__(self, name, size, value = 0):
         '''
         Initializes the field with the given 'name' and 'size' (in
         bits). By default the field's value will be initialized to 0
-        or to 'default' if specified.
+        or to 'value' if specified.
         '''
         Field.__init__(self, name)
         self.__bits = []
         self.__size = size
-        self.set_value(default)
+        self.set_value(value)
 
     def _encode(self, stream, context):
         if isinstance(stream, BitStreamWriter):
