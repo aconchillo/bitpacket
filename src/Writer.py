@@ -30,8 +30,7 @@ __doc__ = '''
 
 '''
 
-__DEFAULT_INDENTATION__ = 2
-
+from WriterConfig import WriterConfig
 
 class Writer:
     '''
@@ -40,8 +39,12 @@ class Writer:
     non-implemented methods in it.
     '''
 
-    def __init__(self):
+    def __init__(self, config = WriterConfig()):
+        self.__config = config
         self.__indent = 0
+
+    def config(self):
+        return self.__config
 
     def start_block(self, field, stream):
         self.__indent += 1
@@ -59,4 +62,4 @@ class Writer:
         return stream.write(" " * self.indentation())
 
     def indentation(self):
-        return __DEFAULT_INDENTATION__ * self.__indent
+        return self.config().indentation * self.__indent
