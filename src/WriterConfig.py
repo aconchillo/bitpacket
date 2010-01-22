@@ -24,12 +24,13 @@
 #
 
 __DEFAULT_INDENTATION__ = 2
+__DEFAULT_NEWLINE__ = "\n"
 
-class WriterConfig:
+class WriterConfig(object):
 
     def __init__(self, config = {}):
         self.indentation = __DEFAULT_INDENTATION__
-        self.newline = "\n"
+        self.newline = __DEFAULT_NEWLINE__
         self.set_config(config)
 
     def set_config(self, config):
@@ -41,3 +42,6 @@ class WriterConfig:
                     raise TypeError('Invalid configuration type for "%s"' % key)
             else:
                 raise KeyError('Invalid configuration parameter "%s"' % key)
+
+    def __str__(self):
+        return str(self.__dict__)
