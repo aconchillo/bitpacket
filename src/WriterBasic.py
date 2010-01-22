@@ -36,6 +36,8 @@ from Writer import Writer
 class WriterBasic(Writer):
 
     def start_block(self, field, stream):
+        if self.indentation() > 0:
+            stream.write(self.config().newline)
         self.indent(stream)
         Writer.start_block(self, field, stream)
         stream.write("(%s =" % field.name())
@@ -45,5 +47,6 @@ class WriterBasic(Writer):
         stream.write(")")
 
     def write(self, field, stream):
+        stream.write(self.config().newline)
         self.indent(stream)
         stream.write("(%s = %s)" % (field.name(), field.str_value()))

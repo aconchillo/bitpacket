@@ -45,6 +45,8 @@ class WriterTable(Writer):
 
     def start_block(self, field, stream):
         name_size = __TABLE_NAME_SIZE__ - self.indentation()
+        if self.indentation() > 0:
+            stream.write(self.config().newline)
         stream.write("| ")
         self.indent(stream)
         Writer.start_block(self, field, stream)
@@ -61,6 +63,7 @@ class WriterTable(Writer):
 
     def write(self, field, stream):
         name_size = __TABLE_NAME_SIZE__ - self.indentation()
+        stream.write(self.config().newline)
         stream.write("| ")
         self.indent(stream)
         s = "%-*s | %-*s | %4d | %*s | %*s | %*s |" \

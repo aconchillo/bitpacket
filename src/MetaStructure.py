@@ -215,37 +215,37 @@ class MetaStructure(Structure):
         Structure._decode(self, stream, context)
 
 
-# import array
+import array
 
-# from Integer import *
-# from MetaData import *
-# from WriterXML import *
-# from WriterTable import *
+from Integer import *
+from MetaData import *
+from WriterXML import *
+from WriterTable import *
 
-# class Test(Structure):
+class Test(Structure):
 
-#     def __init__(self):
-#         Structure.__init__(self, "test")
-#         self.append(UInt8("counter"))
-#         self.append(MetaStructure("address",
-#                                   lambda ctx: self["counter"],
-#                                   lambda ctx: UInt64("value")))
+    def __init__(self):
+        Structure.__init__(self, "test")
+        self.append(UInt8("counter"))
+        self.append(MetaStructure("address",
+                                  lambda ctx: self["counter"],
+                                  lambda ctx: UInt64("value")))
 
-# s = Structure("a")
-# s.set_writer(WriterTable())
-# s.append(UInt8("counter"))
-# s.append(MetaStructure("struct",
-#                        lambda ctx: ctx["counter"],
-#                        lambda ctx: Test()))
+s = Structure("a")
+#s.set_writer(WriterTable())
+s.append(UInt8("counter"))
+s.append(MetaStructure("struct",
+                       lambda ctx: ctx["counter"],
+                       lambda ctx: Test()))
 
-# s.set_array(array.array("B", [2,
-#                               1,
-#                               1, 2, 3, 4, 1, 2, 3, 4,
-#                               2,
-#                               5, 6, 7, 8, 9, 10, 11, 12,
-#                               13, 14, 15, 16, 17, 18, 19, 20]))
+s.set_array(array.array("B", [2,
+                              1,
+                              1, 2, 3, 4, 1, 2, 3, 4,
+                              2,
+                              5, 6, 7, 8, 9, 10, 11, 12,
+                              13, 14, 15, 16, 17, 18, 19, 20]))
 
-# print s
+print s
 
 
 #if __name__ == "__main__":

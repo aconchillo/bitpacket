@@ -117,7 +117,6 @@ class Container(Field):
             old_writer = field.writer()
             # Inherit parent writer
             field.set_writer(self.writer())
-            stream.write("\n")
             field.write(stream)
             # Restore old field writer
             field.set_writer(old_writer)

@@ -41,22 +41,27 @@ class WriterXML(Writer):
         s = '<structure name="%s" class="%s" size="%d">' \
             % (field.name(), field.__class__.__name__, field.size())
         stream.write(s)
+        stream.write(self.config().newline)
 
     def end_block(self, field, stream):
-        stream.write("\n")
         Writer.end_block(self, field, stream)
         self.indent(stream)
         stream.write("</structure>")
+        if self.indentation() > 0:
+            stream.write(self.config().newline)
 
     def write(self, field, stream):
         self.indent(stream)
-        s = '<field name="%s" class="%s" size="%d">\n' \
+        s = '<field name="%s" class="%s" size="%d">' \
             % (field.name(), field.__class__.__name__, field.size())
         stream.write(s)
+        stream.write(self.config().newline)
 
         Writer.start_block(self, field, stream)
         self.indent(stream)
-        stream.write("<value>%s</value>\n" % field.str_value())
+        stream.write("<value>%s</value>" % field.str_value())
+        stream.write(self.config().newline)
         Writer.end_block(self, field, stream)
         self.indent(stream)
         stream.write("</field>")
+        stream.write(self.config().newline)
