@@ -27,6 +27,7 @@ from Structure import Structure
 from String import String
 
 class Data(Structure):
+
     def __init__(self, name, lengthtype, data = "", wsizefunc = lambda ctx: 1):
         Structure.__init__(self, name)
 
