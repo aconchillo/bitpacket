@@ -71,6 +71,12 @@ class MetaField(Field):
         else:
             self._raise_error(self)
 
+    def __repr__(self):
+        if self._field:
+            return repr(self._field)
+        else:
+            self._raise_error(self)
+
     def __getitem__(self, name):
         if self._field:
             return self._field[name]
