@@ -39,6 +39,7 @@ from Structure import Structure
 from Value import Value
 from Writer import Writer
 from WriterBasic import WriterBasic
+from WriterConfig import WriterConfig
 from WriterTable import WriterTable
 from WriterXML import WriterXML
 
@@ -62,5 +63,6 @@ __all__ = [ "Array",
             "Value",
             "Writer",
             "WriterBasic",
+            "WriterConfig",
             "WriterTable",
             "WriterXML" ]
