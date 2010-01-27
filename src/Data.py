@@ -28,12 +28,13 @@ from String import String
 
 class Data(Structure):
 
-    def __init__(self, name, lengthtype, data = "", wsizefunc = lambda ctx: 1):
+    def __init__(self, name, lengthtype, data = "", wordsize = 1):
         Structure.__init__(self, name)
+        self.__wordsize = wordsize
 
         self.__length = lengthtype("Length")
         self.__data = String("Data",
-                             lambda ctx: self.__length.value() * wsizefunc(ctx),
+                             lambda ctx: self.__length.value() * wordsize,
                              data)
 
         Structure.append(self, self.__length)
@@ -43,5 +44,5 @@ class Data(Structure):
         return self.__data.value()
 
     def set_value(self, value):
-        self.__length.set_value(len(value))
+        self.__length.set_value(len(value) * self.__wordsize)
         self.__data.set_value(value)
