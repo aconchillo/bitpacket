@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    string.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Helper functions for text strings
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 18:07
 #

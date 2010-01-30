@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Value.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   An abstract class for numeric values (integer or real)
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Tue Oct 13, 2009 12:02
 #

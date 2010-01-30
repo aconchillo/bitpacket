@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    MetaData.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   A meta structure with an unknown length followed by data
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 15:42
 #

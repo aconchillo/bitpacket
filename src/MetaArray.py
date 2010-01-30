@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    MetaArray.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   A meta array with an unknown length followed by fields (same type)
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Mon Jan 18, 2010 18:21
 #
@@ -50,11 +50,11 @@ class MetaArray(Structure):
 
 # from Integer import *
 
-# ma = MetaArray("memory", UInt8, 
+# ma = MetaArray("memory", UInt8,
 #                lambda ctx: MetaArray("address", UInt8, lambda ctx: UInt32("value")))
 # ma.set_array(array.array("B", [1,
 #                                2,
-#                                0x12, 0x34, 0x56, 0x78, 
+#                                0x12, 0x34, 0x56, 0x78,
 #                                0x9A, 0xBC, 0xDE, 0xFF]))
 # print ma
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    WriterTable.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   A writer implementation to text tables
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Aug 05, 2009 17:37
 #

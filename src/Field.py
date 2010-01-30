@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Field.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Base abstract class for all BitPacket fields
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 12:28
 #

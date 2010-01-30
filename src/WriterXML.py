@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    WriterXML.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   A writer implementation to XML
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Aug 05, 2009 17:37
 #
@@ -58,15 +58,15 @@ class WriterXML(Writer):
         stream.write(self.config().newline)
 
         Writer.start_block(self, field, stream)
-        self.indent(stream) 
+        self.indent(stream)
         stream.write("<value>%s</value>" % field.str_value())
         stream.write(self.config().newline)
 
-        self.indent(stream) 
+        self.indent(stream)
         stream.write("<hex_value>%s</hex_value>" % field.str_hex_value())
         stream.write(self.config().newline)
 
-        self.indent(stream) 
+        self.indent(stream)
         stream.write("<eng_value>%s</eng_value>" % field.str_eng_value())
         stream.write(self.config().newline)
         Writer.end_block(self, field, stream)

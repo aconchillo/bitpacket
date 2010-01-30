@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Real.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Real fields for values of various sizes
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Tue Oct 13, 2009 12:03
 #

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    BitStructure.py
-# @brief   Bit field structures
+# @brief   A container implementation for bit fields
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 19:25
 #

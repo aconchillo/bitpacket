@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    BitField.py
-# @brief   Single bit fields
+# @brief   A field to represent single bit fields
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Sun Aug 02, 2009 12:34
 #

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    String.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   A field to represent a stream of bytes
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Jan 20, 2010 09:18
 #

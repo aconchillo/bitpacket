@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Array.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   An structure with a length followed by fields (same type)
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Mon Jan 18, 2010 18:20
 #
@@ -48,12 +48,12 @@ class Array(Structure):
         Sets the given 'value' to the field identified by 'name'.
 
         If the names[0] does not exists in the array the function
-        will instantiate a new field automatically (only if the index is  
+        will instantiate a new field automatically (only if the index is
         consecutive to the length of the array).
         '''
         names = name.split(".", 1)
         length = self.__length.value()
-    
+
         if int(names[0]) < length:
             # Normal access
             pass

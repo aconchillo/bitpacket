@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    MetaStructure.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   A meta structure with an unknow number of fields
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 17:07
 #

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    MetaField.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   A meta field that acts as a proxy when the real field is created.
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Jan 15, 2010 10:22
 #

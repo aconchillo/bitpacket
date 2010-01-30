@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Container.py
-# @brief   Field containers
+# @brief   Generic abstract field container
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 11:57
 #

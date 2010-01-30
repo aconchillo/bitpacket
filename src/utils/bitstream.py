@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 #
 # @file    bitstream.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Bit stream classes to read and write from byte streams
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 18:07
 #
-# Copyright (C) 2009 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
-# This file is part of BitPacket.
+# This file is part of BitPacket and has been copied from the
+# construct project and updated (http://construct.wikispaces.com).
 #
 # BitPacket is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,7 +58,7 @@ class BitStreamReader(object):
             data = self.__buffer
             count -= l
             bytes = count // 8
-            if count & 7: 
+            if count & 7:
                 bytes += 1
             buf = encode_bin(self.__substream.read(bytes))
             data += buf[:count]

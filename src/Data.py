@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Data.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   An structure with a length followed by data (of the given length)
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Jan 20, 2010 11:30
 #

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Integer.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Integer fields for signed/unsigned values of various sizes
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Tue Oct 13, 2009 12:03
 #

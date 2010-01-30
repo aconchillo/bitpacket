@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Structure.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   A container implementation for fields of different types
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Dec 11, 2009 11:57
 #

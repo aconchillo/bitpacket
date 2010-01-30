@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 #
 # @file    binary.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Helper functions to work with binary data
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Wed Aug 05, 2009 17:37
 #
 # Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
-# This file is part of BitPacket.
+# This file is part of BitPacket and has been copied from the
+# construct project and updated (http://construct.wikispaces.com).
 #
 # BitPacket is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
