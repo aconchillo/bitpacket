@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    WriterConfig.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   Base configuration parameters for writers
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
 # @date    Fri Jan 22, 2010 10:34
 #

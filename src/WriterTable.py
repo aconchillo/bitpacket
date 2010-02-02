@@ -33,18 +33,19 @@ __doc__ = '''
 from utils.string import wrap_string
 
 from Writer import Writer
-
-
-__TABLE_NAME_SIZE__ = 25
-__TABLE_CLASS_SIZE__ = 15
-__TABLE_HEX_SIZE__ = 20
-__TABLE_STR_SIZE__ = 20
-
+from WriterTableConfig import WriterTableConfig
 
 class WriterTable(Writer):
 
+    def __init__(self, config = WriterTableConfig()):
+        Writer.__init__(self, config)
+
     def start_block(self, field, stream):
-        name_size = __TABLE_NAME_SIZE__ - self.indentation()
+        table_name_size = self.config().table_name_size
+        table_class_size = self.config().table_class_size
+        table_value_size = self.config().table_value_size
+
+        name_size = table_name_size - self.indentation()
         if self.indentation() > 0:
             stream.write(self.config().newline)
         stream.write("| ")
@@ -53,29 +54,33 @@ class WriterTable(Writer):
         s = "%-*s | %-*s | %4d | %*s | %*s | %*s |" \
             % (name_size,
                wrap_string(field.name(), name_size),
-               __TABLE_CLASS_SIZE__,
-               wrap_string(field.__class__.__name__, __TABLE_CLASS_SIZE__),
+               table_class_size,
+               wrap_string(field.__class__.__name__, table_class_size),
                field.size(),
-               __TABLE_HEX_SIZE__, "",
-               __TABLE_STR_SIZE__, "",
-               __TABLE_STR_SIZE__, "")
+               table_value_size, "",
+               table_value_size, "",
+               table_value_size, "")
         stream.write(s)
 
     def write(self, field, stream):
-        name_size = __TABLE_NAME_SIZE__ - self.indentation()
+        table_name_size = self.config().table_name_size
+        table_class_size = self.config().table_class_size
+        table_value_size = self.config().table_value_size
+
+        name_size = table_name_size - self.indentation()
         stream.write(self.config().newline)
         stream.write("| ")
         self.indent(stream)
         s = "%-*s | %-*s | %4d | %*s | %*s | %*s |" \
             % (name_size,
                wrap_string(field.name(), name_size),
-               __TABLE_CLASS_SIZE__,
-               wrap_string(field.__class__.__name__, __TABLE_CLASS_SIZE__),
+               table_class_size,
+               wrap_string(field.__class__.__name__, table_class_size),
                field.size(),
-               __TABLE_HEX_SIZE__,
-               wrap_string(field.str_hex_value(), __TABLE_HEX_SIZE__),
-               __TABLE_STR_SIZE__,
-               wrap_string(field.str_value(), __TABLE_STR_SIZE__),
-               __TABLE_STR_SIZE__,
-               wrap_string(field.str_eng_value(), __TABLE_STR_SIZE__))
+               table_value_size,
+               wrap_string(field.str_hex_value(), table_value_size),
+               table_value_size,
+               wrap_string(field.str_value(), table_value_size),
+               table_value_size,
+               wrap_string(field.str_eng_value(), table_value_size))
         stream.write(s)

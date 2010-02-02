@@ -22,6 +22,7 @@ src/Writer.py
 src/WriterBasic.py
 src/WriterConfig.py
 src/WriterTable.py
+src/WriterTableConfig.py
 src/WriterXML.py
 src/utils/__init__.py
 src/utils/binary.py

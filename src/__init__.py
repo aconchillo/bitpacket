@@ -41,6 +41,7 @@ from Writer import Writer
 from WriterBasic import WriterBasic
 from WriterConfig import WriterConfig
 from WriterTable import WriterTable
+from WriterTableConfig import WriterTableConfig
 from WriterXML import WriterXML
 
 __all__ = [ "Array",
@@ -65,4 +66,5 @@ __all__ = [ "Array",
             "WriterBasic",
             "WriterConfig",
             "WriterTable",
+            "WriterTableConfig",
             "WriterXML" ]
