@@ -59,6 +59,8 @@ __doc__ = '''
 
 from Field import Field
 
+__FIELD_SEPARATOR__ = "."
+
 class Container(Field):
     '''
     This is an abstrat class to create containers. A container is just
@@ -94,11 +96,38 @@ class Container(Field):
 
         self.__fields.append(field)
 
+    def field(self, name):
+        '''
+        Returns the field identified by 'name'.
+        '''
+        names = name.split(__FIELD_SEPARATOR__, 1)
+        try:
+            field = self.__fields_name[names[0]]
+            if len(names) >= 2:
+                if isinstance(field, Container):
+                    field = field.field(names[1])
+                else:
+                    raise KeyError
+        except KeyError:
+            raise KeyError("Field '%s' does not exist" % name)
+        return field
+
     def fields(self):
         '''
         Returns the (ordered) list of subfields that form this field.
         '''
         return self.__fields
+
+    def keys(self):
+        keys = []
+        for field in self.fields():
+            name = field.name()
+            if isinstance(field, Container):
+                for k in field.keys():
+                    keys.append(name + __FIELD_SEPARATOR__ + k)
+            else:
+                keys.append(name)
+        return keys
 
     def size(self):
         '''
@@ -122,12 +151,6 @@ class Container(Field):
             field.set_writer(old_writer)
         self.writer().end_block(self, stream)
 
-    def field(self, name):
-        '''
-        Returns the field identified by 'name'.
-        '''
-        return self.__fields_name[name]
-
     def __len__(self):
         '''
         Returns the number of fields in this container.
@@ -139,28 +162,14 @@ class Container(Field):
         Returns the value of the field identified by 'name'. This is
         the same as calling container.field(name).value().
         '''
-        names = name.split(".", 1)
-        try:
-            if len(names) < 2:
-                return self.field(name).value()
-            else:
-                return self.__fields_name[names[0]][names[1]]
-        except KeyError:
-            raise KeyError("Field '%s' does not exist" % name)
+        return self.field(name).value()
 
     def __setitem__(self, name, value):
         '''
         Sets the given 'value' to the field identified by 'name'. This
         is the same as calling container.field(name).set_value(value).
         '''
-        names = name.split(".", 1)
-        try:
-            if len(names) < 2:
-                self.field(name).set_value(value)
-            else:
-                self.__fields_name[names[0]][names[1]] = value
-        except KeyError:
-            raise KeyError("Field '%s' does not exist" % name)
+        self.field(name).set_value(value)
 
 if __name__ == "__main__":
     import doctest
