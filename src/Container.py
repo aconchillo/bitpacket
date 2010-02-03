@@ -107,9 +107,11 @@ class Container(Field):
                 if isinstance(field, Container):
                     field = field.field(names[1])
                 else:
-                    raise KeyError
+                    raise TypeError("%s is not a Container" % names[0])
         except KeyError:
             raise KeyError("Field '%s' does not exist" % name)
+        except TypeError, err:
+            raise KeyError("Field '%s' does not exist (%s)" % (name, err))
         return field
 
     def fields(self):
