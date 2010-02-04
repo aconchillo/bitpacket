@@ -43,20 +43,24 @@ class WriterTable(Writer):
     def start_block(self, field, stream):
         table_name_size = self.config().table_name_size
         table_class_size = self.config().table_class_size
+        table_size_size = self.config().table_size_size
         table_value_size = self.config().table_value_size
 
         name_size = table_name_size - self.indentation()
-        if self.indentation() > 0:
+        if self.indentation() == 0:
+            self.__header(stream)
+        else:
             stream.write(self.config().newline)
+
         stream.write("| ")
         self.indent(stream)
         Writer.start_block(self, field, stream)
-        s = "%-*s | %-*s | %4d | %*s | %*s | %*s |" \
+        s = "%-*s | %-*s | %*d | %*s | %*s | %*s |" \
             % (name_size,
                wrap_string(field.name(), name_size),
                table_class_size,
                wrap_string(field.__class__.__name__, table_class_size),
-               field.size(),
+               table_size_size, field.size(),
                table_value_size, "",
                table_value_size, "",
                table_value_size, "")
@@ -65,18 +69,20 @@ class WriterTable(Writer):
     def write(self, field, stream):
         table_name_size = self.config().table_name_size
         table_class_size = self.config().table_class_size
+        table_size_size = self.config().table_size_size
         table_value_size = self.config().table_value_size
 
         name_size = table_name_size - self.indentation()
-        stream.write(self.config().newline)
+        if self.indentation() > 0:
+            stream.write(self.config().newline)
         stream.write("| ")
         self.indent(stream)
-        s = "%-*s | %-*s | %4d | %*s | %*s | %*s |" \
+        s = "%-*s | %-*s | %*d | %*s | %*s | %*s |" \
             % (name_size,
                wrap_string(field.name(), name_size),
                table_class_size,
                wrap_string(field.__class__.__name__, table_class_size),
-               field.size(),
+               table_size_size, field.size(),
                table_value_size,
                wrap_string(field.str_hex_value(), table_value_size),
                table_value_size,
@@ -84,3 +90,33 @@ class WriterTable(Writer):
                table_value_size,
                wrap_string(field.str_eng_value(), table_value_size))
         stream.write(s)
+
+    def __header(self, stream):
+        table_size_size = self.config().table_size_size
+        table_name_size = self.config().table_name_size
+        table_class_size = self.config().table_class_size
+        table_value_size = self.config().table_value_size
+
+        s = "| %-*s | %-*s | %-*s | %*s | %*s | %*s |" \
+            % (table_name_size,
+               wrap_string("Name", table_name_size),
+               table_class_size,
+               wrap_string("Class", table_class_size),
+               table_size_size, "Size",
+               table_value_size, "Hex",
+               table_value_size, "Raw",
+               table_value_size, "Eng")
+        stream.write(s)
+        stream.write(self.config().newline)
+
+        s = "+-%s-+-%s-+-%s-+-%s-+-%s-+-%s-+" \
+            % ("-" * table_name_size,
+               "-" * table_class_size,
+               "-" * table_size_size,
+               "-" * table_value_size,
+               "-" * table_value_size,
+               "-" * table_value_size)
+        stream.write(s)
+        stream.write(self.config().newline)
+
+

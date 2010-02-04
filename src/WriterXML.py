@@ -59,11 +59,11 @@ class WriterXML(Writer):
 
         Writer.start_block(self, field, stream)
         self.indent(stream)
-        stream.write("<value>%s</value>" % field.str_value())
+        stream.write("<hex_value>%s</hex_value>" % field.str_hex_value())
         stream.write(self.config().newline)
 
         self.indent(stream)
-        stream.write("<hex_value>%s</hex_value>" % field.str_hex_value())
+        stream.write("<value>%s</value>" % field.str_value())
         stream.write(self.config().newline)
 
         self.indent(stream)
@@ -73,4 +73,5 @@ class WriterXML(Writer):
 
         self.indent(stream)
         stream.write("</field>")
-        stream.write(self.config().newline)
+        if self.indentation() > 0:
+            stream.write(self.config().newline)

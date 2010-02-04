@@ -53,7 +53,7 @@ class String(Field):
         string = ""
         value = self.value()
         if len(value) > 0:
-            string = "0x" +  "".join(["%02X" % ord(c) for c in value])
+            string = "0x" + "".join(["%02X" % ord(c) for c in value])
         return string
 
     def str_hex_value(self):
