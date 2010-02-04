@@ -58,6 +58,6 @@ class MetaArray(Structure):
 #                                0x9A, 0xBC, 0xDE, 0xFF]))
 # print ma
 
-# if __name__ == "__main__":
-#     import doctest
-#     doctest.testmod()
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

@@ -25,6 +25,8 @@
 
 from Structure import Structure
 
+__FIELD_SEPARATOR__ = "."
+
 class Array(Structure):
 
     def __init__(self, name, lengthtype, basetype):
@@ -51,21 +53,18 @@ class Array(Structure):
         will instantiate a new field automatically (only if the index is
         consecutive to the length of the array).
         '''
-        names = name.split(".", 1)
+        names = name.split(__FIELD_SEPARATOR__, 1)
         length = self.__length.value()
 
         if int(names[0]) < length:
             # Normal access
             pass
-        elif int(names[0]) > length:
-            raise IndexError("Index %s must be <= %s" % (names[0], length))
-        else: # int(names[0]) == length
+        elif int(names[0]) == length:
             new_field = self.__basetype("%d" % length)
-            #new_field.set_name("%d" % length)
-
-            Structure.append(self,new_field)
-
+            Structure.append(self, new_field)
             self.__length.set_value (length + 1)
+        else: # int(names[0]) > length
+            raise IndexError("Index %s must be <= %s" % (names[0], length))
 
         Structure.__setitem__(self, name, value)
 
@@ -82,7 +81,6 @@ class Array(Structure):
 
 # print a
 
-
-# if __name__ == "__main__":
-#     import doctest
-#     doctest.testmod()
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
