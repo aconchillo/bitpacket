@@ -34,8 +34,8 @@ class Data(Structure):
 
         self.__length = lengthtype("Length")
         self.__data = String("Data",
-                             lambda ctx: self.__length.value() * wordsize,
-                             data)
+                             data,
+                             lambda ctx: self.__length.value() * wordsize)
 
         Structure.append(self, self.__length)
         Structure.append(self, self.__data)
