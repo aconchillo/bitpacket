@@ -44,5 +44,10 @@ class Data(Structure):
         return self.__data.value()
 
     def set_value(self, value):
-        self.__length.set_value(len(value) * self.__wordsize)
-        self.__data.set_value(value)
+        length = len(value)
+        if (length % self.__wordsize) == 0:
+            self.__length.set_value(length / self.__wordsize)
+            self.__data.set_value(value)
+        else:
+            raise ValueError("Data length must be a multiple of %d (%d given)" \
+                                 % (self.__wordsize, length))
