@@ -32,13 +32,13 @@ __doc__ = '''
 
 from utils.string import wrap_string
 
-from Writer import Writer
+from WriterStream import WriterStream
 from WriterTableConfig import WriterTableConfig
 
-class WriterTable(Writer):
+class WriterTable(WriterStream):
 
     def __init__(self, config = WriterTableConfig()):
-        Writer.__init__(self, config)
+        WriterStream.__init__(self, config)
 
     def start_block(self, field, stream):
         table_name_size = self.config().table_name_size
@@ -47,14 +47,14 @@ class WriterTable(Writer):
         table_value_size = self.config().table_value_size
 
         name_size = table_name_size - self.indentation()
-        if self.indentation() == 0:
+        if self.level() == 0:
             self.__header(stream)
         else:
             stream.write(self.config().newline)
 
         stream.write("| ")
         self.indent(stream)
-        Writer.start_block(self, field, stream)
+        WriterStream.start_block(self, field, stream)
         s = "%-*s | %-*s | %*d | %*s | %*s | %*s |" \
             % (name_size,
                wrap_string(field.name(), name_size),
@@ -73,7 +73,7 @@ class WriterTable(Writer):
         table_value_size = self.config().table_value_size
 
         name_size = table_name_size - self.indentation()
-        if self.indentation() > 0:
+        if self.level() > 0:
             stream.write(self.config().newline)
         stream.write("| ")
         self.indent(stream)

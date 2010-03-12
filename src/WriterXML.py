@@ -30,24 +30,24 @@ __doc__ = '''
 
 '''
 
-from Writer import Writer
+from WriterStream import WriterStream
 
 
-class WriterXML(Writer):
+class WriterXML(WriterStream):
 
     def start_block(self, field, stream):
         self.indent(stream)
-        Writer.start_block(self, field, stream)
+        WriterStream.start_block(self, field, stream)
         s = '<structure name="%s" class="%s" size="%d">' \
             % (field.name(), field.__class__.__name__, field.size())
         stream.write(s)
         stream.write(self.config().newline)
 
     def end_block(self, field, stream):
-        Writer.end_block(self, field, stream)
+        WriterStream.end_block(self, field, stream)
         self.indent(stream)
         stream.write("</structure>")
-        if self.indentation() > 0:
+        if self.level() > 0:
             stream.write(self.config().newline)
 
     def write(self, field, stream):
@@ -57,7 +57,7 @@ class WriterXML(Writer):
         stream.write(s)
         stream.write(self.config().newline)
 
-        Writer.start_block(self, field, stream)
+        WriterStream.start_block(self, field, stream)
         self.indent(stream)
         stream.write("<hex_value>%s</hex_value>" % field.str_hex_value())
         stream.write(self.config().newline)
@@ -69,9 +69,9 @@ class WriterXML(Writer):
         self.indent(stream)
         stream.write("<eng_value>%s</eng_value>" % field.str_eng_value())
         stream.write(self.config().newline)
-        Writer.end_block(self, field, stream)
+        WriterStream.end_block(self, field, stream)
 
         self.indent(stream)
         stream.write("</field>")
-        if self.indentation() > 0:
+        if self.level() > 0:
             stream.write(self.config().newline)

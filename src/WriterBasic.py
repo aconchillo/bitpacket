@@ -30,24 +30,24 @@ __doc__ = '''
 
 '''
 
-from Writer import Writer
+from WriterStream import WriterStream
 
 
-class WriterBasic(Writer):
+class WriterBasic(WriterStream):
 
     def start_block(self, field, stream):
-        if self.indentation() > 0:
+        if self.level() > 0:
             stream.write(self.config().newline)
         self.indent(stream)
-        Writer.start_block(self, field, stream)
+        WriterStream.start_block(self, field, stream)
         stream.write("(%s =" % field.name())
 
     def end_block(self, field, stream):
-        Writer.end_block(self, field, stream)
+        WriterStream.end_block(self, field, stream)
         stream.write(")")
 
     def write(self, field, stream):
-        if self.indentation() > 0:
+        if self.level() > 0:
             stream.write(self.config().newline)
         self.indent(stream)
         stream.write("(%s = %s)" % (field.name(), field.str_value()))

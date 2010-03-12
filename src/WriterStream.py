@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-# @file    WriterTableConfig.py
-# @brief   Configuration parameters for table writers
+# @file    WriterStream.py
+# @brief   Base class for stream-oriented field writers
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
-# @date    Tue Feb 02, 2010 15:40
+# @date    Fri Mar 12, 2010 14:57
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
 #
@@ -23,18 +23,23 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    Stream
+    ======
+
+'''
+
+from Writer import Writer
 from WriterStreamConfig import WriterStreamConfig
 
-__TABLE_NAME_SIZE__ = 25
-__TABLE_CLASS_SIZE__ = 15
-__TABLE_SIZE_SIZE__ = 4
-__TABLE_VALUE_SIZE__ = 20
+class WriterStream(Writer):
 
-class WriterTableConfig(WriterStreamConfig):
+    def __init__(self, config = WriterStreamConfig()):
+        Writer.__init__(self, config)
 
-    def __init__(self, config = {}):
-        self.table_name_size = __TABLE_NAME_SIZE__
-        self.table_class_size = __TABLE_CLASS_SIZE__
-        self.table_size_size = __TABLE_SIZE_SIZE__
-        self.table_value_size = __TABLE_VALUE_SIZE__
-        WriterStreamConfig.__init__(self, config)
+    def indent(self, stream):
+        return stream.write(" " * self.indentation())
+
+    def indentation(self):
+        return self.config().indentation * self.level()

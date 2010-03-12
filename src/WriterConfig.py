@@ -23,14 +23,9 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__DEFAULT_INDENTATION__ = 2
-__DEFAULT_NEWLINE__ = "\n"
-
 class WriterConfig(object):
 
     def __init__(self, config = {}):
-        self.indentation = __DEFAULT_INDENTATION__
-        self.newline = __DEFAULT_NEWLINE__
         self.set_config(config)
 
     def set_config(self, config):

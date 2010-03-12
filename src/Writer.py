@@ -41,25 +41,22 @@ class Writer:
 
     def __init__(self, config = WriterConfig()):
         self.__config = config
-        self.__indent = 0
+        self.__level = 0
 
     def config(self):
         return self.__config
 
-    def start_block(self, field, stream):
-        self.__indent += 1
+    def level(self):
+        return self.__level
 
-    def end_block(self, field, stream):
-        self.__indent -= 1
+    def start_block(self, field, obj):
+        self.__level += 1
 
-    def write(self, field, stream):
+    def end_block(self, field, obj):
+        self.__level -= 1
+
+    def write(self, field, obj):
         '''
         Returns the name of the field.
         '''
         raise NotImplementedError
-
-    def indent(self, stream):
-        return stream.write(" " * self.indentation())
-
-    def indentation(self):
-        return self.config().indentation * self.__indent
