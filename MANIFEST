@@ -21,6 +21,8 @@ src/Value.py
 src/Writer.py
 src/WriterBasic.py
 src/WriterConfig.py
+src/WriterStream.py
+src/WriterStreamConfig.py
 src/WriterTable.py
 src/WriterTableConfig.py
 src/WriterXML.py
