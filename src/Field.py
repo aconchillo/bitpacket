@@ -47,7 +47,7 @@ try:
 except ImportError:
     from StringIO import StringIO
 
-from WriterBasic import WriterBasic
+from WriterTextBasic import WriterTextBasic
 
 class Field(object):
 
@@ -58,7 +58,7 @@ class Field(object):
         '''
         self.__name = name
         self.__calibration = None
-        self.__writer = WriterBasic()
+        self.__writer = WriterTextBasic()
 
         # Identity calibration
         self.set_calibration_curve(lambda x: x)

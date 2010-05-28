@@ -33,7 +33,7 @@ __doc__ = '''
 from WriterStream import WriterStream
 
 
-class WriterXML(WriterStream):
+class WriterTextXML(WriterStream):
 
     def start_block(self, field, stream):
         self.indent(stream)

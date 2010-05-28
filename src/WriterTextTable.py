@@ -33,11 +33,11 @@ __doc__ = '''
 from utils.string import wrap_string
 
 from WriterStream import WriterStream
-from WriterTableConfig import WriterTableConfig
+from WriterTextTableConfig import WriterTextTableConfig
 
-class WriterTable(WriterStream):
+class WriterTextTable(WriterStream):
 
-    def __init__(self, config = WriterTableConfig()):
+    def __init__(self, config = WriterTextTableConfig()):
         WriterStream.__init__(self, config)
 
     def start_block(self, field, stream):

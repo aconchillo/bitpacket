@@ -23,3 +23,16 @@ Writer
 .. toctree::
 
    api-writer
+
+WriterConfig
+------------
+
+.. currentmodule:: WriterConfig
+.. autoclass:: WriterConfig
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
+.. toctree::
+
+   api-writer-config

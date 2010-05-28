@@ -219,8 +219,8 @@ class MetaStructure(Structure):
 
 # from Integer import *
 # from MetaData import *
-# from WriterXML import *
-# from WriterTable import *
+# from WriterTextXML import *
+# from WriterTextTable import *
 
 # class Test(Structure):
 
@@ -232,7 +232,7 @@ class MetaStructure(Structure):
 #                                   lambda ctx: UInt64("value")))
 
 # s = Structure("a")
-# s.set_writer(WriterTable())
+# s.set_writer(WriterTextTable())
 # s.append(UInt8("counter"))
 # s.append(MetaStructure("struct",
 #                        lambda ctx: ctx["counter"],

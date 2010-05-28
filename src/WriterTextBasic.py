@@ -33,7 +33,7 @@ __doc__ = '''
 from WriterStream import WriterStream
 
 
-class WriterBasic(WriterStream):
+class WriterTextBasic(WriterStream):
 
     def start_block(self, field, stream):
         if self.level() > 0:

@@ -30,7 +30,7 @@ __TABLE_CLASS_SIZE__ = 15
 __TABLE_SIZE_SIZE__ = 4
 __TABLE_VALUE_SIZE__ = 20
 
-class WriterTableConfig(WriterStreamConfig):
+class WriterTextTableConfig(WriterStreamConfig):
 
     def __init__(self, config = {}):
         self.table_name_size = __TABLE_NAME_SIZE__

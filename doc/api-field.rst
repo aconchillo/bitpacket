@@ -21,11 +21,20 @@ Container
 
    api-container
 
-MetaData
---------
+MetaField
+---------
 
-.. currentmodule:: MetaData
-.. autoclass:: MetaData
+.. currentmodule:: MetaField
+.. autoclass:: MetaField
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
+String
+------
+
+.. currentmodule:: String
+.. autoclass:: String
    :show-inheritance:
    :members:
    :undoc-members:

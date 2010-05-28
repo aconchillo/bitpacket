@@ -38,13 +38,13 @@ from String import String
 from Structure import Structure
 from Value import Value
 from Writer import Writer
-from WriterBasic import WriterBasic
 from WriterConfig import WriterConfig
 from WriterStream import WriterStream
 from WriterStreamConfig import WriterStreamConfig
-from WriterTable import WriterTable
-from WriterTableConfig import WriterTableConfig
-from WriterXML import WriterXML
+from WriterTextBasic import WriterTextBasic
+from WriterTextTable import WriterTextTable
+from WriterTextTableConfig import WriterTextTableConfig
+from WriterTextXML import WriterTextXML
 
 __all__ = [ "Array",
             "BitField",
@@ -65,10 +65,10 @@ __all__ = [ "Array",
             "Structure",
             "Value",
             "Writer",
-            "WriterBasic",
             "WriterConfig",
             "WriterStream",
             "WriterStreamConfig",
-            "WriterTable",
-            "WriterTableConfig",
-            "WriterXML" ]
+            "WriterTextBasic",
+            "WriterTextTable",
+            "WriterTextTableConfig",
+            "WriterTextXML" ]

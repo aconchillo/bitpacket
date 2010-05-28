@@ -1,27 +1,13 @@
 
-WriterBasic
------------
+WriterStream
+------------
 
-.. currentmodule:: WriterBasic
-.. autoclass:: WriterBasic
+.. currentmodule:: WriterStream
+.. autoclass:: WriterStream
    :show-inheritance:
    :members:
    :undoc-members:
 
-WriterTable
------------
+.. toctree::
 
-.. currentmodule:: WriterTable
-.. autoclass:: WriterTable
-   :show-inheritance:
-   :members:
-   :undoc-members:
-
-WriterXML
------------
-
-.. currentmodule:: WriterXML
-.. autoclass:: WriterXML
-   :show-inheritance:
-   :members:
-   :undoc-members:
+   api-writer-stream
