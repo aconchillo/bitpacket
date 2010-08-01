@@ -40,7 +40,7 @@ class Array(Structure):
         if isinstance(field, self.__basetype):
             value = self["Length"]
             field.set_name(value)
-            self["Length"] = value + 1
+            Structure.__setitem__(self, "Length", value + 1)
             Structure.append(self, field)
         else:
             raise TypeError("Invalid field type for array '%s'" % self.name())
