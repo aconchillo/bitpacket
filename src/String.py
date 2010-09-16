@@ -23,6 +23,12 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    **API reference**: :class:`String`
+
+'''
+
 from utils.stream import read_stream, write_stream
 
 from Field import Field

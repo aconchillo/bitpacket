@@ -23,6 +23,12 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    **API reference**: :class:`WriterStreamConfig`
+
+'''
+
 from WriterConfig import WriterConfig
 
 __DEFAULT_INDENTATION__ = 2

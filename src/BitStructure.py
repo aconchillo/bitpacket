@@ -25,9 +25,6 @@
 
 __doc__ = '''
 
-    Bit-aligned container
-    =====================
-
     **API reference**: :class:`BitStructure`
 
     The :mod:`BitStructure` class must be used, in conjunction with

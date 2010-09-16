@@ -23,6 +23,12 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    **API reference**: :class:`WriterConfig`
+
+'''
+
 class WriterConfig(object):
 
     def __init__(self, config = {}):

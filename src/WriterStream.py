@@ -25,8 +25,7 @@
 
 __doc__ = '''
 
-    Stream
-    ======
+    **API reference**: :class:`Stream`
 
 '''
 

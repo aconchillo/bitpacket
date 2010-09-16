@@ -25,8 +25,7 @@
 
 __doc__ = '''
 
-    Basic text
-    ==========
+    **API reference**: :class:`WriterTextBasic`
 
 '''
 

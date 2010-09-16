@@ -1,4 +1,0 @@
-Bit fields
-==========
-
-.. automodule:: BitField

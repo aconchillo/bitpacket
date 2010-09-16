@@ -23,6 +23,12 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    **API reference**: :class:`Data`
+
+'''
+
 from Structure import Structure
 from String import String
 

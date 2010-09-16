@@ -25,8 +25,7 @@
 
 __doc__ = '''
 
-    Text tables
-    ===========
+    **API reference**: :class:`WriterTextTable`
 
 '''
 

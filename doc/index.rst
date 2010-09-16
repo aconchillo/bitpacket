@@ -28,7 +28,7 @@ Manual
    intro
    concepts
    fields-base
-   fields-numeric
+   fields
    containers
    writers
 

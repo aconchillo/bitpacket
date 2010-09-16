@@ -23,6 +23,12 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    **API reference**: :class:`WriterTextTableConfig`
+
+'''
+
 from WriterStreamConfig import WriterStreamConfig
 
 __TABLE_NAME_SIZE__ = 25

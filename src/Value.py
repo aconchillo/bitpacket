@@ -25,10 +25,9 @@
 
 __doc__ = '''
 
-    Numeric fields
-    ==============
-
     An object-oriented representation of bit field structures.
+
+    **API reference**: :class:`Value`
 
     These classes represent simple bit fields, and fixed and variable
     structures of bit fields which might be used to construct

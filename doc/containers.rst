@@ -1,9 +1,21 @@
 Container fields
 ================
 
-.. automodule:: Container
+Bit fields containers
+---------------------
 
-   .. toctree::
-      :maxdepth: 2
+.. automodule:: BitStructure
 
-      containers-impl
+
+Structures
+----------
+
+.. automodule:: Structure
+
+
+Meta structures
+---------------
+
+.. automodule:: MetaArray
+.. automodule:: MetaData
+.. automodule:: MetaStructure

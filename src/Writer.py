@@ -25,6 +25,7 @@
 
 __doc__ = '''
 
+    **API reference**: :class:`Writer`
 
 '''
 

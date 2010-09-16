@@ -25,8 +25,7 @@
 
 __doc__ = '''
 
-    XML
-    ===
+    **API reference**: :class:`WriterTextXML`
 
 '''
 

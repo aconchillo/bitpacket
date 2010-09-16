@@ -25,6 +25,8 @@
 
 __doc__ = '''
 
+    **API reference**: :class:`MetaStructure`
+
     Variable structures depending on a counter field.
 
     Sometimes we need to create packets that have a number of repeated

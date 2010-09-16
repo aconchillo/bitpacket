@@ -23,6 +23,12 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+__doc__ = '''
+
+    **API reference**: :class:`Array`
+
+'''
+
 from Structure import Structure
 
 __FIELD_SEPARATOR__ = "."
