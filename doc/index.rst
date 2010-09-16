@@ -23,10 +23,14 @@ Manual
 
 .. toctree::
    :numbered:
-   :maxdepth: 3
+   :maxdepth: 4
 
    intro
    concepts
+   fields-base
+   fields-numeric
+   containers
+   writers
 
 API reference
 =============

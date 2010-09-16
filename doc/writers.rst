@@ -1,5 +1,8 @@
+Writers
+=======
+
 .. automodule:: Writer
 
-   .. automodule:: WriterBasic
-   .. automodule:: WriterTable
-   .. automodule:: WriterXML
+   .. automodule:: WriterTextBasic
+   .. automodule:: WriterTextTable
+   .. automodule:: WriterTextXML

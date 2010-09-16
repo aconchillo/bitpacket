@@ -40,8 +40,6 @@ __doc__ = '''
 
 '''
 
-from struct import *
-
 from utils.string import hex_string
 from utils.stream import read_stream, write_stream
 

@@ -1,1 +1,4 @@
+Bit fields
+==========
+
 .. automodule:: BitField

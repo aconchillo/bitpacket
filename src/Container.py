@@ -25,9 +25,6 @@
 
 __doc__ = '''
 
-    Containers
-    ==========
-
     **API reference**: :class:`Container`
 
     Packets can be seen as field containers. That is, a packet is
@@ -110,7 +107,7 @@ class Container(Field):
                     raise TypeError("%s is not a Container" % names[0])
         except KeyError:
             raise KeyError("Field '%s' does not exist" % name)
-        except TypeError, err:
+        except TypeError as err:
             raise KeyError("Field '%s' does not exist (%s)" % (name, err))
         return field
 

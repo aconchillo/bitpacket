@@ -25,22 +25,84 @@
 
 __doc__ = '''
 
-    Fields
-    ======
-
     An object-oriented representation of bit field structures.
 
-    These classes represent simple bit fields, and fixed and variable
-    structures of bit fields which might be used to construct
-    packets. BitField, BitStructure and BitVariableStructure implement
-    the BitFieldBase abstract class, so all of them can be used
-    together. This means that, for example, we can add any
-    BitFieldBase sub-class into a BitStructure or
-    BitVariableStructure.
+    **API reference**: :class:`Field`
+
+    The Field class is the abstract root class for all other BitPacket
+    classes. Initially, a field only has a name and no value. Field
+    subclasses must provide field details, such as the size of the
+    field, the implementation of how the field value will look like,
+    that is, how the field should be built, and other field related
+    details.
+
+    Naming fields
+    =============
+
+    The most simple field accessor is its name. A field name is built
+    upon creation but can be changed at run-time (special care should
+    be taken, though). It is recommended to follow python variable
+    naming when assigning a name to a field. This is because with the
+    :class:`Container` subclass (and its subclasses) fields can be
+    accessed as class members.
+
+    Note: changing the field name at run-time is not recommended
+    unless you know what you are doing.
+
+
+    Building and parsing fields
+    ===========================
+
+    The main objective of BitPacket is to provide an easy way to
+    represent packets. In BitPacket, packets can be built from and to
+    strings, arrays and streams.
+
+    A field subclass, then, needs to provide the following methods:
+
+    >>> def value(self)
+
+    This method returns the actual value of the field, whatever that
+    is, a number, a string, etc.
+
+    >>> def set_value(self, value)
+
+    This method sets a new value for the current field. The value
+    might be a number, a string, etc. depending on the field contents.
+
+    >>> def size(self)
+
+    This method must return the field's size. Note that some fields
+    are bit-oriented, so the method might return values for different
+    units (basically for bytes and bits).
+
+    >>> def str_value(self)
+
+    This method must return the string representation for the given
+    field.
+
+    >>> def str_hex_value(self)
+
+    This method must return the hexadecimal string representation for
+    the given field. The hexadecimal values of the string must be
+    obtained from the actual values in memory. For example, for a
+    float value, the hexadecimal representation could be the bytes
+    forming the IEEE-754 representation.
+
+    >>> def str_eng_value(self)
+
+    This method must return the string representation of the result
+    obtained after applying the field's calibration curve. Therefore,
+    it is necessary to first call the calibration curve of the field
+    and then return the result (after applying any extra desired
+    formatting).
+
+    >>> def _encode(self, stream, context)
+    >>> def _decode(self, stream, context)
+
+    Calibration curves
+    ==================
 
 '''
-
-import array
 
 try:
     from cStringIO import StringIO
@@ -174,12 +236,6 @@ class Field(object):
 
         return self.writer().write(self, stream)
 
-    def _encode(self, stream, context):
-        raise NotImplementedError
-
-    def _decode(self, stream, context):
-        raise NotImplementedError
-
     def size(self):
         '''
         Returns the size of the field.
@@ -198,7 +254,7 @@ class Field(object):
     def str_hex_value(self):
         '''
         Returns a human-readable representation of the hexadecimal
-        values of this field. Note that the type of the field can be a
+        value of this field. Note that the type of the field can be a
         float, integer, etc. This is the real representation (in
         memory) of the value.
         '''
@@ -213,6 +269,12 @@ class Field(object):
         '''
         raise NotImplementedError
 
+    def _encode(self, stream, context):
+        raise NotImplementedError
+
+    def _decode(self, stream, context):
+        raise NotImplementedError
+
     def __str__(self):
         '''
         Returns a human-readable representation of the information of
@@ -225,3 +287,7 @@ class Field(object):
         self.write(stream)
         return stream.getvalue()
 
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

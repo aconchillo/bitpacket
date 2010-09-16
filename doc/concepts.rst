@@ -1,10 +1,7 @@
 Concepts
 ========
 
-.. toctree::
-   :maxdepth: 3
+Packets and fields
+------------------
 
-   packets
-   fields
-   containers
-   writers
+packets.

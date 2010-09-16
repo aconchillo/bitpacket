@@ -25,9 +25,6 @@
 
 __doc__ = '''
 
-    Single bit fields
-    =================
-
     **API reference**: :class:`BitField`
 
     A packet might be formed by multiple fields that can be single bit
@@ -54,8 +51,6 @@ __doc__ = '''
     That is, a 4 bits field with a default, optional, value 15.
 
 '''
-
-import array
 
 from utils.binary import byte_end, bin_to_int, int_to_bin
 from utils.bitstream import BitStreamReader, BitStreamWriter

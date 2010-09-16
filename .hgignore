@@ -1,5 +1,6 @@
 syntax: glob
 
+.ropeproject
 build
 dist
 doc/_*
