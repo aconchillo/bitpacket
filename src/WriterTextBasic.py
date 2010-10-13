@@ -31,19 +31,19 @@ __doc__ = '''
 
 from utils.string import u_str
 
-from WriterStream import WriterStream
+from WriterTextStream import WriterTextStream
 
-class WriterTextBasic(WriterStream):
+class WriterTextBasic(WriterTextStream):
 
     def start_block(self, field, stream):
         if self.level() > 0:
             stream.write(self.config().newline)
         self.indent(stream)
-        WriterStream.start_block(self, field, stream)
+        WriterTextStream.start_block(self, field, stream)
         stream.write(u_str("(%s =") % field.name())
 
     def end_block(self, field, stream):
-        WriterStream.end_block(self, field, stream)
+        WriterTextStream.end_block(self, field, stream)
         stream.write(u_str(")"))
 
     def write(self, field, stream):

@@ -29,18 +29,18 @@ __doc__ = '''
 
 '''
 
-from WriterStreamConfig import WriterStreamConfig
+from WriterTextStreamConfig import WriterTextStreamConfig
 
 __TABLE_NAME_SIZE__ = 25
 __TABLE_CLASS_SIZE__ = 15
 __TABLE_SIZE_SIZE__ = 4
 __TABLE_VALUE_SIZE__ = 20
 
-class WriterTextTableConfig(WriterStreamConfig):
+class WriterTextTableConfig(WriterTextStreamConfig):
 
     def __init__(self, config = {}):
         self.table_name_size = __TABLE_NAME_SIZE__
         self.table_class_size = __TABLE_CLASS_SIZE__
         self.table_size_size = __TABLE_SIZE_SIZE__
         self.table_value_size = __TABLE_VALUE_SIZE__
-        WriterStreamConfig.__init__(self, config)
+        WriterTextStreamConfig.__init__(self, config)

@@ -39,9 +39,9 @@ from Structure import Structure
 from Value import Value
 from Writer import Writer
 from WriterConfig import WriterConfig
-from WriterStream import WriterStream
-from WriterStreamConfig import WriterStreamConfig
 from WriterTextBasic import WriterTextBasic
+from WriterTextStream import WriterTextStream
+from WriterTextStreamConfig import WriterTextStreamConfig
 from WriterTextTable import WriterTextTable
 from WriterTextTableConfig import WriterTextTableConfig
 from WriterTextXML import WriterTextXML
@@ -66,8 +66,8 @@ __all__ = [ "Array",
             "Value",
             "Writer",
             "WriterConfig",
-            "WriterStream",
-            "WriterStreamConfig",
+            "WriterTextStream",
+            "WriterTextStreamConfig",
             "WriterTextBasic",
             "WriterTextTable",
             "WriterTextTableConfig",

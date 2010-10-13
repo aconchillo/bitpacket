@@ -31,13 +31,13 @@ __doc__ = '''
 
 from utils.string import u_str, wrap_string
 
-from WriterStream import WriterStream
+from WriterTextStream import WriterTextStream
 from WriterTextTableConfig import WriterTextTableConfig
 
-class WriterTextTable(WriterStream):
+class WriterTextTable(WriterTextStream):
 
     def __init__(self, config = WriterTextTableConfig()):
-        WriterStream.__init__(self, config)
+        WriterTextStream.__init__(self, config)
 
     def start_block(self, field, stream):
         table_name_size = self.config().table_name_size
@@ -53,7 +53,7 @@ class WriterTextTable(WriterStream):
 
         stream.write(u_str("| "))
         self.indent(stream)
-        WriterStream.start_block(self, field, stream)
+        WriterTextStream.start_block(self, field, stream)
         s = u_str("%-*s | %-*s | %*d | %*s | %*s | %*s |") \
             % (name_size,
                wrap_string(field.name(), name_size),

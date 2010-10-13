@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-# @file    WriterStreamConfig.py
-# @brief   Configuration parameters for stream writers
+# @file    WriterTextStream.py
+# @brief   Base class for text stream-oriented field writers
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
-# @date    Fri Mar 12, 2010 15:08
+# @date    Fri Mar 12, 2010 14:57
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
 #
@@ -25,20 +25,22 @@
 
 __doc__ = '''
 
-    **API reference**: :class:`WriterStreamConfig`
+    **API reference**: :class:`WriterTextStream`
 
 '''
 
 from utils.string import u_str
 
-from WriterConfig import WriterConfig
+from Writer import Writer
+from WriterTextStreamConfig import WriterTextStreamConfig
 
-__DEFAULT_INDENTATION__ = 2
-__DEFAULT_NEWLINE__ = u_str("\n")
+class WriterTextStream(Writer):
 
-class WriterStreamConfig(WriterConfig):
+    def __init__(self, config = WriterTextStreamConfig()):
+        Writer.__init__(self, config)
 
-    def __init__(self, config = {}):
-        self.indentation = __DEFAULT_INDENTATION__
-        self.newline = __DEFAULT_NEWLINE__
-        WriterConfig.__init__(self, config)
+    def indent(self, stream):
+        return stream.write(u_str(" ") * self.indentation())
+
+    def indentation(self):
+        return self.config().indentation * self.level()
