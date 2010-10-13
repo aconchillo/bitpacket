@@ -122,7 +122,7 @@ class Container(Field):
         for field in self.fields():
             name = field.name()
             if isinstance(field, Container):
-                for k in field.keys():
+                for k in list(field.keys()):
                     keys.append(name + __FIELD_SEPARATOR__ + k)
             else:
                 keys.append(name)

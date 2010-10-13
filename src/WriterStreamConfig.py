@@ -29,10 +29,12 @@ __doc__ = '''
 
 '''
 
+from utils.string import u_str
+
 from WriterConfig import WriterConfig
 
 __DEFAULT_INDENTATION__ = 2
-__DEFAULT_NEWLINE__ = "\n"
+__DEFAULT_NEWLINE__ = u_str("\n")
 
 class WriterStreamConfig(WriterConfig):
 

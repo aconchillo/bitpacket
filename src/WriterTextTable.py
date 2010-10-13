@@ -29,7 +29,7 @@ __doc__ = '''
 
 '''
 
-from utils.string import wrap_string
+from utils.string import u_str, wrap_string
 
 from WriterStream import WriterStream
 from WriterTextTableConfig import WriterTextTableConfig
@@ -51,10 +51,10 @@ class WriterTextTable(WriterStream):
         else:
             stream.write(self.config().newline)
 
-        stream.write("| ")
+        stream.write(u_str("| "))
         self.indent(stream)
         WriterStream.start_block(self, field, stream)
-        s = "%-*s | %-*s | %*d | %*s | %*s | %*s |" \
+        s = u_str("%-*s | %-*s | %*d | %*s | %*s | %*s |") \
             % (name_size,
                wrap_string(field.name(), name_size),
                table_class_size,
@@ -74,9 +74,9 @@ class WriterTextTable(WriterStream):
         name_size = table_name_size - self.indentation()
         if self.level() > 0:
             stream.write(self.config().newline)
-        stream.write("| ")
+        stream.write(u_str("| "))
         self.indent(stream)
-        s = "%-*s | %-*s | %*d | %*s | %*s | %*s |" \
+        s = u_str("%-*s | %-*s | %*d | %*s | %*s | %*s |") \
             % (name_size,
                wrap_string(field.name(), name_size),
                table_class_size,
@@ -96,7 +96,7 @@ class WriterTextTable(WriterStream):
         table_class_size = self.config().table_class_size
         table_value_size = self.config().table_value_size
 
-        s = "| %-*s | %-*s | %-*s | %*s | %*s | %*s |" \
+        s = u_str("| %-*s | %-*s | %-*s | %*s | %*s | %*s |") \
             % (table_name_size,
                wrap_string("Name", table_name_size),
                table_class_size,
@@ -108,7 +108,7 @@ class WriterTextTable(WriterStream):
         stream.write(s)
         stream.write(self.config().newline)
 
-        s = "+-%s-+-%s-+-%s-+-%s-+-%s-+-%s-+" \
+        s = u_str("+-%s-+-%s-+-%s-+-%s-+-%s-+-%s-+") \
             % ("-" * table_name_size,
                "-" * table_class_size,
                "-" * table_size_size,

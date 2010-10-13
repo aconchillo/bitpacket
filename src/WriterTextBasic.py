@@ -29,8 +29,9 @@ __doc__ = '''
 
 '''
 
-from WriterStream import WriterStream
+from utils.string import u_str
 
+from WriterStream import WriterStream
 
 class WriterTextBasic(WriterStream):
 
@@ -39,14 +40,14 @@ class WriterTextBasic(WriterStream):
             stream.write(self.config().newline)
         self.indent(stream)
         WriterStream.start_block(self, field, stream)
-        stream.write("(%s =" % field.name())
+        stream.write(u_str("(%s =") % field.name())
 
     def end_block(self, field, stream):
         WriterStream.end_block(self, field, stream)
-        stream.write(")")
+        stream.write(u_str(")"))
 
     def write(self, field, stream):
         if self.level() > 0:
             stream.write(self.config().newline)
         self.indent(stream)
-        stream.write("(%s = %s)" % (field.name(), field.str_value()))
+        stream.write(u_str("(%s = %s)") % (field.name(), field.str_value()))

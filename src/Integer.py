@@ -56,6 +56,7 @@ __doc__ = '''
 '''
 
 from Value import Value
+from Value import LITTLE_ENDIAN, BIG_ENDIAN
 
 
 __STRUCT_INT8_FMT__ = "b"
@@ -68,46 +69,108 @@ __STRUCT_INT64_FMT__ = "q"
 __STRUCT_UINT64_FMT__ = "Q"
 
 
+###########################################################################
+
 class Int8(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT8_FMT__, value)
+        Value.__init__(self, name, __STRUCT_INT8_FMT__, BIG_ENDIAN, value)
 
 class UInt8(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT8_FMT__, value)
+        Value.__init__(self, name, __STRUCT_UINT8_FMT__, BIG_ENDIAN, value)
+
+class Int8LE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT8_FMT__, LITTLE_ENDIAN, value)
+
+class UInt8LE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT8_FMT__, LITTLE_ENDIAN, value)
+
+Int8BE = Int8
+UInt8BE = UInt8
+
+###########################################################################
 
 class Int16(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT16_FMT__, value)
+        Value.__init__(self, name, __STRUCT_INT16_FMT__, BIG_ENDIAN, value)
 
 class UInt16(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT16_FMT__, value)
+        Value.__init__(self, name, __STRUCT_UINT16_FMT__, BIG_ENDIAN, value)
+
+class Int16LE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT16_FMT__, LITTLE_ENDIAN, value)
+
+class UInt16LE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT16_FMT__, LITTLE_ENDIAN, value)
+
+Int16BE = Int16
+UInt16BE = UInt16
+
+###########################################################################
 
 class Int32(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT32_FMT__, value)
+        Value.__init__(self, name, __STRUCT_INT32_FMT__, BIG_ENDIAN, value)
 
 class UInt32(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT32_FMT__, value)
+        Value.__init__(self, name, __STRUCT_UINT32_FMT__, BIG_ENDIAN, value)
+
+class Int32LE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT32_FMT__, LITTLE_ENDIAN, value)
+
+class UInt32LE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT32_FMT__, LITTLE_ENDIAN, value)
+
+Int32BE = Int32
+UInt32BE = UInt32
+
+###########################################################################
 
 class Int64(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT64_FMT__, value)
+        Value.__init__(self, name, __STRUCT_INT64_FMT__, BIG_ENDIAN, value)
 
 class UInt64(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT64_FMT__, value)
+        Value.__init__(self, name, __STRUCT_UINT64_FMT__, BIG_ENDIAN, value)
 
+class Int64LE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT64_FMT__, LITTLE_ENDIAN, value)
+
+class UInt64LE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT64_FMT__, LITTLE_ENDIAN, value)
+
+
+Int64BE = Int64
+UInt64BE = UInt64
+
+###########################################################################
 
 if __name__ == "__main__":
     import doctest

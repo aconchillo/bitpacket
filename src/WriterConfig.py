@@ -35,7 +35,7 @@ class WriterConfig(object):
         self.set_config(config)
 
     def set_config(self, config):
-        for key in config.keys():
+        for key in list(config.keys()):
             if key in self.__dict__:
                 if type(config[key]) == type(self.__dict__[key]):
                     self.__dict__[key] = config[key]

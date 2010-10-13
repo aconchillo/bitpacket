@@ -39,14 +39,17 @@ __doc__ = '''
 
 '''
 
-from utils.string import hex_string
+import struct
+
+from utils.string import hex_string, u_ord
 from utils.stream import read_stream, write_stream
 
 from Field import Field
 
-__ALLOWED_ENDIANNES__ = [ "@", "=", "<", ">", "!" ]
+LITTLE_ENDIAN = "<"
+BIG_ENDIAN = ">"
 
-__DEFAULT_ENDIANNESS__ = ">"
+__ALLOWED_ENDIANNESS__ = [ LITTLE_ENDIAN , BIG_ENDIAN ]
 
 # Character     Byte order               Size and alignment
 # @             native                   native
@@ -57,7 +60,7 @@ __DEFAULT_ENDIANNESS__ = ">"
 
 class Value(Field):
 
-    def __init__(self, name, format, value):
+    def __init__(self, name, format, endianness, value):
         Field.__init__(self, name)
 
         # This will store the string of bytes
@@ -65,10 +68,10 @@ class Value(Field):
 
         # Calculate bit size from struct type
         self.__format = format
-        self.__size = calcsize(self.__format)
+        self.__size = struct.calcsize(self.__format)
 
-        # Set default endianness
-        self.set_endianness(__DEFAULT_ENDIANNESS__)
+        # Set endianness
+        self.set_endianness(endianness)
 
         # Finally set default value
         self.set_value(value)
@@ -80,22 +83,22 @@ class Value(Field):
         self.__bytes = read_stream(stream, self.size())
 
     def set_endianness(self, endianness):
-        if endianness not in __ALLOWED_ENDIANNES__:
+        if endianness not in __ALLOWED_ENDIANNESS__:
             raise KeyError("'%s' is not an allowed endianness" % endianness)
         self.__endianness = endianness
 
     def value(self):
-        value = unpack(self.__str_format(), self.__bytes)
+        value = struct.unpack(self.__str_format(), self.__bytes)
         return value[0]
 
     def set_value(self, value):
-        string = pack(self.__str_format(), value)
+        string = struct.pack(self.__str_format(), value)
         self.set_string(string)
 
     def hex_value(self):
         value = 0
         for c in self.__bytes:
-            value = (value << 8) + ord(c)
+            value = (value << 8) + u_ord(c)
         return value
 
     def size(self):

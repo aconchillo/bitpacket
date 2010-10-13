@@ -29,6 +29,8 @@ __doc__ = '''
 
 '''
 
+from utils.string import u_str
+
 from Writer import Writer
 from WriterStreamConfig import WriterStreamConfig
 
@@ -38,7 +40,7 @@ class WriterStream(Writer):
         Writer.__init__(self, config)
 
     def indent(self, stream):
-        return stream.write(" " * self.indentation())
+        return stream.write(u_str(" ") * self.indentation())
 
     def indentation(self):
         return self.config().indentation * self.level()

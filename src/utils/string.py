@@ -23,6 +23,20 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import sys
+
+def u_str(string):
+    if sys.hexversion >= 0x03000000:
+        return string
+    else:
+        return eval("""u\"%s\" % string""")
+
+def u_ord(c):
+    if sys.hexversion >= 0x03000000:
+        return c
+    else:
+        return ord(c)
+
 def hex_string(number, byte_size):
     hex_size = byte_size * 2
     return "0x%0*X" % (hex_size, number)

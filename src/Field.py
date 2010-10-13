@@ -104,10 +104,7 @@ __doc__ = '''
 
 '''
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+from io import BytesIO, StringIO
 
 from WriterTextBasic import WriterTextBasic
 
@@ -158,7 +155,7 @@ class Field(object):
         if the field is not byte aligned, the last byte starts from
         the MSB.
         '''
-        stream = StringIO()
+        stream = BytesIO()
         self.stream(stream)
         return stream.getvalue()
 
@@ -166,7 +163,7 @@ class Field(object):
         '''
         Sets a string of bytes to the field.
         '''
-        self.set_stream(StringIO(string))
+        self.set_stream(BytesIO(string))
 
     def stream(self, stream):
         self._encode(stream, self)
