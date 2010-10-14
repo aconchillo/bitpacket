@@ -25,11 +25,11 @@
 
 import sys
 
-def u_str(string):
-    if sys.hexversion >= 0x03000000:
-        return string
-    else:
-        return eval("""u\"%s\" % string""")
+try:
+    u_str = unicode
+except NameError:
+    u_str = str
+    pass
 
 def u_ord(c):
     if sys.hexversion >= 0x03000000:
