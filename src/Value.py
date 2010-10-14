@@ -41,7 +41,9 @@ __doc__ = '''
 
 import struct
 
-from utils.string import hex_string, u_ord
+from utils.compatibility import *
+
+from utils.string import hex_string
 from utils.stream import read_stream, write_stream
 
 from Field import Field

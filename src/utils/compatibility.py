@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-# @file    WriterTextStream.py
-# @brief   Base class for text stream-oriented field writers
+# @file    compatibility.py
+# @brief   Py3k and Python 2.6 compatibility
 # @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
-# @date    Fri Mar 12, 2010 14:57
+# @date    Thu Oct 14, 2010 12:57
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
 #
@@ -23,24 +23,15 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__doc__ = '''
+import sys
 
-    **API reference**: :class:`WriterTextStream`
+try:
+    str = unicode
+except NameError:
+    pass
 
-'''
-
-from utils.compatibility import *
-
-from Writer import Writer
-from WriterTextStreamConfig import WriterTextStreamConfig
-
-class WriterTextStream(Writer):
-
-    def __init__(self, config = WriterTextStreamConfig()):
-        Writer.__init__(self, config)
-
-    def indent(self, stream):
-        return stream.write(str(" ") * self.indentation())
-
-    def indentation(self):
-        return self.config().indentation * self.level()
+def u_ord(c):
+    if sys.hexversion >= 0x03000000:
+        return c
+    else:
+        return ord(c)

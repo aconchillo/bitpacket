@@ -29,7 +29,8 @@ __doc__ = '''
 
 '''
 
-from utils.string import u_str, wrap_string
+from utils.compatibility import *
+from utils.string import wrap_string
 
 from WriterTextStream import WriterTextStream
 from WriterTextTableConfig import WriterTextTableConfig
@@ -51,10 +52,10 @@ class WriterTextTable(WriterTextStream):
         else:
             stream.write(self.config().newline)
 
-        stream.write(u_str("| "))
+        stream.write(str("| "))
         self.indent(stream)
         WriterTextStream.start_block(self, field, stream)
-        s = u_str("%-*s | %-*s | %*d | %*s | %*s | %*s |") \
+        s = str("%-*s | %-*s | %*d | %*s | %*s | %*s |") \
             % (name_size,
                wrap_string(field.name(), name_size),
                table_class_size,
@@ -74,9 +75,9 @@ class WriterTextTable(WriterTextStream):
         name_size = table_name_size - self.indentation()
         if self.level() > 0:
             stream.write(self.config().newline)
-        stream.write(u_str("| "))
+        stream.write(str("| "))
         self.indent(stream)
-        s = u_str("%-*s | %-*s | %*d | %*s | %*s | %*s |") \
+        s = str("%-*s | %-*s | %*d | %*s | %*s | %*s |") \
             % (name_size,
                wrap_string(field.name(), name_size),
                table_class_size,
@@ -96,7 +97,7 @@ class WriterTextTable(WriterTextStream):
         table_class_size = self.config().table_class_size
         table_value_size = self.config().table_value_size
 
-        s = u_str("| %-*s | %-*s | %-*s | %*s | %*s | %*s |") \
+        s = str("| %-*s | %-*s | %-*s | %*s | %*s | %*s |") \
             % (table_name_size,
                wrap_string("Name", table_name_size),
                table_class_size,
@@ -108,7 +109,7 @@ class WriterTextTable(WriterTextStream):
         stream.write(s)
         stream.write(self.config().newline)
 
-        s = u_str("+-%s-+-%s-+-%s-+-%s-+-%s-+-%s-+") \
+        s = str("+-%s-+-%s-+-%s-+-%s-+-%s-+-%s-+") \
             % ("-" * table_name_size,
                "-" * table_class_size,
                "-" * table_size_size,
