@@ -56,119 +56,129 @@ __doc__ = '''
 '''
 
 from Value import Value
-from Value import LITTLE_ENDIAN, BIG_ENDIAN
 
 
-__STRUCT_INT8_FMT__ = "b"
-__STRUCT_UINT8_FMT__ = "B"
-__STRUCT_INT16_FMT__ = "h"
-__STRUCT_UINT16_FMT__ = "H"
-__STRUCT_INT32_FMT__ = "i"
-__STRUCT_UINT32_FMT__ = "I"
-__STRUCT_INT64_FMT__ = "q"
-__STRUCT_UINT64_FMT__ = "Q"
+__STRUCT_INT8_LE_FMT__ = "<b"
+__STRUCT_UINT8_LE_FMT__ = "<B"
+__STRUCT_INT8_BE_FMT__ = ">b"
+__STRUCT_UINT8_BE_FMT__ = ">B"
+
+__STRUCT_INT16_LE_FMT__ = "<h"
+__STRUCT_UINT16_LE_FMT__ = "<H"
+__STRUCT_INT16_BE_FMT__ = ">h"
+__STRUCT_UINT16_BE_FMT__ = ">H"
+
+__STRUCT_INT32_LE_FMT__ = "<i"
+__STRUCT_UINT32_LE_FMT__ = "<I"
+__STRUCT_INT32_BE_FMT__ = ">i"
+__STRUCT_UINT32_BE_FMT__ = ">I"
+
+__STRUCT_INT64_LE_FMT__ = "<q"
+__STRUCT_UINT64_LE_FMT__ = "<Q"
+__STRUCT_INT64_BE_FMT__ = ">q"
+__STRUCT_UINT64_BE_FMT__ = ">Q"
 
 
 ###########################################################################
-
-class Int8(Value):
-
-    def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT8_FMT__, BIG_ENDIAN, value)
-
-class UInt8(Value):
-
-    def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT8_FMT__, BIG_ENDIAN, value)
 
 class Int8LE(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT8_FMT__, LITTLE_ENDIAN, value)
+        Value.__init__(self, name, __STRUCT_INT8_LE_FMT__, value)
 
 class UInt8LE(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT8_FMT__, LITTLE_ENDIAN, value)
+        Value.__init__(self, name, __STRUCT_UINT8_LE_FMT__, value)
 
-Int8BE = Int8
-UInt8BE = UInt8
+class Int8BE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT8_BE_FMT__, value)
+
+class UInt8BE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT8_BE_FMT__, value)
+
+Int8 = Int8BE
+UInt8 = UInt8BE
 
 ###########################################################################
-
-class Int16(Value):
-
-    def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT16_FMT__, BIG_ENDIAN, value)
-
-class UInt16(Value):
-
-    def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT16_FMT__, BIG_ENDIAN, value)
 
 class Int16LE(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT16_FMT__, LITTLE_ENDIAN, value)
+        Value.__init__(self, name, __STRUCT_INT16_LE_FMT__, value)
 
 class UInt16LE(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT16_FMT__, LITTLE_ENDIAN, value)
+        Value.__init__(self, name, __STRUCT_UINT16_LE_FMT__, value)
 
-Int16BE = Int16
-UInt16BE = UInt16
+class Int16BE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT16_BE_FMT__, value)
+
+class UInt16BE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT16_BE_FMT__, value)
+
+Int16 = Int16BE
+UInt16 = UInt16BE
 
 ###########################################################################
-
-class Int32(Value):
-
-    def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT32_FMT__, BIG_ENDIAN, value)
-
-class UInt32(Value):
-
-    def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT32_FMT__, BIG_ENDIAN, value)
 
 class Int32LE(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT32_FMT__, LITTLE_ENDIAN, value)
+        Value.__init__(self, name, __STRUCT_INT32_LE_FMT__, value)
 
 class UInt32LE(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT32_FMT__, LITTLE_ENDIAN, value)
+        Value.__init__(self, name, __STRUCT_UINT32_LE_FMT__, value)
 
-Int32BE = Int32
-UInt32BE = UInt32
+class Int32BE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT32_BE_FMT__, value)
+
+class UInt32BE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT32_BE_FMT__, value)
+
+Int32 = Int32BE
+UInt32 = UInt32BE
 
 ###########################################################################
-
-class Int64(Value):
-
-    def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT64_FMT__, BIG_ENDIAN, value)
-
-class UInt64(Value):
-
-    def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT64_FMT__, BIG_ENDIAN, value)
 
 class Int64LE(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_INT64_FMT__, LITTLE_ENDIAN, value)
+        Value.__init__(self, name, __STRUCT_INT64_LE_FMT__, value)
 
 class UInt64LE(Value):
 
     def __init__(self, name, value = 0):
-        Value.__init__(self, name, __STRUCT_UINT64_FMT__, LITTLE_ENDIAN, value)
+        Value.__init__(self, name, __STRUCT_UINT64_LE_FMT__, value)
+
+class Int64BE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_INT64_BE_FMT__, value)
+
+class UInt64BE(Value):
+
+    def __init__(self, name, value = 0):
+        Value.__init__(self, name, __STRUCT_UINT64_BE_FMT__, value)
 
 
-Int64BE = Int64
-UInt64BE = UInt64
+Int64 = Int64BE
+UInt64 = UInt64BE
 
 ###########################################################################
 

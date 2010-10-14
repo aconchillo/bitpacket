@@ -46,11 +46,6 @@ from utils.stream import read_stream, write_stream
 
 from Field import Field
 
-LITTLE_ENDIAN = "<"
-BIG_ENDIAN = ">"
-
-__ALLOWED_ENDIANNESS__ = [ LITTLE_ENDIAN , BIG_ENDIAN ]
-
 # Character     Byte order               Size and alignment
 # @             native                   native
 # =             native                   standard
@@ -60,7 +55,7 @@ __ALLOWED_ENDIANNESS__ = [ LITTLE_ENDIAN , BIG_ENDIAN ]
 
 class Value(Field):
 
-    def __init__(self, name, format, endianness, value):
+    def __init__(self, name, format, value):
         Field.__init__(self, name)
 
         # This will store the string of bytes
@@ -69,9 +64,6 @@ class Value(Field):
         # Calculate bit size from struct type
         self.__format = format
         self.__size = struct.calcsize(self.__format)
-
-        # Set endianness
-        self.set_endianness(endianness)
 
         # Finally set default value
         self.set_value(value)
@@ -82,17 +74,12 @@ class Value(Field):
     def _decode(self, stream, context):
         self.__bytes = read_stream(stream, self.size())
 
-    def set_endianness(self, endianness):
-        if endianness not in __ALLOWED_ENDIANNESS__:
-            raise KeyError("'%s' is not an allowed endianness" % endianness)
-        self.__endianness = endianness
-
     def value(self):
-        value = struct.unpack(self.__str_format(), self.__bytes)
+        value = struct.unpack(self.__format, self.__bytes)
         return value[0]
 
     def set_value(self, value):
-        string = struct.pack(self.__str_format(), value)
+        string = struct.pack(self.__format, value)
         self.set_string(string)
 
     def hex_value(self):
@@ -112,6 +99,3 @@ class Value(Field):
 
     def str_eng_value(self):
         return str(self.eng_value())
-
-    def __str_format(self):
-        return self.__endianness + self.__format
