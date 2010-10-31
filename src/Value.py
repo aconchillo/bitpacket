@@ -81,8 +81,8 @@ class Value(Field):
         return value[0]
 
     def set_value(self, value):
-        string = struct.pack(self.__format, value)
-        self.set_string(string)
+        bytes = struct.pack(self.__format, value)
+        self.set_bytes(bytes)
 
     def hex_value(self):
         value = 0

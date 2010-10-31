@@ -94,7 +94,7 @@ __doc__ = '''
 
     into our previously defined structure:
 
-    >>> bs.set_string(data.tostring())
+    >>> bs.set_bytes(data.tostring())
     >>> print bs
     (mypacket =
        (id = 0x38)

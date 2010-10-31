@@ -160,7 +160,7 @@ __doc__ = '''
 
     into our previously defined variable structure:
 
-    >>> vs.set_string(data.tostring())
+    >>> vs.set_bytes(data.tostring())
     >>> print vs
     (packet =
        (counter = 0x01)

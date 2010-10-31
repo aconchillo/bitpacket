@@ -55,7 +55,7 @@ __doc__ = '''
 
     The main objective of BitPacket is to provide an easy way to
     represent packets. In BitPacket, packets can be built from and to
-    strings, arrays and streams.
+    string of bytes, arrays and streams.
 
     A field subclass, then, needs to provide the following methods:
 
@@ -77,24 +77,24 @@ __doc__ = '''
 
     >>> def str_value(self)
 
-    This method must return the string representation for the given
-    field.
+    This method must return the text string representation for the
+    given field.
 
     >>> def str_hex_value(self)
 
-    This method must return the hexadecimal string representation for
-    the given field. The hexadecimal values of the string must be
+    This method must return the hexadecimal text string representation
+    for the given field. The hexadecimal values of the string must be
     obtained from the actual values in memory. For example, for a
     float value, the hexadecimal representation could be the bytes
     forming the IEEE-754 representation.
 
     >>> def str_eng_value(self)
 
-    This method must return the string representation of the result
-    obtained after applying the field's calibration curve. Therefore,
-    it is necessary to first call the calibration curve of the field
-    and then return the result (after applying any extra desired
-    formatting).
+    This method must return the text string representation of the
+    result obtained after applying the field's calibration
+    curve. Therefore, it is necessary to first call the calibration
+    curve of the field and then return the result (after applying any
+    extra desired formatting).
 
     >>> def _encode(self, stream, context)
     >>> def _decode(self, stream, context)
@@ -144,26 +144,24 @@ class Field(object):
         raise NotImplementedError
 
     def array(self, array):
-        return array.fromstring(self.string())
+        return array.fromstring(self.bytes())
 
     def set_array(self, array):
-        self.set_string(array.tostring())
+        self.set_bytes(array.tostring())
 
-    def string(self):
+    def bytes(self):
         '''
-        Returns a string of bytes representing this field. Note that
-        if the field is not byte aligned, the last byte starts from
-        the MSB.
+        Returns a string of bytes representing this field.
         '''
         stream = BytesIO()
         self.stream(stream)
         return stream.getvalue()
 
-    def set_string(self, string):
+    def set_bytes(self, bytes):
         '''
         Sets a string of bytes to the field.
         '''
-        self.set_stream(BytesIO(string))
+        self.set_stream(BytesIO(bytes))
 
     def stream(self, stream):
         self._encode(stream, self)
