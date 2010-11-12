@@ -117,7 +117,6 @@ class Field(object):
         '''
         self.__name = name
         self.__calibration = None
-        self.__writer = WriterTextBasic()
 
         # Identity calibration
         self.set_calibration_curve(lambda x: x)
@@ -202,34 +201,16 @@ class Field(object):
         '''
         return self.__calibration(self.value())
 
-    def writer(self):
+    def write(self, writer):
         '''
-        Returns the writer to be used by this field in order to print
-        the field information.
-
-        By default, the WriterBasic is used.
+        Writes this field information to the given writer. Note that
+        this function does not perform any display of the field's
+        information, it is the writer that is responsible to manage
+        this information (e.g. in a text string, file, GUI
+        widget...). It is then necessary to access the writer in order
+        to obtain the written data.
         '''
-        return self.__writer
-
-    def set_writer(self, writer):
-        '''
-        Sets the new 'writer' to be used by this field in order to
-        print the field information.
-        '''
-        self.__writer = writer
-
-    def write(self, stream):
-        '''
-        Returns a human-readable representation of the information of
-        this bit field. This function uses the writer set via
-        'set_writer' to obtain the final string.
-
-        Note that the result might not contain all the information. It
-        all depends on the BitFieldWriter implementation.
-        '''
-        assert self.writer() != None, "No default writer set for this field"
-
-        return self.writer().write(self, stream)
+        return writer.write(self)
 
     def size(self):
         '''
@@ -278,9 +259,9 @@ class Field(object):
 
         It has the same effect than calling the 'write' method.
         '''
-        stream = StringIO()
-        self.write(stream)
-        return stream.getvalue()
+        writer = WriterTextBasic(StringIO())
+        self.write(writer)
+        return writer.stream().getvalue()
 
 
 if __name__ == "__main__":

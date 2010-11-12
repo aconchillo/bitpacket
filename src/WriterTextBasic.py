@@ -35,19 +35,24 @@ from WriterTextStream import WriterTextStream
 
 class WriterTextBasic(WriterTextStream):
 
-    def start_block(self, field, stream):
+    def start_block(self, field):
         if self.level() > 0:
-            stream.write(self.config().newline)
-        self.indent(stream)
-        WriterTextStream.start_block(self, field, stream)
-        stream.write(str("(%s =") % field.name())
+            self.stream().write(self.config().newline)
+        self.indent()
+        WriterTextStream.start_block(self, field)
 
-    def end_block(self, field, stream):
-        WriterTextStream.end_block(self, field, stream)
-        stream.write(str(")"))
+        try:
+            str_hex = field.str_hex_value()
+        except:
+            str_hex = ""
+        self.stream().write(str("(%s = %s") % (field.name(), str_hex))
 
-    def write(self, field, stream):
+    def end_block(self, field):
+        WriterTextStream.end_block(self, field)
+        self.stream().write(str(")"))
+
+    def write(self, field):
         if self.level() > 0:
-            stream.write(self.config().newline)
-        self.indent(stream)
-        stream.write(str("(%s = %s)") % (field.name(), field.str_value()))
+            self.stream().write(self.config().newline)
+        self.indent()
+        self.stream().write(str("(%s = %s)") % (field.name(), field.str_value()))

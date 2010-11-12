@@ -234,7 +234,6 @@ class MetaStructure(Structure):
 #                                   lambda ctx: UInt64("value")))
 
 # s = Structure("a")
-# s.set_writer(WriterTextTable())
 # s.append(UInt8("counter"))
 # s.append(MetaStructure("struct",
 #                        lambda ctx: ctx["counter"],
@@ -247,7 +246,11 @@ class MetaStructure(Structure):
 #                               5, 6, 7, 8, 9, 10, 11, 12,
 #                               13, 14, 15, 16, 17, 18, 19, 20]))
 
-# print s
+# from io import StringIO
+
+# writer = WriterTextTable(StringIO())
+# s.write(writer)
+# print writer.stream().getvalue()
 
 
 if __name__ == "__main__":

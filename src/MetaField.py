@@ -57,10 +57,9 @@ class MetaField(Field):
         self._create_field(context)
         self._field._decode(stream, context)
 
-    def write(self, stream):
+    def write(self, writer):
         if self._field:
-            self._field.set_writer(self.writer())
-            self._field.write(stream)
+            self._field.write(writer)
         else:
             self._raise_error(self)
 

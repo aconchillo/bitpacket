@@ -138,17 +138,11 @@ class Container(Field):
             size += f.size()
         return size
 
-    def write(self, stream):
-        self.writer().start_block(self, stream)
+    def write(self, writer):
+        writer.start_block(self)
         for field in self.fields():
-            # Save field writer
-            old_writer = field.writer()
-            # Inherit parent writer
-            field.set_writer(self.writer())
-            field.write(stream)
-            # Restore old field writer
-            field.set_writer(old_writer)
-        self.writer().end_block(self, stream)
+            field.write(writer)
+        writer.end_block(self)
 
     def __len__(self):
         '''

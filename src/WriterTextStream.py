@@ -36,11 +36,15 @@ from WriterTextStreamConfig import WriterTextStreamConfig
 
 class WriterTextStream(Writer):
 
-    def __init__(self, config = WriterTextStreamConfig()):
+    def __init__(self, stream, config = WriterTextStreamConfig()):
         Writer.__init__(self, config)
+        self.__stream = stream
 
-    def indent(self, stream):
-        return stream.write(str(" ") * self.indentation())
+    def stream(self):
+        return self.__stream
+
+    def indent(self):
+        return self.stream().write(str(" ") * self.indentation())
 
     def indentation(self):
         return self.config().indentation * self.level()
