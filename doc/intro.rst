@@ -8,8 +8,8 @@ BitPacket_ is maintained in Savannah_. Savannah is the central point
 for development, maintenance and distribution of official `GNU
 software`_ (and other non-GNU software, like BitPacket).
 
-You can dowlonad the latest BitPacket release from the project's
-website_, or alternativelly, you can also clone the Mercurial_
+You can download the latest BitPacket release from the project's
+website_, or alternatively, you can also clone the Mercurial_
 BitPacket repository_.
 
 ::
@@ -62,16 +62,16 @@ History
 The first version of BitPacket was released in 2007.
 
 The validation guys, from the project I was working on, were building
-a test enviroment to validate a software which involved a lot of
+a test environment to validate a software which involved a lot of
 packet management. They started by accessing packet fields with
-indexes. This was very error prone, hard to maitain, hard to read and
+indexes. This was very error prone, hard to maintain, hard to read and
 understand and some more bad things. So, I start digging through the
 web for something that could help us, but I only found the struct_
 module. The struct module is great, but it does not solve the indexing
 problem. However, one is able to recover a 32-bit integer or float
 values without the need to access all four bytes and build the
 value. Also, it does not solve the problem of bit fields. Therefore, I
-wanted something easier to maitain, extend and read and also able to
+wanted something easier to maintain, extend and read and also able to
 work with bits.
 
 Then, I found the BitVector_ class which was able to work with bits
@@ -81,7 +81,7 @@ fields), BitStructure (a BitField itself, to build packets as a
 sequence BitFields) and BitVariableStructure (something like a meta
 BitStructure).
 
-At the end of 2009, a refactoring of the test environtment was
+At the end of 2009, a refactoring of the test environment was
 necessary, and I knew BitPacket was very slow and hard to
 extend. Between 2007 and 2009, I discovered a great Python library for
 building and parsing packets, construct_. construct is great and
