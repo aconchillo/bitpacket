@@ -63,7 +63,7 @@ class Value(Field):
         # This will store the string of bytes
         self.__bytes = ""
 
-        # Calculate bit size from struct type
+        # Calculate byte size from struct type
         self.__format = format
         self.__size = struct.calcsize(self.__format)
 

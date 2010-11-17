@@ -25,10 +25,13 @@
 from Array import Array
 from BitField import BitField
 from BitStructure import BitStructure
+from Boolean import Boolean
 from Container import Container
 from Data import Data
 from Field import Field
+from Flag import Flag
 from Integer import *
+from Mask import *
 from MetaArray import MetaArray
 from MetaData import MetaData
 from MetaField import MetaField
@@ -49,13 +52,17 @@ from WriterTextXML import WriterTextXML
 __all__ = [ "Array",
             "BitField",
             "BitStructure",
+            "Boolean",
             "Container",
             "Data",
             "Field",
+            "Flag",
             "Int8", "UInt8", "Int8LE", "UInt8LE", "Int8BE", "UInt8BE",
             "Int16", "UInt16", "Int16LE", "UInt16LE", "Int16BE", "UInt16BE",
             "Int32", "UInt32", "Int32LE", "UInt32LE", "Int32BE", "UInt32BE",
             "Int64", "UInt64", "Int64LE", "UInt64LE", "Int64BE", "UInt64BE",
+            "Mask", "MaskValue",
+            "Mask8", "Mask16", "Mask32", "Mask64",
             "MetaArray",
             "MetaData",
             "MetaField",
