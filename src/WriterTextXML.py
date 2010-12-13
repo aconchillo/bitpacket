@@ -36,9 +36,8 @@ from WriterTextStream import WriterTextStream
 
 class WriterTextXML(WriterTextStream):
 
-    def start_block(self, field):
-        self.indent()
-        WriterTextStream.start_block(self, field)
+    def start_block(self, field, userdata = None):
+        WriterTextStream.start_block(self, field, userdata)
         try:
             s = str('<container name="%s" class="%s" size="%d" value="%s">') \
                 % (field.name(), field.__class__.__name__, field.size(),
@@ -49,21 +48,32 @@ class WriterTextXML(WriterTextStream):
         self.stream().write(s)
         self.stream().write(self.config().newline)
 
-    def end_block(self, field):
-        WriterTextStream.end_block(self, field)
+    def end_block(self, field, userdata = None):
+        WriterTextStream.end_block(self, field, userdata)
         self.indent()
         self.stream().write(str("</container>"))
         if self.level() > 0:
             self.stream().write(self.config().newline)
 
-    def write(self, field):
+    def write(self, field, userdata = None):
         self.indent()
+
+        subfields = field.fields()
+        if len(subfields) > 0:
+            self.start_block(field, userdata)
+            for f in subfields:
+                self.write(f, userdata)
+            self.end_block(field, userdata)
+        else:
+            self.__field_line(field, userdata)
+
+    def __field_line(self, field, userdata):
         s = str('<field name="%s" class="%s" size="%d">') \
             % (field.name(), field.__class__.__name__, field.size())
         self.stream().write(s)
         self.stream().write(self.config().newline)
 
-        WriterTextStream.start_block(self, field)
+        WriterTextStream.start_block(self, field, userdata)
         self.indent()
         self.stream().write(str("<hex_value>%s</hex_value>") % field.str_hex_value())
         self.stream().write(self.config().newline)
@@ -75,7 +85,7 @@ class WriterTextXML(WriterTextStream):
         self.indent()
         self.stream().write(str("<eng_value>%s</eng_value>") % field.str_eng_value())
         self.stream().write(self.config().newline)
-        WriterTextStream.end_block(self, field)
+        WriterTextStream.end_block(self, field, userdata)
 
         self.indent()
         self.stream().write(str("</field>"))

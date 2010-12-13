@@ -38,7 +38,7 @@ __DEFAULT_NEWLINE__ = str("\n")
 
 class WriterTextStreamConfig(WriterConfig):
 
-    def __init__(self, config = {}):
+    def __init__(self, **kwargs):
         self.indentation = __DEFAULT_INDENTATION__
         self.newline = __DEFAULT_NEWLINE__
-        WriterConfig.__init__(self, config)
+        WriterConfig.__init__(self, **kwargs)

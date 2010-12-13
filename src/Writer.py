@@ -48,13 +48,13 @@ class Writer:
     def level(self):
         return self.__level
 
-    def start_block(self, field):
+    def start_block(self, field, userdata = None):
         self.__level += 1
 
-    def end_block(self, field):
+    def end_block(self, field, userdata = None):
         self.__level -= 1
 
-    def write(self, field):
+    def write(self, field, userdata = None):
         '''
         Returns the name of the field.
         '''

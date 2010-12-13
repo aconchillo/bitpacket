@@ -201,16 +201,8 @@ class Field(object):
         '''
         return self.__calibration(self.value())
 
-    def write(self, writer):
-        '''
-        Writes this field information to the given writer. Note that
-        this function does not perform any display of the field's
-        information, it is the writer that is responsible to manage
-        this information (e.g. in a text string, file, GUI
-        widget...). It is then necessary to access the writer in order
-        to obtain the written data.
-        '''
-        return writer.write(self)
+    def fields(self):
+        return []
 
     def size(self):
         '''
@@ -260,7 +252,7 @@ class Field(object):
         It has the same effect than calling the 'write' method.
         '''
         writer = WriterTextBasic(StringIO())
-        self.write(writer)
+        writer.write(self)
         return writer.stream().getvalue()
 
 

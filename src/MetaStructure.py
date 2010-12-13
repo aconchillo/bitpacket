@@ -249,7 +249,7 @@ class MetaStructure(Structure):
 # from io import StringIO
 
 # writer = WriterTextTable(StringIO())
-# s.write(writer)
+# writer.write(s)
 # print writer.stream().getvalue()
 
 

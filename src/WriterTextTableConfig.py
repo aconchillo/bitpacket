@@ -38,9 +38,9 @@ __TABLE_VALUE_SIZE__ = 20
 
 class WriterTextTableConfig(WriterTextStreamConfig):
 
-    def __init__(self, config = {}):
+    def __init__(self, **kwargs):
         self.table_name_size = __TABLE_NAME_SIZE__
         self.table_class_size = __TABLE_CLASS_SIZE__
         self.table_size_size = __TABLE_SIZE_SIZE__
         self.table_value_size = __TABLE_VALUE_SIZE__
-        WriterTextStreamConfig.__init__(self, config)
+        WriterTextStreamConfig.__init__(self, **kwargs)

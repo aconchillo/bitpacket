@@ -31,16 +31,19 @@ __doc__ = '''
 
 class WriterConfig(object):
 
-    def __init__(self, config = {}):
-        self.set_config(config)
+    def __init__(self, **kwargs):
+        self.set_config(**kwargs)
 
-    def set_config(self, config):
-        for key in list(config.keys()):
+    def set_config(self, **kwargs):
+        for key in list(kwargs.keys()):
             if key in self.__dict__:
-                if type(config[key]) == type(self.__dict__[key]):
-                    self.__dict__[key] = config[key]
+                if type(kwargs[key]) == type(self.__dict__[key]):
+                    self.__dict__[key] = kwargs[key]
                 else:
-                    raise TypeError('Invalid configuration type for "%s"' % key)
+                    raise TypeError('Invalid type for "%s" configuration (%s != %s)' \
+                                        % (key,
+                                           type(kwargs[key]),
+                                           type(self.__dict__[key])))
             else:
                 raise KeyError('Invalid configuration parameter "%s"' % key)
 

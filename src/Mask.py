@@ -68,13 +68,12 @@ class MaskValue(Value):
     def unmask(self, mask):
         self.set_value(self.value() & ~mask)
 
-    def write(self, writer):
-        writer.start_block(self)
+    def fields(self):
+        fields = []
         for mask in self.__mask:
             active = ((self.value() & self.__dict__[mask]) != 0)
-            field = self.__masktype(mask, active)
-            field.write(writer)
-        writer.end_block(self)
+            fields.append(self.__masktype(mask, active))
+        return fields
 
     def str_value(self):
         return self.str_hex_value()
@@ -86,25 +85,25 @@ class MaskValue(Value):
 class Mask8(MaskValue):
 
     def __init__(self, name, masktype, value = 0, **kwargs):
-        ValueMask.__init__(self, name, __STRUCT_MASK8_FMT__, masktype,
+        MaskValue.__init__(self, name, __STRUCT_MASK8_FMT__, masktype,
                            value, **kwargs)
 
 class Mask16(MaskValue):
 
     def __init__(self, name, masktype, value = 0, **kwargs):
-        ValueMask.__init__(self, name, __STRUCT_MASK16_FMT__, masktype,
+        MaskValue.__init__(self, name, __STRUCT_MASK16_FMT__, masktype,
                            value, **kwargs)
 
 class Mask32(MaskValue):
 
     def __init__(self, name, masktype, value = 0, **kwargs):
-        ValueMask.__init__(self, name, __STRUCT_MASK32_FMT__, masktype,
+        MaskValue.__init__(self, name, __STRUCT_MASK32_FMT__, masktype,
                            value, **kwargs)
 
 class Mask64(MaskValue):
 
     def __init__(self, name, masktype, value = 0, **kwargs):
-        ValueMask.__init__(self, name, __STRUCT_MASK64_FMT__, masktype,
+        MaskValue.__init__(self, name, __STRUCT_MASK64_FMT__, masktype,
                            value, **kwargs)
 
 
@@ -123,12 +122,5 @@ class Mask64(MaskValue):
 
 # a.mask(a.FLAG_1 | a.FLAG_2)
 
-# from WriterTextBasic import *
-# from WriterTextTable import *
-# from WriterTextXML import *
-# from io import StringIO
-
-# writer = WriterTextBasic(StringIO())
-# a.write(writer)
-# print writer.stream().getvalue()
+# print a
 

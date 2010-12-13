@@ -40,13 +40,14 @@ class WriterTextTable(WriterTextStream):
     def __init__(self, stream, config = WriterTextTableConfig()):
         WriterTextStream.__init__(self, stream, config)
 
-    def start_block(self, field):
-        self.__field(field, True)
+    def start_block(self, field, userdata = None):
+        WriterTextStream.start_block(self, field, userdata)
+        self.__field_line(field, userdata)
 
-    def write(self, field):
-        self.__field(field, False)
+    def write(self, field, userdata = None):
+        self.__field(field, userdata, False)
 
-    def __header(self):
+    def __header(self, userdata):
         table_size_size = self.config().table_size_size
         table_name_size = self.config().table_name_size
         table_class_size = self.config().table_class_size
@@ -74,12 +75,22 @@ class WriterTextTable(WriterTextStream):
         self.stream().write(s)
         self.stream().write(self.config().newline)
 
-    def __field(self, field, start):
+    def __field(self, field, userdata, start):
         if self.level() == 0:
-            self.__header()
+            self.__header(userdata)
         else:
             self.stream().write(self.config().newline)
 
+        subfields = field.fields()
+        if len(subfields) > 0:
+            self.start_block(field, userdata)
+            for f in subfields:
+                self.write(f, userdata)
+            self.end_block(field, userdata)
+        else:
+            self.__field_line(field, userdata)
+
+    def __field_line(self, field, userdata):
         table_name_size = self.config().table_name_size
         table_class_size = self.config().table_class_size
         table_size_size = self.config().table_size_size
@@ -97,10 +108,6 @@ class WriterTextTable(WriterTextStream):
 
         self.stream().write(str("| "))
         self.indent()
-
-        if start:
-            WriterTextStream.start_block(self, field)
-
         s = str("%-*s | %-*s | %*d | %*s | %*s | %*s |") \
             % (name_size,
                wrap_string(field.name(), name_size),
@@ -115,6 +122,5 @@ class WriterTextTable(WriterTextStream):
                table_value_size,
                wrap_string(str_eng, table_value_size))
         self.stream().write(s)
-
 
 
