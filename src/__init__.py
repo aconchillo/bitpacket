@@ -42,6 +42,8 @@ from Structure import Structure
 from Value import Value
 from Writer import Writer
 from WriterConfig import WriterConfig
+from WriterGtkTreeModel import WriterGtkTreeModel
+from WriterGtkTreeView import WriterGtkTreeView
 from WriterTextBasic import WriterTextBasic
 from WriterTextStream import WriterTextStream
 from WriterTextStreamConfig import WriterTextStreamConfig
@@ -73,6 +75,8 @@ __all__ = [ "Array",
             "Value",
             "Writer",
             "WriterConfig",
+            "WriterGtkTreeModel",
+            "WriterGtkTreeView",
             "WriterTextStream",
             "WriterTextStreamConfig",
             "WriterTextBasic",

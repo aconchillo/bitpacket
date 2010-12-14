@@ -57,18 +57,17 @@ class MetaField(Field):
         self._create_field(context)
         self._field._decode(stream, context)
 
-    def write(self, writer):
-        if self._field:
-            self._field.write(writer)
-        else:
-            self._raise_error(self)
-
     def _create_field(self, context):
         if not self._field:
-            # Call name() before proxy is available.
+            # Call name(), parent() and index() before proxy is
+            # available.
             name = self.name()
+            parent = self.parent()
+            index = self.index()
             self._field = self._fieldfunc(context)
             self._field.set_name(name)
+            self._field.set_parent(parent)
+            self._field.set_index(index)
 
     def __len__(self):
         if self._field:

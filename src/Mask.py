@@ -52,28 +52,40 @@ class MaskValue(Value):
     def __init__(self, name, format, masktype, value, **kwargs):
         Value.__init__(self, name, format, value)
 
-        self.__mask = []
-        self.__masktype = masktype
+        self.__masks = []
+        self.__fields = []
+        self.__fields_dict = {}
 
         # Add bit masks. Note that kwargs is a dictionary, hence not
         # ordered.
         masks = sorted(kwargs.items(), key=itemgetter(1))
         for mask in masks:
-            self.__mask.append(mask[0])
+            self.__masks.append(mask[0])
             self.__dict__[mask[0]] = mask[1]
+
+            field = masktype(mask[0])
+            field.set_index(len(self.__fields))
+            field.set_parent(self)
+            self.__fields.append(field)
+            self.__fields_dict[mask[0]] = field
+
+        self.__update_masks()
 
     def mask(self, mask):
         self.set_value(self.value() | mask)
+        self.__update_masks()
 
     def unmask(self, mask):
         self.set_value(self.value() & ~mask)
+        self.__update_masks()
+
+    def __update_masks(self):
+        for mask in self.__masks:
+            active = ((self.value() & self.__dict__[mask]) != 0)
+            self.__fields_dict[mask].set_value(active)
 
     def fields(self):
-        fields = []
-        for mask in self.__mask:
-            active = ((self.value() & self.__dict__[mask]) != 0)
-            fields.append(self.__masktype(mask, active))
-        return fields
+        return self.__fields
 
     def str_value(self):
         return self.str_hex_value()

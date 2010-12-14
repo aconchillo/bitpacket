@@ -91,7 +91,11 @@ class Container(Field):
         else:
             self.__fields_name[field.name()] = field
 
+        index = len(self.__fields)
         self.__fields.append(field)
+
+        field.set_parent(self)
+        field.set_index(index)
 
     def field(self, name):
         '''

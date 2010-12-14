@@ -116,6 +116,8 @@ class Field(object):
         'type'.
         '''
         self.__name = name
+        self.__index = 0
+        self.__parent = None
         self.__calibration = None
 
         # Identity calibration
@@ -129,6 +131,18 @@ class Field(object):
 
     def set_name(self, name):
         self.__name = name
+
+    def parent(self):
+        return self.__parent
+
+    def set_parent(self, parent):
+        self.__parent = parent
+
+    def index(self):
+        return self.__index
+
+    def set_index(self, index):
+        self.__index = index
 
     def value(self):
         '''
