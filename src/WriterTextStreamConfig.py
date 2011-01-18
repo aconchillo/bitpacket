@@ -2,7 +2,7 @@
 #
 # @file    WriterTextStreamConfig.py
 # @brief   Configuration parameters for text stream writers
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Mar 12, 2010 15:08
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

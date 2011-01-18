@@ -2,7 +2,7 @@
 #
 # @file    Structure.py
 # @brief   A container implementation for fields of different types
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Dec 11, 2009 11:57
 #
 # Copyright (C) 2009, 2010 Aleix Conchillo Flaque

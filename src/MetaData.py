@@ -2,7 +2,7 @@
 #
 # @file    MetaData.py
 # @brief   A meta structure with an unknown length followed by data
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Dec 11, 2009 15:42
 #
 # Copyright (C) 2009, 2010 Aleix Conchillo Flaque

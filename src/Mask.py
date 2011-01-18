@@ -1,7 +1,7 @@
 #
 # @file    Mask.py
 # @brief   An object-oriented representation of bit field structures
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Nov 17, 2010 13:02
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

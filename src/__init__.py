@@ -1,7 +1,7 @@
 #
 # @file    __init__.py
 # @brief   An object-oriented representation of bit field structures
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Jan 13, 2010 18:46
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

@@ -2,7 +2,7 @@
 #
 # @file    WriterTableConfig.py
 # @brief   Configuration parameters for table writers
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Feb 02, 2010 15:40
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

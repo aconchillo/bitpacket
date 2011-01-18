@@ -2,7 +2,7 @@
 #
 # @file    Field.py
 # @brief   Base abstract class for all BitPacket fields
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Sun Aug 02, 2009 12:28
 #
 # Copyright (C) 2009, 2010 Aleix Conchillo Flaque

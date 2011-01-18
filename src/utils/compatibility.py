@@ -2,7 +2,7 @@
 #
 # @file    compatibility.py
 # @brief   Py3k and Python 2.6 compatibility
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Thu Oct 14, 2010 12:57
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

@@ -2,7 +2,7 @@
 #
 # @file    WriterConfig.py
 # @brief   Base configuration parameters for writers
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Jan 22, 2010 10:34
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

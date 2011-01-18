@@ -2,7 +2,7 @@
 #
 # @file    BitStructure.py
 # @brief   A container implementation for bit fields
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Sun Aug 02, 2009 19:25
 #
 # Copyright (C) 2009, 2010 Aleix Conchillo Flaque

@@ -2,7 +2,7 @@
 #
 # @file    WriterGtkTreeModel.py
 # @brief   An abstract class for field writers
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Dec 14, 2010 16:24
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

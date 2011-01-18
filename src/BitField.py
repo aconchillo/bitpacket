@@ -2,7 +2,7 @@
 #
 # @file    BitField.py
 # @brief   A field to represent single bit fields
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Sun Aug 02, 2009 12:34
 #
 # Copyright (C) 2009, 2010 Aleix Conchillo Flaque

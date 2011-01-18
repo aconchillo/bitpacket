@@ -2,7 +2,7 @@
 #
 # @file    String.py
 # @brief   A field to represent a stream of bytes
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Jan 20, 2010 09:18
 #
 # Copyright (C) 2009, 2010 Aleix Conchillo Flaque

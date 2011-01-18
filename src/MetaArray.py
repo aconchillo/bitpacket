@@ -2,7 +2,7 @@
 #
 # @file    MetaArray.py
 # @brief   A meta array with an unknown length followed by fields (same type)
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Mon Jan 18, 2010 18:21
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

@@ -2,7 +2,7 @@
 #
 # @file    WriterGtkTreeView.py
 # @brief   An abstract class for field writers
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Dec 14, 2010 16:25
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
@@ -156,7 +156,7 @@ class WriterGtkTreeDemo(gtk.Window):
 
 # from Mask import *
 
-# a =  Mask8("ValidityFlags", Mask, 0,
+# s =  Mask8("ValidityFlags", Mask, 0,
 #            FLAG_1 = 0x01,
 #            FLAG_2 = 0x02,
 #            FLAG_3 = 0x04,
@@ -166,7 +166,7 @@ class WriterGtkTreeDemo(gtk.Window):
 #            FLAG_7 = 0x40,
 #            FLAG_8 = 0x80)
 
-# a.mask(a.FLAG_1 | a.FLAG_2)
+# s.mask(s.FLAG_1 | s.FLAG_2)
 
 # def main():
 #     WriterGtkTreeDemo(s)

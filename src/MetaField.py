@@ -2,7 +2,7 @@
 #
 # @file    MetaField.py
 # @brief   A meta field that acts as a proxy when the real field is created.
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Jan 15, 2010 10:22
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

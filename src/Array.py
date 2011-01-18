@@ -2,7 +2,7 @@
 #
 # @file    Array.py
 # @brief   An structure with a length followed by fields (same type)
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Mon Jan 18, 2010 18:20
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque

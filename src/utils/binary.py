@@ -2,7 +2,7 @@
 #
 # @file    binary.py
 # @brief   Helper functions to work with binary data
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Aug 05, 2009 17:37
 #
 # Copyright (C) 2009, 2010 Aleix Conchillo Flaque

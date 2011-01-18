@@ -23,6 +23,8 @@ src/Structure.py
 src/Value.py
 src/Writer.py
 src/WriterConfig.py
+src/WriterGtkTreeModel.py
+src/WriterGtkTreeView.py
 src/WriterTextBasic.py
 src/WriterTextStream.py
 src/WriterTextStreamConfig.py

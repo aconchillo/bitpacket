@@ -2,7 +2,7 @@
 #
 # @file    Value.py
 # @brief   An abstract class for numeric values (integer or real)
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Oct 13, 2009 12:02
 #
 # Copyright (C) 2009, 2010 Aleix Conchillo Flaque

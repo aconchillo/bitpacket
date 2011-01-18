@@ -2,7 +2,7 @@
 #
 # @file    WriterTextStream.py
 # @brief   Base class for text stream-oriented field writers
-# @author  Aleix Conchillo Flaque <aleix@member.fsf.org>
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Mar 12, 2010 14:57
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
