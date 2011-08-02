@@ -40,16 +40,7 @@ from Real import *
 from String import String
 from Structure import Structure
 from Value import Value
-from Writer import Writer
-from WriterConfig import WriterConfig
-from WriterGtkTreeModel import WriterGtkTreeModel
-from WriterGtkTreeView import WriterGtkTreeView
-from WriterTextBasic import WriterTextBasic
-from WriterTextStream import WriterTextStream
-from WriterTextStreamConfig import WriterTextStreamConfig
-from WriterTextTable import WriterTextTable
-from WriterTextTableConfig import WriterTextTableConfig
-from WriterTextXML import WriterTextXML
+
 
 __all__ = [ "Array",
             "BitField",
@@ -73,13 +64,4 @@ __all__ = [ "Array",
             "String",
             "Structure",
             "Value",
-            "Writer",
-            "WriterConfig",
-            "WriterGtkTreeModel",
-            "WriterGtkTreeView",
-            "WriterTextStream",
-            "WriterTextStreamConfig",
-            "WriterTextBasic",
-            "WriterTextTable",
-            "WriterTextTableConfig",
-            "WriterTextXML" ]
+

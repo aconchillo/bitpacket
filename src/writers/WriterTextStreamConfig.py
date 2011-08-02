@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-# @file    WriterTableConfig.py
-# @brief   Configuration parameters for table writers
+# @file    WriterTextStreamConfig.py
+# @brief   Configuration parameters for text stream writers
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
-# @date    Tue Feb 02, 2010 15:40
+# @date    Fri Mar 12, 2010 15:08
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
 #
@@ -25,22 +25,20 @@
 
 __doc__ = '''
 
-    **API reference**: :class:`WriterTextTableConfig`
+    **API reference**: :class:`WriterTextStreamConfig`
 
 '''
 
-from WriterTextStreamConfig import WriterTextStreamConfig
+from utils.compatibility import *
 
-__TABLE_NAME_SIZE__ = 25
-__TABLE_CLASS_SIZE__ = 15
-__TABLE_SIZE_SIZE__ = 4
-__TABLE_VALUE_SIZE__ = 20
+from writers.WriterConfig import WriterConfig
 
-class WriterTextTableConfig(WriterTextStreamConfig):
+__DEFAULT_INDENTATION__ = 2
+__DEFAULT_NEWLINE__ = str("\n")
+
+class WriterTextStreamConfig(WriterConfig):
 
     def __init__(self, **kwargs):
-        self.table_name_size = __TABLE_NAME_SIZE__
-        self.table_class_size = __TABLE_CLASS_SIZE__
-        self.table_size_size = __TABLE_SIZE_SIZE__
-        self.table_value_size = __TABLE_VALUE_SIZE__
-        WriterTextStreamConfig.__init__(self, **kwargs)
+        self.indentation = __DEFAULT_INDENTATION__
+        self.newline = __DEFAULT_NEWLINE__
+        WriterConfig.__init__(self, **kwargs)

@@ -31,7 +31,7 @@ __doc__ = '''
 
 from utils.compatibility import *
 
-from WriterTextStream import WriterTextStream
+from writers.WriterTextStream import WriterTextStream
 
 class WriterTextBasic(WriterTextStream):
 

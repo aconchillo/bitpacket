@@ -32,8 +32,8 @@ __doc__ = '''
 from utils.compatibility import *
 from utils.string import wrap_string
 
-from WriterTextStream import WriterTextStream
-from WriterTextTableConfig import WriterTextTableConfig
+from writers.WriterTextStream import WriterTextStream
+from writers.WriterTextTableConfig import WriterTextTableConfig
 
 class WriterTextTable(WriterTextStream):
 

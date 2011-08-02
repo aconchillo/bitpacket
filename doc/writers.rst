@@ -1,8 +1,8 @@
 Writers
 =======
 
-.. automodule:: Writer
+.. automodule:: writers.Writer
 
-   .. automodule:: WriterTextBasic
-   .. automodule:: WriterTextTable
-   .. automodule:: WriterTextXML
+   .. automodule:: writers.WriterTextBasic
+   .. automodule:: writers.WriterTextTable
+   .. automodule:: writers.WriterTextXML

@@ -14,7 +14,7 @@ Field
 Writer
 -------
 
-.. currentmodule:: Writer
+.. currentmodule:: writers.Writer
 .. autoclass:: Writer
    :show-inheritance:
    :members:
@@ -27,7 +27,7 @@ Writer
 WriterConfig
 ------------
 
-.. currentmodule:: WriterConfig
+.. currentmodule:: writers.WriterConfig
 .. autoclass:: WriterConfig
    :show-inheritance:
    :members:

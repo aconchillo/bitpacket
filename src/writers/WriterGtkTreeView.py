@@ -31,8 +31,8 @@ __doc__ = '''
 
 import gtk
 
-from Writer import Writer
-from WriterGtkTreeModel import WriterGtkTreeModel
+from writers.Writer import Writer
+from writers.WriterGtkTreeModel import WriterGtkTreeModel
 
 class WriterGtkTreeView(Writer):
 

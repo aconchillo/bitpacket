@@ -2,8 +2,8 @@
 WriterStream
 ------------
 
-.. currentmodule:: WriterStream
-.. autoclass:: WriterStream
+.. currentmodule:: writers.WriterTextStream
+.. autoclass:: WriterTextStream
    :show-inheritance:
    :members:
    :undoc-members:

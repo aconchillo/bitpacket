@@ -29,7 +29,7 @@ __doc__ = '''
 
 '''
 
-from WriterConfig import WriterConfig
+from writers.WriterConfig import WriterConfig
 
 class Writer:
     '''

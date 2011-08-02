@@ -106,7 +106,7 @@ __doc__ = '''
 
 from io import BytesIO, StringIO
 
-from WriterTextBasic import WriterTextBasic
+from writers.WriterTextBasic import WriterTextBasic
 
 class Field(object):
 
