@@ -1,11 +1,9 @@
 #
 # @file    __init__.py
 # @brief   An set of writers to reprsent bit structures.
-# @author  Aleix Conchillo Flaque <aconchillo@gmail.com> (modified Lukasz Dziewanowski <nczita@gmail.com>)
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com> 
 # @date    Tue Aug 2, 2011 10:46
 #
-# Explanation:
-# I have removed all writers to separate module due to specific imports like 'gtk'.
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
 #
