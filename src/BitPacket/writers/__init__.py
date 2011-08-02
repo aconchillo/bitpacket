@@ -27,8 +27,6 @@
 
 from BitPacket.writers.Writer import Writer
 from BitPacket.writers.WriterConfig import WriterConfig
-from BitPacket.writers.WriterGtkTreeModel import WriterGtkTreeModel
-from BitPacket.writers.WriterGtkTreeView import WriterGtkTreeView
 from BitPacket.writers.WriterTextBasic import WriterTextBasic
 from BitPacket.writers.WriterTextStream import WriterTextStream
 from BitPacket.writers.WriterTextStreamConfig import WriterTextStreamConfig
@@ -36,13 +34,22 @@ from BitPacket.writers.WriterTextTable import WriterTextTable
 from BitPacket.writers.WriterTextTableConfig import WriterTextTableConfig
 from BitPacket.writers.WriterTextXML import WriterTextXML
 
+__HAVE_GTK = True
+try:
+    from BitPacket.writers.WriterGtkTreeModel import WriterGtkTreeModel
+    from BitPacket.writers.WriterGtkTreeView import WriterGtkTreeView
+except ImportError as e:
+    __HAVE_GTK = False
+
 __all__ =   [ "Writer",
               "WriterConfig",
-              "WriterGtkTreeModel",
-              "WriterGtkTreeView",
               "WriterTextStream",
               "WriterTextStreamConfig",
               "WriterTextBasic",
               "WriterTextTable",
               "WriterTextTableConfig",
               "WriterTextXML" ]
+
+if __HAVE_GTK:
+    __all__.extend([ "WriterGtkTreeModel",
+                     "WriterGtkTreeView" ])
