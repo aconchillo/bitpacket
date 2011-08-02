@@ -2,7 +2,7 @@
 Array
 -----
 
-.. currentmodule:: Array
+.. currentmodule:: BitPacket.Array
 .. autoclass:: Array
    :show-inheritance:
    :members:
@@ -11,7 +11,7 @@ Array
 Data
 ----
 
-.. currentmodule:: Data
+.. currentmodule:: BitPacket.Data
 .. autoclass:: Data
    :show-inheritance:
    :members:
@@ -20,7 +20,7 @@ Data
 MetaArray
 ---------
 
-.. currentmodule:: MetaArray
+.. currentmodule:: BitPacket.MetaArray
 .. autoclass:: MetaArray
    :show-inheritance:
    :members:
@@ -29,7 +29,7 @@ MetaArray
 MetaData
 --------
 
-.. currentmodule:: MetaStructure
+.. currentmodule:: BitPacket.MetaStructure
 .. autoclass:: MetaStructure
    :show-inheritance:
    :members:
@@ -38,7 +38,7 @@ MetaData
 MetaStructure
 -------------
 
-.. currentmodule:: MetaStructure
+.. currentmodule:: BitPacket.MetaStructure
 .. autoclass:: MetaStructure
    :show-inheritance:
    :members:

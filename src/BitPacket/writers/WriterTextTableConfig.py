@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 #
-# @file    WriterTextStream.py
-# @brief   Base class for text stream-oriented field writers
+# @file    WriterTableConfig.py
+# @brief   Configuration parameters for table writers
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
-# @date    Fri Mar 12, 2010 14:57
+# @date    Tue Feb 02, 2010 15:40
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
 #
@@ -25,26 +25,22 @@
 
 __doc__ = '''
 
-    **API reference**: :class:`WriterTextStream`
+    **API reference**: :class:`WriterTextTableConfig`
 
 '''
 
-from utils.compatibility import *
+from BitPacket.writers.WriterTextStreamConfig import WriterTextStreamConfig
 
-from writers.Writer import Writer
-from writers.WriterTextStreamConfig import WriterTextStreamConfig
+__TABLE_NAME_SIZE__ = 25
+__TABLE_CLASS_SIZE__ = 15
+__TABLE_SIZE_SIZE__ = 4
+__TABLE_VALUE_SIZE__ = 20
 
-class WriterTextStream(Writer):
+class WriterTextTableConfig(WriterTextStreamConfig):
 
-    def __init__(self, stream, config = WriterTextStreamConfig()):
-        Writer.__init__(self, config)
-        self.__stream = stream
-
-    def stream(self):
-        return self.__stream
-
-    def indent(self):
-        return self.stream().write(str(" ") * self.indentation())
-
-    def indentation(self):
-        return self.config().indentation * self.level()
+    def __init__(self, **kwargs):
+        self.table_name_size = __TABLE_NAME_SIZE__
+        self.table_class_size = __TABLE_CLASS_SIZE__
+        self.table_size_size = __TABLE_SIZE_SIZE__
+        self.table_value_size = __TABLE_VALUE_SIZE__
+        WriterTextStreamConfig.__init__(self, **kwargs)

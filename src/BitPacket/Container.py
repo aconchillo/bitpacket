@@ -54,7 +54,7 @@ __doc__ = '''
 
 '''
 
-from Field import Field
+from BitPacket.Field import Field
 
 __FIELD_SEPARATOR__ = "."
 

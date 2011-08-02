@@ -4,24 +4,24 @@ Simple fields
 Bit fields
 ----------
 
-.. automodule:: BitField
+.. automodule:: BitPacket.BitField
 
 
 Numeric fields
 --------------
 
-.. automodule:: Value
+.. automodule:: BitPacket.Value
 
-   .. automodule:: Integer
-   .. automodule:: Real
+   .. automodule:: BitPacket.Integer
+   .. automodule:: BitPacket.Real
 
 Data fields
 -----------
 
-.. automodule:: Data
-.. automodule:: String
+.. automodule:: BitPacket.Data
+.. automodule:: BitPacket.String
 
 Meta fields
 -----------
 
-.. automodule:: MetaField
+.. automodule:: BitPacket.MetaField

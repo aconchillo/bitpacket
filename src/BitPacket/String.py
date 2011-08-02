@@ -29,9 +29,9 @@ __doc__ = '''
 
 '''
 
-from utils.stream import read_stream, write_stream
+from BitPacket.utils.stream import read_stream, write_stream
 
-from Field import Field
+from BitPacket.Field import Field
 
 class String(Field):
 

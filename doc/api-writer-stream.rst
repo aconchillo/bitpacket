@@ -2,7 +2,7 @@
 WriterTextBasic
 ---------------
 
-.. currentmodule:: writers.WriterTextBasic
+.. currentmodule:: BitPacket.writers.WriterTextBasic
 .. autoclass:: WriterTextBasic
    :show-inheritance:
    :members:
@@ -11,7 +11,7 @@ WriterTextBasic
 WriterTextTable
 ---------------
 
-.. currentmodule:: writers.WriterTextTable
+.. currentmodule:: BitPacket.writers.WriterTextTable
 .. autoclass:: WriterTextTable
    :show-inheritance:
    :members:
@@ -20,7 +20,7 @@ WriterTextTable
 WriterTextXML
 -------------
 
-.. currentmodule:: writers.WriterTextXML
+.. currentmodule:: BitPacket.writers.WriterTextXML
 .. autoclass:: WriterTextXML
    :show-inheritance:
    :members:

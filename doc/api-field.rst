@@ -2,7 +2,7 @@
 BitField
 --------
 
-.. currentmodule:: BitField
+.. currentmodule:: BitPacket.BitField
 .. autoclass:: BitField
    :show-inheritance:
    :members:
@@ -11,7 +11,7 @@ BitField
 Container
 ---------
 
-.. currentmodule:: Container
+.. currentmodule:: BitPacket.Container
 .. autoclass:: Container
    :show-inheritance:
    :members:
@@ -24,7 +24,7 @@ Container
 MetaField
 ---------
 
-.. currentmodule:: MetaField
+.. currentmodule:: BitPacket.MetaField
 .. autoclass:: MetaField
    :show-inheritance:
    :members:
@@ -33,7 +33,7 @@ MetaField
 String
 ------
 
-.. currentmodule:: String
+.. currentmodule:: BitPacket.String
 .. autoclass:: String
    :show-inheritance:
    :members:
@@ -42,7 +42,7 @@ String
 Value
 -----
 
-.. currentmodule:: Value
+.. currentmodule:: BitPacket.Value
 .. autoclass:: Value
    :show-inheritance:
    :members:

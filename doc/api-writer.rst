@@ -2,7 +2,7 @@
 WriterStream
 ------------
 
-.. currentmodule:: writers.WriterTextStream
+.. currentmodule:: BitPacket.writers.WriterTextStream
 .. autoclass:: WriterTextStream
    :show-inheritance:
    :members:

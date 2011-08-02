@@ -29,7 +29,7 @@ __doc__ = '''
 
 '''
 
-from Structure import Structure
+from BitPacket.Structure import Structure
 
 __FIELD_SEPARATOR__ = "."
 
@@ -74,7 +74,7 @@ class Array(Structure):
 
         Structure.__setitem__(self, name, value)
 
-# from Integer import *
+# from BitPacket.Integer import *
 
 # class Sub32(UInt32):
 

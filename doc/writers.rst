@@ -1,8 +1,8 @@
 Writers
 =======
 
-.. automodule:: writers.Writer
+.. automodule:: BitPacket.writers.Writer
 
-   .. automodule:: writers.WriterTextBasic
-   .. automodule:: writers.WriterTextTable
-   .. automodule:: writers.WriterTextXML
+   .. automodule:: BitPacket.writers.WriterTextBasic
+   .. automodule:: BitPacket.writers.WriterTextTable
+   .. automodule:: BitPacket.writers.WriterTextXML

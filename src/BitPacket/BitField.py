@@ -52,12 +52,12 @@ __doc__ = '''
 
 '''
 
-from utils.binary import byte_end, bin_to_int, int_to_bin
-from utils.bitstream import BitStreamReader, BitStreamWriter
-from utils.stream import read_stream, write_stream
-from utils.string import hex_string
+from BitPacket.utils.binary import byte_end, bin_to_int, int_to_bin
+from BitPacket.utils.bitstream import BitStreamReader, BitStreamWriter
+from BitPacket.utils.stream import read_stream, write_stream
+from BitPacket.utils.string import hex_string
 
-from Field import Field
+from BitPacket.Field import Field
 
 class BitField(Field):
     '''

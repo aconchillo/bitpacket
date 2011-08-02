@@ -135,9 +135,9 @@ __doc__ = '''
 
 '''
 
-from Integer import UInt8, UInt16
+from BitPacket.Integer import UInt8, UInt16
 
-from Container import Container
+from BitPacket.Container import Container
 
 class Structure(Container):
 

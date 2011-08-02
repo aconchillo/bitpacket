@@ -31,8 +31,8 @@ __doc__ = '''
 
 import gtk
 
-from writers.Writer import Writer
-from writers.WriterGtkTreeModel import WriterGtkTreeModel
+from BitPacket.writers.Writer import Writer
+from BitPacket.writers.WriterGtkTreeModel import WriterGtkTreeModel
 
 class WriterGtkTreeView(Writer):
 
@@ -100,9 +100,9 @@ class WriterGtkTreeDemo(gtk.Window):
 
 # import array
 
-# from MetaField import *
-# from Structure import Structure
-# from Integer import *
+# from BitPacket.MetaField import *
+# from BitPacket.Structure import Structure
+# from BitPacket.Integer import *
 
 # class Test(Structure):
 
@@ -124,11 +124,11 @@ class WriterGtkTreeDemo(gtk.Window):
 
 # import array
 
-# from Integer import *
-# from MetaData import *
-# from MetaStructure import *
-# from WriterTextXML import *
-# from WriterTextTable import *
+# from BitPacket.Integer import *
+# from BitPacket.MetaData import *
+# from BitPacket.MetaStructure import *
+# from BitPacket.WriterTextXML import *
+# from BitPacket.WriterTextTable import *
 
 # class Test(Structure):
 
@@ -154,7 +154,7 @@ class WriterGtkTreeDemo(gtk.Window):
 
 ##################################################
 
-# from Mask import *
+# from BitPacket.Mask import *
 
 # s =  Mask8("ValidityFlags", Mask, 0,
 #            FLAG_1 = 0x01,

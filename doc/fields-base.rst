@@ -1,4 +1,4 @@
 The base field
 ==============
 
-.. automodule:: Field
+.. automodule:: BitPacket.Field

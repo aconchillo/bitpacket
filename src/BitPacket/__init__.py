@@ -22,24 +22,24 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from Array import Array
-from BitField import BitField
-from BitStructure import BitStructure
-from Boolean import Boolean
-from Container import Container
-from Data import Data
-from Field import Field
-from Flag import Flag
-from Integer import *
-from Mask import *
-from MetaArray import MetaArray
-from MetaData import MetaData
-from MetaField import MetaField
-from MetaStructure import MetaStructure
-from Real import *
-from String import String
-from Structure import Structure
-from Value import Value
+from BitPacket.Array import Array
+from BitPacket.BitField import BitField
+from BitPacket.BitStructure import BitStructure
+from BitPacket.Boolean import Boolean
+from BitPacket.Container import Container
+from BitPacket.Data import Data
+from BitPacket.Field import Field
+from BitPacket.Flag import Flag
+from BitPacket.Integer import *
+from BitPacket.Mask import *
+from BitPacket.MetaArray import MetaArray
+from BitPacket.MetaData import MetaData
+from BitPacket.MetaField import MetaField
+from BitPacket.MetaStructure import MetaStructure
+from BitPacket.Real import *
+from BitPacket.String import String
+from BitPacket.Structure import Structure
+from BitPacket.Value import Value
 
 
 __all__ = [ "Array",
@@ -63,5 +63,5 @@ __all__ = [ "Array",
             "Float", "Double",
             "String",
             "Structure",
-            "Value",
+            "Value" ]
 

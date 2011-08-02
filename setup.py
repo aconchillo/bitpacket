@@ -11,9 +11,9 @@ setup(name = 'BitPacket',
       url='http://www.nongnu.org/bitpacket',
       requires = [],
       packages = ['BitPacket', 'BitPacket.utils', 'BitPacket.writers'],
-      package_dir = {'BitPacket': 'src',
-                     'BitPacket.utils': 'src/utils',
-                     'BitPacket.writers': 'src/writers'},
+      package_dir = {'BitPacket': 'src.BitPacket',
+                     'BitPacket.utils': 'src/BitPacket/utils',
+                     'BitPacket.writers': 'src/BitPacket/writers'},
       description = 'A Python object-oriented representation of packets',
       long_description =
       '''

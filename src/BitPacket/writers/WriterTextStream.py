@@ -1,8 +1,9 @@
+#!/usr/bin/env python
 #
-# @file    Flag.py
-# @brief   An object-oriented representation of bit field structures
+# @file    WriterTextStream.py
+# @brief   Base class for text stream-oriented field writers
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
-# @date    Wed Nov 17, 2010 13:02
+# @date    Fri Mar 12, 2010 14:57
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
 #
@@ -22,27 +23,28 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from BitField import *
+__doc__ = '''
 
-__FLAG_STR__ = ["Inactive", "Active"]
+    **API reference**: :class:`WriterTextStream`
 
+'''
 
-class Flag(BitField):
+from BitPacket.utils.compatibility import *
 
-    Inactive = 0
-    Active = 1
+from BitPacket.writers.Writer import Writer
+from BitPacket.writers.WriterTextStreamConfig import WriterTextStreamConfig
 
-    def __init__(self, name, value = Inactive):
-        BitField.__init__(self, name, 1, value)
+class WriterTextStream(Writer):
 
-    def activate(self):
-        self.set_value(Flag.Active)
+    def __init__(self, stream, config = WriterTextStreamConfig()):
+        Writer.__init__(self, config)
+        self.__stream = stream
 
-    def deactivate(self):
-        self.set_value(Flag.Inactive)
+    def stream(self):
+        return self.__stream
 
-    def str_value(self):
-        return __FLAG_STR__[self.value()]
+    def indent(self):
+        return self.stream().write(str(" ") * self.indentation())
 
-    def str_eng_value(self):
-        return __FLAG_STR__[self.eng_value()]
+    def indentation(self):
+        return self.config().indentation * self.level()

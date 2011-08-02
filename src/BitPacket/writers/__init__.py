@@ -25,16 +25,16 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from Writer import Writer
-from WriterConfig import WriterConfig
-from WriterGtkTreeModel import WriterGtkTreeModel
-from WriterGtkTreeView import WriterGtkTreeView
-from WriterTextBasic import WriterTextBasic
-from WriterTextStream import WriterTextStream
-from WriterTextStreamConfig import WriterTextStreamConfig
-from WriterTextTable import WriterTextTable
-from WriterTextTableConfig import WriterTextTableConfig
-from WriterTextXML import WriterTextXML
+from BitPacket.writers.Writer import Writer
+from BitPacket.writers.WriterConfig import WriterConfig
+from BitPacket.writers.WriterGtkTreeModel import WriterGtkTreeModel
+from BitPacket.writers.WriterGtkTreeView import WriterGtkTreeView
+from BitPacket.writers.WriterTextBasic import WriterTextBasic
+from BitPacket.writers.WriterTextStream import WriterTextStream
+from BitPacket.writers.WriterTextStreamConfig import WriterTextStreamConfig
+from BitPacket.writers.WriterTextTable import WriterTextTable
+from BitPacket.writers.WriterTextTableConfig import WriterTextTableConfig
+from BitPacket.writers.WriterTextXML import WriterTextXML
 
 __all__ =   [ "Writer",
               "WriterConfig",

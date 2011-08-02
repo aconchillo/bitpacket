@@ -29,9 +29,9 @@ __doc__ = '''
 
 '''
 
-from utils.compatibility import *
+from BitPacket.utils.compatibility import *
 
-from writers.WriterTextStream import WriterTextStream
+from BitPacket.writers.WriterTextStream import WriterTextStream
 
 class WriterTextBasic(WriterTextStream):
 

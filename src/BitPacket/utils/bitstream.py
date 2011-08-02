@@ -24,7 +24,7 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from binary import encode_bin, decode_bin
+from BitPacket.utils.binary import encode_bin, decode_bin
 
 class BitStreamReader(object):
 

@@ -55,7 +55,7 @@ __doc__ = '''
 
 '''
 
-from Value import Value
+from BitPacket.Value import Value
 
 
 __STRUCT_INT8_LE_FMT__ = "<b"

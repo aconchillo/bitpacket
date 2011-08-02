@@ -179,7 +179,7 @@ __doc__ = '''
 
 '''
 
-from Structure import Structure
+from BitPacket.Structure import Structure
 
 class MetaStructure(Structure):
     '''
@@ -219,10 +219,10 @@ class MetaStructure(Structure):
 
 # import array
 
-# from Integer import *
-# from MetaData import *
-# from WriterTextXML import *
-# from WriterTextTable import *
+# from BitPacket.Integer import *
+# from BitPacket.MetaData import *
+# from BitPacket.writers.WriterTextXML import *
+# from BitPacket.writers.WriterTextTable import *
 
 # class Test(Structure):
 

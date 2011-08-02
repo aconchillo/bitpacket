@@ -4,18 +4,18 @@ Container fields
 Bit fields containers
 ---------------------
 
-.. automodule:: BitStructure
+.. automodule:: BitPacket.BitStructure
 
 
 Structures
 ----------
 
-.. automodule:: Structure
+.. automodule:: BitPacket.Structure
 
 
 Meta structures
 ---------------
 
-.. automodule:: MetaArray
-.. automodule:: MetaData
-.. automodule:: MetaStructure
+.. automodule:: BitPacket.MetaArray
+.. automodule:: BitPacket.MetaData
+.. automodule:: BitPacket.MetaStructure

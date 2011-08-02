@@ -22,8 +22,8 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from Value import *
-from BitField import *
+from BitPacket.Value import *
+from BitPacket.BitField import *
 
 from operator import itemgetter
 
@@ -119,8 +119,8 @@ class Mask64(MaskValue):
                            value, **kwargs)
 
 
-# from Boolean import *
-# from Flag import *
+# from BitPacket.Boolean import *
+# from BitPacket.Flag import *
 
 # a =  Mask8("ValidityFlags", Mask, 0,
 #            FLAG_1 = 0x01,

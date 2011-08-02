@@ -2,7 +2,7 @@
 Field
 -----
 
-.. currentmodule:: Field
+.. currentmodule:: BitPacket.Field
 .. autoclass:: Field
    :members:
    :undoc-members:
@@ -14,7 +14,7 @@ Field
 Writer
 -------
 
-.. currentmodule:: writers.Writer
+.. currentmodule:: BitPacket.writers.Writer
 .. autoclass:: Writer
    :show-inheritance:
    :members:
@@ -27,7 +27,7 @@ Writer
 WriterConfig
 ------------
 
-.. currentmodule:: writers.WriterConfig
+.. currentmodule:: BitPacket.writers.WriterConfig
 .. autoclass:: WriterConfig
    :show-inheritance:
    :members:

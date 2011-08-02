@@ -29,11 +29,11 @@ __doc__ = '''
 
 '''
 
-from utils.compatibility import *
-from utils.string import wrap_string
+from BitPacket.utils.compatibility import *
+from BitPacket.utils.string import wrap_string
 
-from writers.WriterTextStream import WriterTextStream
-from writers.WriterTextTableConfig import WriterTextTableConfig
+from BitPacket.writers.WriterTextStream import WriterTextStream
+from BitPacket.writers.WriterTextTableConfig import WriterTextTableConfig
 
 class WriterTextTable(WriterTextStream):
 

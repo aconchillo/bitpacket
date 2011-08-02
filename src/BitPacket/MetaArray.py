@@ -29,7 +29,7 @@ __doc__ = '''
 
 '''
 
-from Structure import Structure
+from BitPacket.Structure import Structure
 
 class MetaArray(Structure):
 
@@ -54,7 +54,7 @@ class MetaArray(Structure):
 
 # import array
 
-# from Integer import *
+# from BitPacket.Integer import *
 
 # ma = MetaArray("memory", UInt8,
 #                lambda ctx: MetaArray("address", UInt8, lambda ctx: UInt32("value")))

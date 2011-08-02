@@ -29,7 +29,7 @@ __doc__ = '''
 
 '''
 
-from writers.WriterConfig import WriterConfig
+from BitPacket.writers.WriterConfig import WriterConfig
 
 class Writer:
     '''

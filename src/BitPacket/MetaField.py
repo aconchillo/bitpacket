@@ -29,7 +29,7 @@ __doc__ = '''
 
 '''
 
-from Field import Field
+from BitPacket.Field import Field
 
 class MetaField(Field):
 
@@ -113,8 +113,8 @@ class MetaField(Field):
 
 # import array
 
-# from Structure import Structure
-# from Integer import *
+# from BitPacket.Structure import Structure
+# from BitPacket.Integer import *
 
 # class Test(Structure):
 

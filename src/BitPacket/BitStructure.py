@@ -102,12 +102,12 @@ __doc__ = '''
 
 import array
 
-from utils.binary import byte_end
-from utils.bitstream import BitStreamReader, BitStreamWriter
-from utils.stream import read_stream, write_stream
+from BitPacket.utils.binary import byte_end
+from BitPacket.utils.bitstream import BitStreamReader, BitStreamWriter
+from BitPacket.utils.stream import read_stream, write_stream
 
-from BitField import BitField
-from Container import Container
+from BitPacket.BitField import BitField
+from BitPacket.Container import Container
 
 class BitStructure(Container):
     '''

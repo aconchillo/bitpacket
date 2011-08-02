@@ -2,7 +2,7 @@
 BitStructure
 ------------
 
-.. currentmodule:: BitStructure
+.. currentmodule:: BitPacket.BitStructure
 .. autoclass:: BitStructure
    :show-inheritance:
    :members:
@@ -11,7 +11,7 @@ BitStructure
 Structure
 ------------
 
-.. currentmodule:: Structure
+.. currentmodule:: BitPacket.Structure
 .. autoclass:: Structure
    :show-inheritance:
    :members:

@@ -41,12 +41,12 @@ __doc__ = '''
 
 import struct
 
-from utils.compatibility import *
+from BitPacket.utils.compatibility import *
 
-from utils.string import hex_string
-from utils.stream import read_stream, write_stream
+from BitPacket.utils.string import hex_string
+from BitPacket.utils.stream import read_stream, write_stream
 
-from Field import Field
+from BitPacket.Field import Field
 
 # Character     Byte order               Size and alignment
 # @             native                   native

@@ -29,8 +29,8 @@ __doc__ = '''
 
 '''
 
-from Structure import Structure
-from String import String
+from BitPacket.Structure import Structure
+from BitPacket.String import String
 
 class Data(Structure):
 

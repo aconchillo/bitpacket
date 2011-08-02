@@ -59,7 +59,7 @@ __doc__ = '''
 
 '''
 
-from Value import Value
+from BitPacket.Value import Value
 
 __STRUCT_FLOAT_FMT__ = "f"
 __STRUCT_DOUBLE_FMT__ = "d"

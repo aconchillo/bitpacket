@@ -1,10 +1,11 @@
+#!/usr/bin/env python
 #
-# @file    Boolean.py
-# @brief   An object-oriented representation of bit field structures
+# @file    MetaData.py
+# @brief   A meta structure with an unknown length followed by data
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
-# @date    Wed Nov 17, 2010 13:02
+# @date    Fri Dec 11, 2009 15:42
 #
-# Copyright (C) 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -22,24 +23,15 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from BitField import *
+from BitPacket.Structure import Structure
+from BitPacket.String import String
 
-__BOOLEAN_STR__ = ["False", "True"]
+class MetaData(Structure):
 
-
-class Boolean(BitField):
-
-    def __init__(self, name, value = False):
-        BitField.__init__(self, name, 1, value)
-
-    def enable(self):
-        self.set_value(True)
-
-    def disable(self):
-        self.set_value(False)
-
-    def str_value(self):
-        return __BOOLEAN_STR__[self.value()]
-
-    def str_eng_value(self):
-        return __BOOLEAN_STR__[self.eng_value()]
+    def __init__(self, name, lengthtype, wsizefunc):
+        Structure.__init__(self, name)
+        self.__length = lengthtype("Length")
+        self.__data = String("Data",
+                             lengthfunc = lambda ctx: self["Length"] * wsizefunc(ctx))
+        self.append(self.__length)
+        self.append(self.__data)

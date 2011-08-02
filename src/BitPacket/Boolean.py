@@ -1,9 +1,8 @@
-#!/usr/bin/env python
 #
-# @file    WriterTableConfig.py
-# @brief   Configuration parameters for table writers
+# @file    Boolean.py
+# @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
-# @date    Tue Feb 02, 2010 15:40
+# @date    Wed Nov 17, 2010 13:02
 #
 # Copyright (C) 2010 Aleix Conchillo Flaque
 #
@@ -23,24 +22,24 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-__doc__ = '''
+from BitPacket.BitField import *
 
-    **API reference**: :class:`WriterTextTableConfig`
+__BOOLEAN_STR__ = ["False", "True"]
 
-'''
 
-from writers.WriterTextStreamConfig import WriterTextStreamConfig
+class Boolean(BitField):
 
-__TABLE_NAME_SIZE__ = 25
-__TABLE_CLASS_SIZE__ = 15
-__TABLE_SIZE_SIZE__ = 4
-__TABLE_VALUE_SIZE__ = 20
+    def __init__(self, name, value = False):
+        BitField.__init__(self, name, 1, value)
 
-class WriterTextTableConfig(WriterTextStreamConfig):
+    def enable(self):
+        self.set_value(True)
 
-    def __init__(self, **kwargs):
-        self.table_name_size = __TABLE_NAME_SIZE__
-        self.table_class_size = __TABLE_CLASS_SIZE__
-        self.table_size_size = __TABLE_SIZE_SIZE__
-        self.table_value_size = __TABLE_VALUE_SIZE__
-        WriterTextStreamConfig.__init__(self, **kwargs)
+    def disable(self):
+        self.set_value(False)
+
+    def str_value(self):
+        return __BOOLEAN_STR__[self.value()]
+
+    def str_eng_value(self):
+        return __BOOLEAN_STR__[self.eng_value()]

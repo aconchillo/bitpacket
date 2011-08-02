@@ -29,9 +29,9 @@ __doc__ = '''
 
 '''
 
-from utils.compatibility import *
+from BitPacket.utils.compatibility import *
 
-from writers.WriterConfig import WriterConfig
+from BitPacket.writers.WriterConfig import WriterConfig
 
 __DEFAULT_INDENTATION__ = 2
 __DEFAULT_NEWLINE__ = str("\n")
