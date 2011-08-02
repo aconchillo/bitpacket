@@ -1,8 +1,8 @@
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(name = 'BitPacket',
-      version = '1.0.0',
+      version = '1.0.1',
       author = 'Aleix Conchillo Flaque',
       author_email = 'aconchillo@gmail.com',
       license = 'GPL',
@@ -10,10 +10,8 @@ setup(name = 'BitPacket',
       maintainer_email='aconchillo@gmail.com',
       url='http://www.nongnu.org/bitpacket',
       requires = [],
-      packages = ['BitPacket', 'BitPacket.utils', 'BitPacket.writers'],
-      package_dir = {'BitPacket': 'src.BitPacket',
-                     'BitPacket.utils': 'src/BitPacket/utils',
-                     'BitPacket.writers': 'src/BitPacket/writers'},
+      package_dir = {'': 'src'},
+      packages = find_packages('src'),
       description = 'A Python object-oriented representation of packets',
       long_description =
       '''
