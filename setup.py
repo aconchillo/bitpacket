@@ -2,10 +2,10 @@
 from setuptools import setup, find_packages
 
 setup(name = 'BitPacket',
-      version = '1.0.1',
+      version = '1.0.0',
       author = 'Aleix Conchillo Flaque',
       author_email = 'aconchillo@gmail.com',
-      license = 'GPL',
+      license = 'GPLv3',
       maintainer = 'Aleix Conchillo Flaque',
       maintainer_email='aconchillo@gmail.com',
       url='http://www.nongnu.org/bitpacket',
