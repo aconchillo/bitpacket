@@ -8,8 +8,8 @@ Welcome to BitPacket's documentation!
 
 BitPacket_ is a Python module that provides a simple objected-oriented
 representation of data structures. The main purpose is to provide an
-easy and extensible interface for building and parsing these structures,
-such as network packages.
+easy and extensible interface for building and parsing these structures
+(e.g. network packets).
 
 These are the main features of BitPacket:
 

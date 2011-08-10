@@ -11,3 +11,11 @@ WriterStream
 .. toctree::
 
    api-writer-stream
+
+
+WriterGtk
+---------
+
+.. toctree::
+
+   api-writer-gtk
