@@ -1,6 +1,11 @@
 Container fields
 ================
 
+.. testsetup:: *
+
+   from BitPacket import *
+   import array
+
 Bit fields containers
 ---------------------
 

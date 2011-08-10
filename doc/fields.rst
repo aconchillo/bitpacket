@@ -1,6 +1,10 @@
 Simple fields
 =============
 
+.. testsetup:: *
+
+   from BitPacket import *
+
 Bit fields
 ----------
 
