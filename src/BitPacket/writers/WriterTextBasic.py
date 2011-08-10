@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Aug 05, 2009 17:37
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -38,10 +38,10 @@ class WriterTextBasic(WriterTextStream):
     def start_block(self, field, userdata = None):
         WriterTextStream.start_block(self, field, userdata)
         try:
-            str_hex = field.str_hex_value()
+            str_hex = " " + field.str_hex_value()
         except:
             str_hex = ""
-        self.stream().write(str("(%s = %s") % (field.name(), str_hex))
+        self.stream().write(str("(%s =%s") % (field.name(), str_hex))
 
     def end_block(self, field, userdata = None):
         WriterTextStream.end_block(self, field, userdata)
