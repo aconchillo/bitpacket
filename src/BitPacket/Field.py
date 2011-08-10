@@ -25,7 +25,7 @@
 
 __doc__ = '''
 
-    An object-oriented representation of bit field structures.
+    Base abstract class for all BitPacket fields.
 
     **API reference**: :class:`Field`
 

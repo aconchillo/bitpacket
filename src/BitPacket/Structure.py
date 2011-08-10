@@ -25,16 +25,17 @@
 
 __doc__ = '''
 
-    Byte-aligned container
-    ======================
+    A container implementation for fields of different types.
 
     **API reference**: :class:`Structure`
 
     The :class:`Structure` class provides a byte-aligned
-    :mod:`Container`. This means that all the fields added to a
-    :mod:`Structure` should be byte-aligned, otherwise wrong results
-    would be given. This does not mean that a :mod:`BitFeild` can not
-    be added, but if added, it should have a byte-aligned size.
+    :mod:`Container` implementation. This means that all the fields
+    added to a :mod:`Structure` should be byte-aligned. This does not
+    mean that a :mod:`BitField` can not be added, but if added, it
+    should be added within a :mod:`BitStructure`. This is because bit
+    and byte processing is done diffrently, and that's why
+    :mod:`BitStructure` was created.
 
     Consider the first three bytes of the IP header:
 
@@ -49,8 +50,8 @@ __doc__ = '''
 
     >>> ip = Structure("IP")
 
-    The line above creates an empty packet named 'IP'. Now, we need to
-    add the two fields to it:
+    The line above creates an empty packet named 'IP'. Now, we can add
+    the two fields to it with an initial value:
 
     >>> ip.append(UInt8("tos", 3))
     >>> ip.append(UInt16("length", 146))
@@ -63,30 +64,47 @@ __doc__ = '''
     Accessing fields
     ----------------
 
-    Structure fields can be obtained as in a dictionary, that is, by
-    its name. Following the last example:
+    Structure fields, as in any other Container, can be obtained like in
+    a dictionary, that is, by its name. Following the last example:
 
-    >>> print "0x%X" % ip["tos"]
-    0x54
-    >>> print "0x%X" % ip["length"]
-    0x10203040
+    >>> ip["tos"]
+    3
+    >>> ip["length"]
+    146
+
+
+    Packing structures
+    -------------------
+
+    As with any BitPacket field, packing a Structure is really
+    simple. Considering the IP header exampe above we can easily create
+    an array of bytes with the contents of the structure:
+
+    >>> ip_data = array.array("B")
+    >>> ip.array(ip_data)
+    >>> print ip_data
+    array('B', [3, 0, 146])
+
+    Or also create a string of bytes from it:
+
+    >>> ip.bytes()
+    '\\x03\\x00\\x92'
 
 
     Unpacking structures
     --------------------
 
     To be able to unpack an integer value or a string of bytes into a
-    BitStructure, we only need to create the desired packet without
-    initializing any field and assign the integer value or string of
-    bytes to it.
+    Structure, we only need to create the desired packet and assign data
+    to it.
 
-    >>> bs = BitStructure("mypacket")
-    >>> bs.append(BitField("id", 8))
-    >>> bs.append(BitField("address", 32))
+    >>> bs = Structure("mypacket")
+    >>> bs.append(UInt8("id"))
+    >>> bs.append(UInt32("address"))
     >>> print bs
     (mypacket =
-       (id = 0x00)
-       (address = 0x00000000))
+      (id = 0)
+      (address = 0))
 
     So, now we can unpack the following array of bytes:
 
@@ -97,22 +115,22 @@ __doc__ = '''
     >>> bs.set_bytes(data.tostring())
     >>> print bs
     (mypacket =
-       (id = 0x38)
-       (address = 0x87342140))
+      (id = 56)
+      (address = 2268340544))
 
 
     Structures as classes
     ---------------------
 
-    An interesting, and obvious, use, is to subclass BitStructure to
-    create your own reusable structures. Then, we could create the
-    structure defined in the previous section as a new class:
+    An interesting use of structures is to subclass them to create your
+    own reusable ones. As an example, we could create the structure
+    defined in the previous section as a new class:
 
-    >>> class MyStructure(BitStructure):
+    >>> class MyStructure(Structure):
     ...    def __init__(self, id = 0, address = 0):
-    ...        BitStructure.__init__(self, "mystructure")
-    ...        self.append(BitField("id", 8, id))
-    ...        self.append(BitField("address", 32, address))
+    ...        Structure.__init__(self, "mystructure")
+    ...        self.append(UInt8("id", id))
+    ...        self.append(UInt32("address", address))
     ...
     ...    def id(self):
     ...        return self["id"]
@@ -123,8 +141,8 @@ __doc__ = '''
     >>> ms = MyStructure(0x33, 0x50607080)
     >>> print ms
     (mystructure =
-       (id = 0x33)
-       (address = 0x50607080))
+      (id = 51)
+      (address = 1348497536))
 
     We can now use the accessors of our class to print its content:
 
@@ -135,13 +153,20 @@ __doc__ = '''
 
 '''
 
-from BitPacket.Integer import UInt8, UInt16
-
 from BitPacket.Container import Container
 
 class Structure(Container):
 
+    '''
+    This class provides a byte-aligned Container implementation. All the
+    fields added to it should be byte-aligned.
+    '''
+
     def __init__(self, name):
+        '''
+        Initialize the structure with the given *name*. By default, it
+        does not contain any fields.
+        '''
         Container.__init__(self, name)
 
     def _encode(self, stream, context):

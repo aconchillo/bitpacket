@@ -80,9 +80,9 @@ __doc__ = '''
     Packing bit structures
     ----------------------
 
-    As any BitPacket field, packing a BitStructure is really
+    As with any BitPacket field, packing a BitStructure is really
     simple. Considering the IP header exampe above we can easily create
-    and array of bytes with the contents of the structure:
+    an array of bytes with the contents of the structure:
 
     >>> ip_data = array.array("B")
     >>> ip.array(ip_data)
@@ -100,7 +100,7 @@ __doc__ = '''
 
     To be able to unpack an integer value or a string of bytes into a
     BitStructure, we only need to create the desired structure and
-    assign an integer value or a string of bytes to it.
+    assign data to it.
 
     >>> bs = BitStructure("mypacket")
     >>> bs.append(BitField("id", 8))

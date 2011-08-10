@@ -17,7 +17,7 @@ Bit fields containers
 Structures
 ----------
 
-#.. automodule:: BitPacket.Structure
+.. automodule:: BitPacket.Structure
 
 
 Meta structures
