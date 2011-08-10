@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Mon Jan 18, 2010 18:20
 #
-# Copyright (C) 2010 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -45,7 +45,7 @@ class Array(Structure):
     def append(self, field):
         if isinstance(field, self.__basetype):
             value = self["Length"]
-            field.set_name(value)
+            field._set_name(value)
             Structure.__setitem__(self, "Length", value + 1)
             Structure.append(self, field)
         else:

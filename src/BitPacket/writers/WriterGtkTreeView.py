@@ -127,8 +127,8 @@ class WriterGtkTreeDemo(gtk.Window):
 # from BitPacket.Integer import *
 # from BitPacket.MetaData import *
 # from BitPacket.MetaStructure import *
-# from BitPacket.WriterTextXML import *
-# from BitPacket.WriterTextTable import *
+# from BitPacket.writers.WriterTextXML import *
+# from BitPacket.writers.WriterTextTable import *
 
 # class Test(Structure):
 

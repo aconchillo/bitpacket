@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Jan 15, 2010 10:22
 #
-# Copyright (C) 2010 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -59,15 +59,12 @@ class MetaField(Field):
 
     def _create_field(self, context):
         if not self._field:
-            # Call name(), parent() and index() before proxy is
-            # available.
+            # Call name() and parent() before proxy is available.
             name = self.name()
             parent = self.parent()
-            index = self.index()
             self._field = self._fieldfunc(context)
-            self._field.set_name(name)
-            self._field.set_parent(parent)
-            self._field.set_index(index)
+            self._field._set_name(name)
+            self._field._set_parent(parent)
 
     def __len__(self):
         if self._field:

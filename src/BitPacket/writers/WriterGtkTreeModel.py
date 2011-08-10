@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Dec 14, 2010 16:24
 #
-# Copyright (C) 2010 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -75,8 +75,10 @@ class WriterGtkTreeModel(gtk.GenericTreeModel):
         path = []
         node = rowref
         while node:
-            path.append(node.index())
-            node = node.parent()
+            parent = node.parent()
+            if parent:
+                path.append(parent.fields().index(node))
+            node = parent
         return tuple(reversed(path))
 
     def on_get_value(self, rowref, column):
@@ -101,8 +103,9 @@ class WriterGtkTreeModel(gtk.GenericTreeModel):
     def on_iter_next(self, rowref):
         if rowref and rowref.parent():
             try:
-                next = rowref.index() + 1
-                return rowref.parent().fields()[next]
+                parent_fields = rowref.parent().fields()
+                next = parent_fields.index(rowref) + 1
+                return parent_fields[next]
             except IndexError:
                 return None
         return None

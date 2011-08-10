@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Dec 11, 2009 11:57
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -91,11 +91,8 @@ class Container(Field):
         else:
             self.__fields_name[field.name()] = field
 
-        index = len(self.__fields)
         self.__fields.append(field)
-
-        field.set_parent(self)
-        field.set_index(index)
+        field._set_parent(self)
 
     def field(self, name):
         '''

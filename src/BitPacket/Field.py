@@ -153,7 +153,6 @@ class Field(object):
         default.
         '''
         self.__name = name
-        self.__index = 0
         self.__parent = None
         self.__calibration = None
 
@@ -165,14 +164,6 @@ class Field(object):
         Returns the name of the field.
         '''
         return self.__name
-
-    def set_name(self, name):
-        '''
-        Sets a new name to the field. This function must be used with
-        caution as the field must have already been referenced by its
-        name at creation time.
-        '''
-        self.__name = name
 
     def parent(self):
         '''
@@ -187,14 +178,6 @@ class Field(object):
         returned if the field does not have any child.
         '''
         return []
-
-    def index(self):
-        '''
-        Returns the index of the field within the parent. That is, the
-        position where this field was added as a child of its parent. It
-        returns 0 if the field does not have any parent.
-        '''
-        return self.__index
 
     def value(self):
         '''
@@ -336,20 +319,20 @@ class Field(object):
         '''
         raise NotImplementedError
 
+    def _set_name(self, name):
+        '''
+        Sets a new name to the field. This function is intended to be
+        used only by the library internals, so use it with care as the
+        field must have already been referenced by its original name.
+        '''
+        self.__name = name
+
     def _set_parent(self, parent):
         '''
         Sets the parent of this field. This function is intended to be
         used only by the library internals, so use it with care.
         '''
         self.__parent = parent
-
-    def _set_index(self, index):
-        '''
-        Sets the field index as a child of its parent. This function is
-        intended to be used only by the library internals, so use it
-        with care.
-        '''
-        self.__index = index
 
     def __str__(self):
         '''

@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Mon Jan 18, 2010 18:21
 #
-# Copyright (C) 2010 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -47,7 +47,7 @@ class MetaArray(Structure):
         # Append fields and parse them.
         for i in range(self.__length.value()):
             new_field = self.__fieldfunc(context)
-            new_field.set_name("%d" % i)
+            new_field._set_name("%d" % i)
             new_field._decode(stream, context)
             self.append(new_field)
 

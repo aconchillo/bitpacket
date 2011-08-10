@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Dec 11, 2009 17:07
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -210,7 +210,7 @@ class MetaStructure(Structure):
         # Append fields.
         for i in range(length):
             new_field = self.__fieldfunc(context)
-            new_field.set_name("%d" % i)
+            new_field._set_name("%d" % i)
             self.append(new_field)
 
         # Once the subfields have been added, parse the stream.
