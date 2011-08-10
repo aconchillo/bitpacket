@@ -27,11 +27,10 @@ __doc__ = '''
 
     **API reference**: :class:`Container`
 
-    Packets can be seen as field containers. That is, a packet is
-    formed by a sequence of fields. The :class:`Container` class
-    provides this vision. A :mod:`Container` is also a :mod:`Field`
-    itself. Therefore, a :mod:`Container` might accomodate other
-    Containers.
+    Packets can be seen as field containers. That is, a packet is formed
+    by a sequence of fields. The :class:`Container` class provides this
+    vision. A :mod:`Container` is also a :mod:`Field` itself. Therefore,
+    a :mod:`Container` might also accomodate other Containers.
 
     Consider the first three bytes of the IP header:
 
@@ -43,14 +42,11 @@ __doc__ = '''
 
     We can see the IP header as a :mod:`Container` with a
     sub-:mod:`Container` holding two bit fields (*version* and *hlen*)
-    and two more fields (*tos* and *length*).
+    and two additional fields (*tos* and *length*).
 
     The :class:`Container` class is just an abstract class that allows
     adding fields. That is, it provides the base methods to build
     Containers.
-
-    Currently, there are three :mod:`Container` implementations:
-    :mod:`Structure`, :mod:`BitStructure` and :mod:`MetaStructure`.
 
 '''
 
@@ -60,20 +56,15 @@ __FIELD_SEPARATOR__ = "."
 
 class Container(Field):
     '''
-    This is an abstrat class to create containers. A container is just
-    a field that might contain a sequence of fields, thus forming a
-    bigger field.
-
-    Fields added to a Container must have the same type, that is, it
-    is not possible to mix byte with bit fields.
+    This is an abstrat class to create containers. A container is just a
+    field that might contain a sequence of fields (that can be
+    containers as well), thus forming a bigger field.
     '''
 
     def __init__(self, name):
         '''
-        Initializes the container with the given 'name' and 'type' and
-        'fields_type'. The 'type' is the type of this container, while
-        'fields_type' is the allowed type for the fields to be added
-        to this container.
+        Initializes the container with the given *name*. By default, it
+        does not contain any fields.
         '''
         Field.__init__(self, name)
         self.__fields = []
@@ -81,8 +72,9 @@ class Container(Field):
 
     def append(self, field):
         '''
-        Appends a new 'field' into the container. The new field type
-        must match the one given at Container's constructor.
+        Appends a new *field* into the container. A *NameError*
+        exception will be raised if a field with the same name is
+        already in the container.
         '''
         # Only one field with the same name is allowed.
         if field.name() in self.__fields_name:
@@ -96,7 +88,10 @@ class Container(Field):
 
     def field(self, name):
         '''
-        Returns the field identified by 'name'.
+        Returns the field identified by *name*. *name* accepts a dot (.)
+        separator to indicate sub-fields of a container (multiple
+        separators are allowed). If the field does not exist a
+        *KeyError* exception is raised.
         '''
         names = name.split(__FIELD_SEPARATOR__, 1)
         try:
@@ -114,11 +109,18 @@ class Container(Field):
 
     def fields(self):
         '''
-        Returns the (ordered) list of subfields that form this field.
+        Returns the (ordered) list of fields of this container.
         '''
         return self.__fields
 
     def keys(self):
+        '''
+        Returns the list of fields' names recursively (i.e. if fields
+        are also containers). In case one or more of the fields are
+        containers, its fields will be suffixed with a dot separator. As
+        an example, "a.b.c" is the key for a field *c* inside a *b*
+        container which is also inside a root *a* container.
+        '''
         keys = []
         for field in self.fields():
             name = field.name()
@@ -131,19 +133,13 @@ class Container(Field):
 
     def size(self):
         '''
-        Returns the size of the field in bytes. That is, the sum of
-        all byte sizes of the fields in this container.
+        Returns the size of the field in bytes. That is, the sum of all
+        byte sizes of the fields in this container.
         '''
         size = 0
         for f in self.fields():
             size += f.size()
         return size
-
-    def write(self, writer):
-        writer.start_block(self)
-        for field in self.fields():
-            field.write(writer)
-        writer.end_block(self)
 
     def __len__(self):
         '''
@@ -153,8 +149,9 @@ class Container(Field):
 
     def __getitem__(self, name):
         '''
-        Returns the value of the field identified by 'name'. This is
-        the same as calling container.field(name).value().
+        Returns the value of the field identified by *name*. This is the
+        same as calling container.field(name).value(). If the field does
+        not exists a *KeyError* exception is raised.
         '''
         names = name.split(__FIELD_SEPARATOR__, 1)
         try:
@@ -168,8 +165,10 @@ class Container(Field):
 
     def __setitem__(self, name, value):
         '''
-        Sets the given 'value' to the field identified by 'name'. This
-        is the same as calling container.field(name).set_value(value).
+        Sets the given *value* to the field identified by *name*. This
+        is the same as calling
+        container.field(name).set_value(value). If the field does not
+        exists a *KeyError* exception is raised.
         '''
         names = name.split(__FIELD_SEPARATOR__, 1)
         try:

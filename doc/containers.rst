@@ -6,6 +6,8 @@ Container fields
    from BitPacket import *
    import array
 
+.. automodule:: BitPacket.Container
+
 Bit fields containers
 ---------------------
 
