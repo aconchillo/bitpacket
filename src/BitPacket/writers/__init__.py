@@ -1,11 +1,10 @@
 #
 # @file    __init__.py
 # @brief   An set of writers to reprsent bit structures.
-# @author  Aleix Conchillo Flaque <aconchillo@gmail.com> 
+# @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Aug 2, 2011 10:46
 #
-#
-# Copyright (C) 2010 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
