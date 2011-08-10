@@ -26,8 +26,9 @@ BitPacket repository_.
 Build and install
 -----------------
 
-BitPacket is distributed as a distutils_ module, so the usual commands
-for building and installing distutils modules can be used.
+BitPacket is distributed as a setuptools_ module, so the usual commands
+for building and installing setuptools modules can be used. However,
+this means that you need setuptools installed in your system.
 
 Once the BitPacket tarball is decompressed, you can build BitPacket as
 a non-root user:
@@ -43,7 +44,9 @@ the following command:
 
     python setup.py install
 
-.. _distutils: http://docs.python.org/distutils/
+If you have obtained an egg file
+
+.. _setuptools: http://packages.python.org/distribute/setuptools.html
 
 Usage
 -----
@@ -61,18 +64,13 @@ History
 
 The first version of BitPacket was released in 2007.
 
-The validation guys, from the project I was working on, were building
-a test environment to validate a software which involved a lot of
+The validation guys from the project I was working on were building a
+test environment to validate a software which involved a lot of network
 packet management. They started by accessing packet fields with
 indexes. This was very error prone, hard to maintain, hard to read and
-understand and some more bad things. So, I start digging through the
-web for something that could help us, but I only found the struct_
-module. The struct module is great, but it does not solve the indexing
-problem. However, one is able to recover a 32-bit integer or float
-values without the need to access all four bytes and build the
-value. Also, it does not solve the problem of bit fields. Therefore, I
-wanted something easier to maintain, extend and read and also able to
-work with bits.
+hard to understand. So, I start digging through the web for something
+that could help us, but I only found the struct_ module. However, it
+does not solve the indexing problem neither it supports bit fields.
 
 Then, I found the BitVector_ class which was able to work with bits
 given a byte array, and I built BitPacket in top of it. Initially,
@@ -94,7 +92,6 @@ Finally, I decided I needed to refactor BitPacket, while learning more
 in the path, and create a small library, much simpler than struct and
 much more powerful and fast than the old BitPacket. This is how
 BitPacket 1.0.0 was born.
-
 
 .. _BitPacket: http://www.nongnu.org/bitpacket/
 .. _BitVector: http://cobweb.ecn.purdue.edu/~kak/dist/

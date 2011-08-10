@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Sun Aug 02, 2009 12:34
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -28,10 +28,10 @@ __doc__ = '''
     **API reference**: :class:`BitField`
 
     A packet might be formed by multiple fields that can be single bit
-    fields, numeric fields, etc. Sometimes, byte-aligned fields are
+    fields, numeric fields, etc. Sometimes, byte-aligned fields are also
     formed by bit fields internally. The purpose of :mod:`BitField` is
-    to provide these single bit fields that, at the end, will be used
-    to form byte-aligned fields.
+    to provide these single bit fields that, at the end, will be used to
+    form byte-aligned fields.
 
     For example, the first byte of the IP header is:
 
@@ -61,18 +61,18 @@ from BitPacket.Field import Field
 
 class BitField(Field):
     '''
-    This class represents bit fields to be used by BitStructure in
-    order to build byte-aligned fields. Remember that BitPacket only
+    This class represents bit fields to be used by :class:`BitStructure`
+    in order to build byte-aligned fields. Remember that BitPacket only
     works with byte-aligned fields, so it is not possible to create
     mixed (bit and byte) fields, that's why BitField can only be used
-    by BitStructure.
+    inside a :class:`BitStructure`.
     '''
 
     def __init__(self, name, size, value = 0):
         '''
-        Initializes the field with the given 'name' and 'size' (in
+        Initializes the field with the given *name* and *size* (in
         bits). By default the field's value will be initialized to 0
-        or to 'value' if specified.
+        or to *value* if specified.
         '''
         Field.__init__(self, name)
         self.__bits = []
@@ -103,7 +103,7 @@ class BitField(Field):
 
     def set_value(self, value):
         '''
-        Sets a new unsigned integer 'value' to the field.
+        Sets a new unsigned integer *value* to the field.
         '''
         self.__bits = int_to_bin(value, self.size())
 
@@ -114,12 +114,28 @@ class BitField(Field):
         return self.__size
 
     def str_value(self):
+        '''
+        Returns a human-readable representation of the value of this
+        field. In case of bit fields the representation is an
+        hexadecimal value.
+        '''
         return hex_string(self.value(), byte_end(self.size()))
 
     def str_hex_value(self):
+        '''
+        Returns a human-readable representation of the hexadecimal value
+        of this field. This will return the same as *str_value*.
+        '''
         return hex_string(self.hex_value(), byte_end(self.size()))
 
     def str_eng_value(self):
+        '''
+        Returns a human-readable representation of the engineering
+        value. This function will first calculate the engineering value
+        (by applying the calibration curve) and will return the string
+        representation of it. In case of bit fields the representation
+        is an hexadecimal value.
+        '''
         return hex_string(self.eng_value(), byte_end(self.size()))
 
 

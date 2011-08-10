@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Sun Aug 02, 2009 19:25
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -28,13 +28,13 @@ __doc__ = '''
     **API reference**: :class:`BitStructure`
 
     The :mod:`BitStructure` class must be used, in conjunction with
-    :mod:`BitField`, to create these byte-aligned fields formed,
-    internally, by bit fields.
+    :mod:`BitField`, to create byte-aligned fields formed, internally,
+    by bit fields.
 
     It is really important to understand that BitPacket is byte
     oriented, therefore, a :mod:`BitStructure` must be byte-aligned.
 
-    Now, consider the first byte of the IP header:
+    Consider the first byte of an IP header packet:
 
     +---------+----------+
     | version |   hlen   |
@@ -42,17 +42,17 @@ __doc__ = '''
     | 4 bits  |  4 bits  |
     +---------+----------+
 
-    This packet could be constructed by:
+    This packet can be constructed as:
 
-    >>> bs = BitStructure("IP")
+    >>> ip = BitStructure("IP")
 
     The line above creates an empty structure named 'IP'. Now, we need
     to add fields to it. As :mod:`BitStructure` is a :mod:`Container`
     subclass the :func:`Container.append` function can be used:
 
-    >>> bs.append(BitField("version", 4, 0x0E))
-    >>> bs.append(BitField("hlen", 4, 0x0C))
-    >>> print bs
+    >>> ip.append(BitField("version", 4, 0x0E))
+    >>> ip.append(BitField("hlen", 4, 0x0C))
+    >>> print ip
     (IP =
       (version = 0x0E)
       (hlen = 0x0C))
@@ -61,14 +61,31 @@ __doc__ = '''
     Accessing fields
     ----------------
 
-    BitStructure fields can be obtained as in a dictionary, as in any
-    Container subclass. Following the last example:
+    BitStructure fields can be obtained as in a dictionary, and as in
+    any Container subclass. Following the last example:
 
-    >>> bs["version"]
+    >>> ip["version"]
     14
-    >>> bs["hlen"]
+    >>> ip["hlen"]
     12
 
+
+    Packing bit structures
+    ----------------------
+
+    As any BitPacket field, packing a BitStructure is really
+    simple. Considering the IP header exampe above we can easily create
+    and array of bytes with the contents of the structure:
+
+    >>> ip_data = array.array("B")
+    >>> ip.array(ip_data)
+    >>> print ip_data
+    array('B', [236])
+
+    Or also create a string of bytes from it:
+
+    >>> ip.bytes()
+    '\\xec'
 
     Unpacking bit structures
     ------------------------
