@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Oct 13, 2009 12:03
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -74,8 +74,3 @@ class Double(Value):
 
     def __init__(self, name, value = 0.0):
         Value.__init__(self, name, __STRUCT_DOUBLE_FMT__, value)
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

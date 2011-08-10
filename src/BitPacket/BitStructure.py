@@ -57,6 +57,13 @@ __doc__ = '''
       (version = 0x0E)
       (hlen = 0x0C))
 
+    Note that the size of a BitStructure is returned in bytes. Remember
+    that the purpose of a BitStructure is to create a byte-aligned value
+    that is built internally with bits:
+
+    >>> ip.size()
+    1
+
 
     Accessing fields
     ----------------
@@ -87,13 +94,13 @@ __doc__ = '''
     >>> ip.bytes()
     '\\xec'
 
+
     Unpacking bit structures
     ------------------------
 
     To be able to unpack an integer value or a string of bytes into a
-    BitStructure, we only need to create the desired structure without
-    initializing any field and assign the integer value or string of
-    bytes to it.
+    BitStructure, we only need to create the desired structure and
+    assign an integer value or a string of bytes to it.
 
     >>> bs = BitStructure("mypacket")
     >>> bs.append(BitField("id", 8))
@@ -115,26 +122,32 @@ __doc__ = '''
       (id = 0x38)
       (address = 0x87342140))
 
-'''
+    Also, new data can also be unpacked (old data will be lost):
 
-import array
+    >>> data = array.array("B", [0x45, 0x67, 0x24, 0x98, 0xFB])
+    >>> bs.set_array(data)
+    >>> print bs
+    (mypacket =
+      (id = 0x45)
+      (address = 0x672498FB))
+
+'''
 
 from BitPacket.utils.binary import byte_end
 from BitPacket.utils.bitstream import BitStreamReader, BitStreamWriter
-from BitPacket.utils.stream import read_stream, write_stream
 
-from BitPacket.BitField import BitField
 from BitPacket.Container import Container
 
 class BitStructure(Container):
     '''
-    This class represents an structure of bit fields to be used to
-    build byte-aligned fields.
+    This class represents an structure formed by bit fields. The
+    resulting structure must be byte-aligned and is to be used with
+    other BitPacket types.
     '''
 
     def __init__(self, name):
         '''
-        Initializes the bit structure field with the given 'name'. By
+        Initializes the bit structure field with the given *name*. By
         default an structure field does not contain any fields.
         '''
         Container.__init__(self, name)
@@ -157,8 +170,3 @@ class BitStructure(Container):
         the container.
         '''
         return byte_end(Container.size(self))
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

@@ -130,7 +130,3 @@ class MetaField(Field):
 # s.set_array(array.array("B", [123, 124]))
 
 # print s
-
-if __name__ == "__main__":
-   import doctest
-   doctest.testmod()

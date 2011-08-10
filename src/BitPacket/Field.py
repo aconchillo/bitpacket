@@ -343,8 +343,3 @@ class Field(object):
         writer = WriterTextBasic(StringIO())
         writer.write(self)
         return writer.stream().getvalue()
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

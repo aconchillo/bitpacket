@@ -137,8 +137,3 @@ class BitField(Field):
         is an hexadecimal value.
         '''
         return hex_string(self.eng_value(), byte_end(self.size()))
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

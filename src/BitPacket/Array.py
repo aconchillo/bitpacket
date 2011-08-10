@@ -86,7 +86,3 @@ class Array(Structure):
 # a.append(Sub32(34))
 
 # print a
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

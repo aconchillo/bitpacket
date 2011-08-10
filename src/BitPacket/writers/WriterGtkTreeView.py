@@ -174,7 +174,3 @@ class WriterGtkTreeDemo(gtk.Window):
 
 # if __name__ == '__main__':
 #     main()
-
-if __name__ == "__main__":
-   import doctest
-   doctest.testmod()

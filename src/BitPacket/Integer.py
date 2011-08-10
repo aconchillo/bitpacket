@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Oct 13, 2009 12:03
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -79,7 +79,7 @@ __STRUCT_INT64_BE_FMT__ = ">q"
 __STRUCT_UINT64_BE_FMT__ = ">Q"
 
 
-###########################################################################
+########################################################################
 
 class Int8LE(Value):
 
@@ -104,7 +104,7 @@ class UInt8BE(Value):
 Int8 = Int8BE
 UInt8 = UInt8BE
 
-###########################################################################
+########################################################################
 
 class Int16LE(Value):
 
@@ -129,7 +129,7 @@ class UInt16BE(Value):
 Int16 = Int16BE
 UInt16 = UInt16BE
 
-###########################################################################
+########################################################################
 
 class Int32LE(Value):
 
@@ -154,7 +154,7 @@ class UInt32BE(Value):
 Int32 = Int32BE
 UInt32 = UInt32BE
 
-###########################################################################
+########################################################################
 
 class Int64LE(Value):
 
@@ -179,9 +179,3 @@ class UInt64BE(Value):
 
 Int64 = Int64BE
 UInt64 = UInt64BE
-
-###########################################################################
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

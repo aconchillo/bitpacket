@@ -15,12 +15,12 @@ Bit fields containers
 Structures
 ----------
 
-.. automodule:: BitPacket.Structure
+#.. automodule:: BitPacket.Structure
 
 
 Meta structures
 ---------------
 
-.. automodule:: BitPacket.MetaArray
-.. automodule:: BitPacket.MetaData
-.. automodule:: BitPacket.MetaStructure
+#.. automodule:: BitPacket.MetaArray
+#.. automodule:: BitPacket.MetaData
+#.. automodule:: BitPacket.MetaStructure

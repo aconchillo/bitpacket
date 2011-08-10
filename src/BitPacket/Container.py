@@ -180,8 +180,3 @@ class Container(Field):
                 field[names[1]] = value
         except KeyError:
             raise KeyError("Field '%s' does not exist" % name)
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()

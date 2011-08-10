@@ -251,8 +251,3 @@ class MetaStructure(Structure):
 # writer = WriterTextTable(StringIO())
 # writer.write(s)
 # print writer.stream().getvalue()
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
