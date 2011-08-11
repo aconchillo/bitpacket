@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Aug 05, 2009 17:37
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -40,12 +40,8 @@ class WriterTextTable(WriterTextStream):
     def __init__(self, stream, config = WriterTextTableConfig()):
         WriterTextStream.__init__(self, stream, config)
 
-    def start_block(self, field, userdata = None):
-        WriterTextStream.start_block(self, field, userdata)
-        self.__field_line(field, userdata)
-
     def write(self, field, userdata = None):
-        self.__field(field, userdata, False)
+        self.__field(field, userdata)
 
     def __header(self, userdata):
         table_size_size = self.config().table_size_size
@@ -75,20 +71,22 @@ class WriterTextTable(WriterTextStream):
         self.stream().write(s)
         self.stream().write(self.config().newline)
 
-    def __field(self, field, userdata, start):
+    def __field(self, field, userdata):
         if self.level() == 0:
             self.__header(userdata)
         else:
             self.stream().write(self.config().newline)
 
+        # First we write the field
+        self.__field_line(field, userdata)
+
+        # Then, its children, if any.
         subfields = field.fields()
         if len(subfields) > 0:
             self.start_block(field, userdata)
             for f in subfields:
                 self.write(f, userdata)
             self.end_block(field, userdata)
-        else:
-            self.__field_line(field, userdata)
 
     def __field_line(self, field, userdata):
         table_name_size = self.config().table_name_size
