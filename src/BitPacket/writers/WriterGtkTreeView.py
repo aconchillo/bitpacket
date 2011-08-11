@@ -64,37 +64,37 @@ class WriterGtkTreeView(Writer):
         treeview.append_column(column)
 
 
-class WriterGtkTreeDemo(gtk.Window):
-    def __init__(self, field, parent=None):
-        gtk.Window.__init__(self)
-        try:
-            self.set_screen(parent.get_screen())
-        except AttributeError:
-            self.connect('destroy', lambda *w: gtk.main_quit())
-        self.set_title(self.__class__.__name__)
-        self.set_default_size(700, 400)
-        self.set_border_width(8)
+# class WriterGtkTreeDemo(gtk.Window):
+#     def __init__(self, field, parent=None):
+#         gtk.Window.__init__(self)
+#         try:
+#             self.set_screen(parent.get_screen())
+#         except AttributeError:
+#             self.connect('destroy', lambda *w: gtk.main_quit())
+#         self.set_title(self.__class__.__name__)
+#         self.set_default_size(700, 400)
+#         self.set_border_width(8)
 
-        vbox = gtk.VBox(False, 8)
-        self.add(vbox)
+#         vbox = gtk.VBox(False, 8)
+#         self.add(vbox)
 
-        sw = gtk.ScrolledWindow()
-        sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-        sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        vbox.pack_start(sw)
+#         sw = gtk.ScrolledWindow()
+#         sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+#         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+#         vbox.pack_start(sw)
 
-        # create treeview
-        writer = WriterGtkTreeView()
-        treeview = writer.view()
-        treeview.set_rules_hint(True)
-        writer.write(field)
+#         # create treeview
+#         writer = WriterGtkTreeView()
+#         treeview = writer.view()
+#         treeview.set_rules_hint(True)
+#         writer.write(field)
 
-        sw.add(treeview)
+#         sw.add(treeview)
 
-        # expand all rows after the treeview widget has been realized
-        treeview.connect('realize', lambda tv: tv.expand_all())
+#         # expand all rows after the treeview widget has been realized
+#         treeview.connect('realize', lambda tv: tv.expand_all())
 
-        self.show_all()
+#         self.show_all()
 
 ##################################################
 
