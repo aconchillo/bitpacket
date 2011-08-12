@@ -1,10 +1,11 @@
+#!/usr/bin/env python
 #
 # @file    Flag.py
 # @brief   An object-oriented representation of bit field structures
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Nov 17, 2010 13:02
 #
-# Copyright (C) 2010 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Array.py
-# @brief   An structure with a length followed by fields (same type)
+# @brief   An structure for fields of the same type.
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Mon Jan 18, 2010 18:20
 #
@@ -24,6 +24,8 @@
 #
 
 __doc__ = '''
+
+    An structure for fields of the same type.
 
     **API reference**: :class:`Array`
 

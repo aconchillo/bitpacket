@@ -25,6 +25,8 @@
 
 __doc__ = '''
 
+    A container implementation for bit fields.
+
     **API reference**: :class:`BitStructure`
 
     The :mod:`BitStructure` class must be used, in conjunction with

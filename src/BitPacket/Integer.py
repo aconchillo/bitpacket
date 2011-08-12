@@ -25,6 +25,10 @@
 
 __doc__ = '''
 
+    Integer fields for signed/unsigned values of various sizes.
+
+    **API reference**: :class:`Integer`
+
     Integer fields
     ==============
 

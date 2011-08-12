@@ -25,6 +25,8 @@
 
 __doc__ = '''
 
+    A field to represent single bit fields.
+
     **API reference**: :class:`BitField`
 
     A packet might be formed by multiple fields that can be single bit

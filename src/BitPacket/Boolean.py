@@ -1,10 +1,11 @@
+#!/usr/bin/env python
 #
 # @file    Boolean.py
-# @brief   An object-oriented representation of bit field structures
+# @brief   A bit field for representing a boolean type
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Nov 17, 2010 13:02
 #
-# Copyright (C) 2010 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -21,6 +22,14 @@
 # You should have received a copy of the GNU General Public License
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+__doc__ = '''
+
+    A bit field for representing a boolean type.
+
+    **API reference**: :class:`Boolean`
+
+'''
 
 from BitPacket.BitField import *
 

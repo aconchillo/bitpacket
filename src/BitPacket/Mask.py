@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 # @file    Mask.py
 # @brief   An object-oriented representation of bit field structures

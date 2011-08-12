@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Oct 13, 2009 12:02
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -25,7 +25,7 @@
 
 __doc__ = '''
 
-    An object-oriented representation of bit field structures.
+    An abstract class for numeric values (integer or real).
 
     **API reference**: :class:`Value`
 

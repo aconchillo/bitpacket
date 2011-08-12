@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Container.py
-# @brief   Generic abstract field container
+# @brief   Abstract root class for field containers
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Dec 11, 2009 11:57
 #
@@ -24,6 +24,8 @@
 #
 
 __doc__ = '''
+
+    Abstract root class for field containers.
 
     **API reference**: :class:`Container`
 
