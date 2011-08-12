@@ -4,6 +4,9 @@ Container fields
 .. testsetup:: *
 
    from BitPacket import *
+   from BitPacket.writers import *
+
+   from io import StringIO
    import array
 
 .. automodule:: BitPacket.Container
@@ -23,6 +26,7 @@ Structures
 Meta structures
 ---------------
 
+.. automodule:: BitPacket.MetaStructure
+
 #.. automodule:: BitPacket.MetaArray
 #.. automodule:: BitPacket.MetaData
-#.. automodule:: BitPacket.MetaStructure

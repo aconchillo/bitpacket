@@ -25,31 +25,35 @@
 
 __doc__ = '''
 
+    A meta structure with an unknow number of fields.
+
     **API reference**: :class:`MetaStructure`
 
-    Variable structures depending on a counter field.
-
     Sometimes we need to create packets that have a number of repeated
-    structures in it. Normally, these kind of packets have a field
-    indicating the number of repeated structures and the structures
-    after it.
+    fields in it. Normally, these kind of packets have a counter field
+    indicating the number of repeated fields after it.
 
-    +-------+-------+-----------+-------+-----------+
-    | count |  id   |  address  |  id   |  address  |
-    +-------+-------+-----------+-------+-----------+
-     <- 1 -> <- 1 -> <--- 4 ---> <- 1 -> <--- 4 --->
-             <--------------- count --------------->
+    Basic meta structures
+    ---------------------
 
-    We can achieve this by using the MetaStructure class which is a
-    subclass of Structure. This class already contains a counter field
-    of a given size and at the beginning the structure does not
-    contain any more fields, thus the counter is set to zero. The
-    fields which will form the variable structure need to be added as
-    in BitStructure and the counter will be automatically increased.
+    A *MetaStructure* is a subclass of *Structure*. It does not contain
+    any fields by default, as they will be created at
+    run-time. Therefore, the intended use of this class is to facilitate
+    the unpacking of defined data but whose size is not known at
+    creation time (i.e. the number of received data may vary).
 
-    In order to create a BitVariableStructure it is necessary to
-    define the base type of the fields (all of the same type) that
-    this variable structure will contain.
+    +--------+--------+---------+
+    | count  |   id   | address |
+    +========+========+=========+
+    | 1 byte | 1 byte | 4 bytes |
+    +--------+--------+---------+
+    |        |  *count* times   |
+    +--------+------------------+
+
+    In order to create a *MetaStructure* it is necessary to define the
+    base type of the fields (all of the same type) that this structure
+    will contain. Following the depicted packet above, we will create a
+    *MyStructure* class that contains two fields, *id* and *address*.
 
     >>> class MyStructure(Structure):
     ...    def __init__(self, name = "mystructure", id = 0, address = 0):
@@ -57,125 +61,123 @@ __doc__ = '''
     ...        self.append(UInt8("id", id))
     ...        self.append(UInt32("address", address))
 
-    Following the first depicted packet, we have created a MyStructure
-    class that contains two fields. Now, we are ready to define a new
-    variable structure that will contain a variable number of
-    MyStructure fields.
+    Now, we can define an *Structure* that contains a counter field that
+    will be used to know how many *MyStructure* structures follow it.
 
     >>> packet = Structure("mypacket")
     >>> packet.append(UInt8("counter"))
-    >>> packet.append(MetaStructure("mypacket",
-    ...                             lambda ctx: ctx["counter"].value(),
-    ...                             MyStructure))
+    >>> packet.append(MetaStructure("mystructure",
+    ...                             lambda ctx: ctx["counter"],
+    ...                             lambda ctx: MyStructure()))
 
-    Finally, we can try to add a MyStrcuture instance and see how the
-    final packet looks like.
+    So, here is the big deal! Note that, as a second argument to the
+    *MetaStructure* constructor, we have provided an anonymous function
+    (does not need to be anonymous) that returns the number of following
+    *MyStructure*. The function takes a single argument which will
+    always be the root of our BitPacket, so this means we have direct
+    access to the *counter* field and that we can know its value (it has
+    already been processed because it comes first). The third argument
+    is also a function (also receiveing the context) that will tell how
+    to create the fields. Got it?  If not, read this paragraph again.
 
-    >>> packet.append(MyStructure(0x54, 0x10203040))
+    Let's try to unpack some data to this structure and see what
+    happens:
+
+    >>> data = array.array("B", [0x01, 0x54, 0x10, 0x20, 0x30, 0x40])
+    >>> packet.set_array(data)
     >>> print packet
     (mypacket =
-       (counter = 0x01)
-       (fields =
-          (mystructure0 =
-             (id = 0x54)
-             (address = 0x10203040))))
+      (counter = 1)
+      (mystructure =
+        (0 =
+          (id = 84)
+          (address = 270544960))))
 
-    Note that the variable structure has a new field 'fields' which
-    contains all the structures being added to this variable
-    structure. We can also see that the packet has a counter field of
-    value 1 (only one field has been added) and that our MyStructure
-    instance has a new name 'mystructure0'. This is because the
-    BitStructure class does not allow to have fields with the same
-    name, thus when the field has been added the name has
-    automatically changed.
+    Now, the meta structure contains one field of type *MyStructure*. It
+    is worth to note that the fields added to a meta structure are
+    automatically named in a zero-based scheme. That it, to access the
+    first *address* field value we could:
 
-    We can also build more complex packets, such as the one below,
-    where we have two variable structures one inside of the other.
-
-    +-------+-------+-------+-----------+------
-    | cnt1  |  id   | cnt2  |  address  | ...
-    +-------+-------+-------+-----------+------
-     <- 1 -> <- 1 -> <- 1 -> <--- 4 --->
-                             <----- cnt2 ----->
-             <-------------- cnt1 ------------>
-
-    This can easly be done with the following piece of code:
-
-    >>> class Address(BitField):
-    ...    def __init__(self, address = 0):
-    ...        BitField.__init__(self, "address", 32, address)
-
-    >>> class AddressList(BitVariableStructure):
-    ...    def __init__(self):
-    ...        BitVariableStructure.__init__(self, "addresses", 8, Address)
-
-    >>> class IdAddresses(BitStructure):
-    ...    def __init__(self, id = 0):
-    ...        BitStructure.__init__(self, "ids")
-    ...        self.__list = AddressList()
-    ...        self.append(BitField("id", 8, id))
-    ...        self.append(self.__list)
-    ...
-    ...    def add(self, address):
-    ...        self.__list.append(Address(address))
-
-    >>> ids = IdAddresses(0x34)
-    >>> ids.add(0x10203040)
-    >>> ids.add(0x50607080)
-
-    >>> vs = BitVariableStructure("packet", 8, IdAddresses)
-    >>> vs.append(ids)
-    >>> print vs
-    (packet =
-       (counter = 0x01)
-       (fields =
-          (ids0 =
-             (id = 0x34)
-             (addresses =
-                (counter = 0x02)
-                (fields =
-                   (address0 = 0x10203040)
-                   (address1 = 0x50607080))))))
+    >>> packet["mystructure.0.address"]
+    270544960
 
 
-    UNPACKING VARIABLE STRUCTURES
+    Complex meta structures
+    -----------------------
 
-    In order to unpack a variable structure, the BitVariableStructure
-    class needs to know, as we already said, the base type of the
-    multiple structures (all of the same type) that will
-    contain. Then, we only need to set new data to the structure and
-    everything will be built automatically.
+    We can also build more complex packets, such as the one below, where
+    we have two meta structures one inside of the other.
 
-    >>> vs = BitVariableStructure("packet", 8, base_type = IdAddresses)
-    >>> print vs
-    (packet =
-       (counter = 0x00)
-       (fields =))
+    +--------+--------+--------+----------------+
+    | count1 |   id   | count2 |     address    |
+    +========+========+========+================+
+    | 1 byte | 1 byte | 1 byte |     4 bytes    |
+    +--------+--------+--------+----------------+
+    |                          | *count2* times |
+    +--------+--------+--------+----------------+
+    |        |         *count1* times           |
+    +--------+----------------------------------+
 
-    The BitVariableStructure "packet" is empty, so, now we can unpack
-    the following array of bytes:
+    We will first create a structure for the list of addresses. It will
+    contain the *count2* counter and a *MetaStructure* whose number of
+    elements is provided by *count2* and that will be filled with 32-bit
+    unsigned integers.
 
-    >>> data = array.array("B", [0x01, 0x34, 0x02, 0x10, 0x20, 0x30, 0x40,
-    ...                          0x50, 0x60, 0x70, 0x80])
+    >>> class AddressList(Structure):
+    ...     def __init__(self):
+    ...         Structure.__init__(self, "address")
+    ...         self.append(UInt8("id"))
+    ...         self.append(UInt8("count2"))
+    ...         self.append(MetaStructure("address",
+    ...                                   lambda ctx: self["count2"],
+    ...                                   lambda ctx: UInt32("value")))
 
-    into our previously defined variable structure:
+    Now, we can build our packet as an structure with the *count1*
+    counter and a *MetaStructure* whose number of elements is provided
+    by *count1* and that will be filled by address lists (that,
+    remember, already has another meta structure).
 
-    >>> vs.set_bytes(data.tostring())
-    >>> print vs
-    (packet =
-       (counter = 0x01)
-       (fields =
-          (ids0 =
-             (id = 0x34)
-             (addresses =
-                (counter = 0x02)
-                (fields =
-                   (address0 = 0x10203040)
-                   (address1 = 0x50607080))))))
+    >>> s = Structure("mypacket")
+    >>> s.append(UInt8("count1"))
+    >>> s.append(MetaStructure("mystructure",
+    ...                        lambda ctx: ctx["count1"],
+    ...                        lambda ctx: AddressList()))
 
-     As we can see, the BitVariableStructure class dynamically creates
-     fields of the given base type in order to reconstruct the whole
-     structure.
+    So, let's try to set some data to this packet. As we have seen
+    before with the simple case, data should be propagated and meta
+    structures will be used to build the desired fields.
+
+    >>> s.set_array(array.array("B", [0x02, # count1
+    ...                               0x01, # id (1)
+    ...                               0x01, # count2 (1)
+    ...                               0x01, 0x02, 0x03, 0x04,
+    ...                               0x02, # id (2)
+    ...                               0x02, # count2 (2)
+    ...                               0x05, 0x06, 0x07, 0x08,
+    ...                               0x09, 0x0A, 0x0B, 0x0C]))
+    >>> print s
+    (mypacket =
+      (count1 = 2)
+      (mystructure =
+        (0 =
+          (id = 1)
+          (count2 = 1)
+          (address =
+            (0 = 16909060)))
+        (1 =
+          (id = 2)
+          (count2 = 2)
+          (address =
+            (0 = 84281096)
+            (1 = 151653132)))))
+
+    It worked! As we see, our packet consists on a *mystructure* that
+    contains two *AddressList* fields. The first one with a single
+    address and the second with two.
+
+    The conclusion is that building complex data structures is possible
+    and really simple with the use of meta fields such as
+    *MetaStructure*.
 
 '''
 
@@ -183,21 +185,22 @@ from BitPacket.Structure import Structure
 
 class MetaStructure(Structure):
     '''
-    This class represents a variable structure of bit fields to be
-    used to build packets. It inhertis from BitStructure, thus both
-    are BitFieldBase themselves and all of them can be used
-    together. That is, we can add any BitFieldBase subclass into a
-    BitStructure or BitVariableStructure.
+    Meta structures are used when the number of fields in a packet is
+    only known at runtime. Normally, the number of fields to create is
+    contained in a numeric field that indicates it.
+
+    This class makes this task easy by letting the user to provide the
+    way this numeric field should be obtained and how to create the
+    fields.
     '''
 
     def __init__(self, name, lengthfunc, fieldfunc):
         '''
-        Initializes the bit variable structure field with the given
-        'name' as well as with the desired bit size ('counter_size')
-        for the self-contained counter field. The 'base_field' might
-        be an instance of the structure's type to be added. Note that
-        it is only allowed to add fields of the same type and size of
-        the base field.
+        Initializes the meta structure with the given *name* and two
+        functions, *lengthfunc* and *fieldfunc*. Both functions are
+        unary, receiving the current BitPacket context as their
+        argument. The former needs to return the number of fields that
+        should be created. The later returns a newly created field.
         '''
         Structure.__init__(self, name)
         self.__fieldfunc = fieldfunc
@@ -215,39 +218,3 @@ class MetaStructure(Structure):
 
         # Once the subfields have been added, parse the stream.
         Structure._decode(self, stream, context)
-
-
-# import array
-
-# from BitPacket.Integer import *
-# from BitPacket.MetaData import *
-# from BitPacket.writers.WriterTextXML import *
-# from BitPacket.writers.WriterTextTable import *
-
-# class Test(Structure):
-
-#     def __init__(self):
-#         Structure.__init__(self, "test")
-#         self.append(UInt8("counter"))
-#         self.append(MetaStructure("address",
-#                                   lambda ctx: self["counter"],
-#                                   lambda ctx: UInt64("value")))
-
-# s = Structure("a")
-# s.append(UInt8("counter"))
-# s.append(MetaStructure("struct",
-#                        lambda ctx: ctx["counter"],
-#                        lambda ctx: Test()))
-
-# s.set_array(array.array("B", [2,
-#                               1,
-#                               1, 2, 3, 4, 1, 2, 3, 4,
-#                               2,
-#                               5, 6, 7, 8, 9, 10, 11, 12,
-#                               13, 14, 15, 16, 17, 18, 19, 20]))
-
-# from io import StringIO
-
-# writer = WriterTextTable(StringIO())
-# writer.write(s)
-# print writer.stream().getvalue()
