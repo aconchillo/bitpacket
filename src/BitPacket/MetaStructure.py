@@ -75,10 +75,11 @@ __doc__ = '''
     (does not need to be anonymous) that returns the number of following
     *MyStructure*. The function takes a single argument which will
     always be the root of our BitPacket, so this means we have direct
-    access to the *counter* field and that we can know its value (it has
-    already been processed because it comes first). The third argument
-    is also a function (also receiveing the context) that will tell how
-    to create the fields. Got it?  If not, read this paragraph again.
+    access to the *counter* field and that we can know its value (it
+    will already be processed because it comes first). The third
+    argument is also a function (also receiveing the context) that will
+    tell how to create the fields. Got it?  If not, read this paragraph
+    again.
 
     Let's try to unpack some data to this structure and see what
     happens:
@@ -95,7 +96,7 @@ __doc__ = '''
 
     Now, the meta structure contains one field of type *MyStructure*. It
     is worth to note that the fields added to a meta structure are
-    automatically named in a zero-based scheme. That it, to access the
+    automatically named in a zero-based scheme. That is, to access the
     first *address* field value we could:
 
     >>> packet["mystructure.0.address"]
