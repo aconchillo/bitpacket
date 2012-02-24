@@ -29,12 +29,12 @@ __doc__ = '''
 
     **API reference**: :class:`BitStructure`
 
-    The :mod:`BitStructure` class must be used, in conjunction with
+    The BitStructure class must be used, in conjunction with
     :mod:`BitField`, to create byte-aligned fields formed, internally,
     by bit fields.
 
     It is really important to understand that BitPacket is byte
-    oriented, therefore, a :mod:`BitStructure` must be byte-aligned.
+    oriented, therefore, a BitStructure must be byte-aligned.
 
     Consider the first byte of an IP header packet:
 
@@ -49,8 +49,8 @@ __doc__ = '''
     >>> ip = BitStructure("IP")
 
     The line above creates an empty structure named 'IP'. Now, we need
-    to add fields to it. As :mod:`BitStructure` is a :mod:`Container`
-    subclass the :func:`Container.append` function can be used:
+    to add fields to it. As BitStructure is a :mod:`Container` subclass
+    the :func:`Container.append` function can be used:
 
     >>> ip.append(BitField("version", 4, 0x0E))
     >>> ip.append(BitField("hlen", 4, 0x0C))
@@ -71,7 +71,7 @@ __doc__ = '''
     ----------------
 
     BitStructure fields can be obtained as in a dictionary, and as in
-    any Container subclass. Following the last example:
+    any :mod:`Container` subclass. Following the last example:
 
     >>> ip["version"]
     14

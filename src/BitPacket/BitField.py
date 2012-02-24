@@ -32,10 +32,10 @@ __doc__ = '''
     A packet might be formed by multiple fields that can be single bit
     fields, numeric fields, etc. Sometimes, byte-aligned fields are also
     formed by bit fields internally. The purpose of :mod:`BitField` is
-    to provide these single bit fields that, at the end, will be used to
-    form byte-aligned fields.
+    to provide these single bit fields.
 
-    For example, the first byte of the IP header is:
+    For example, the first byte of the IP header is formed by two
+    nibbles:
 
     +---------+---------+
     | version |  hlen   |
@@ -43,8 +43,8 @@ __doc__ = '''
     | 4 bits  | 4 bits  |
     +---------+---------+
 
-    That is, a byte formed by two nibbles. The first nibble,
-    *version*, can be constructed by the following piece of code:
+    The first nibble, *version*, can be constructed by the following
+    piece of code:
 
     >>> bf = BitField("version", 4, 15)
     >>> print bf
@@ -66,8 +66,8 @@ class BitField(Field):
     This class represents bit fields to be used by :class:`BitStructure`
     in order to build byte-aligned fields. Remember that BitPacket only
     works with byte-aligned fields, so it is not possible to create
-    mixed (bit and byte) fields, that's why BitField can only be used
-    inside a :class:`BitStructure`.
+    mixed (bit and byte) fields, that's why :mod:`BitField` can only be
+    used inside a :class:`BitStructure`.
     '''
 
     def __init__(self, name, size, value = 0):

@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Oct 13, 2009 12:03
 #
-# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -25,19 +25,11 @@
 
 __doc__ = '''
 
-    Integer fields for signed/unsigned values of various sizes.
-
-    **API reference**: :class:`Integer`
-
     Integer fields
     ==============
 
     This module provides classes to define signed and unsigned
     integers bit fields, from 8-bit to 64-bit.
-
-    In order to encode and decode integer values, the Python's
-    'struct' module is used. So, the conversion from binary data to
-    integer values depends on that module.
 
 
     Signed and unsigned
@@ -56,6 +48,51 @@ __doc__ = '''
     >>> value = UInt16("uint16", 0x8000)
     >>> print value
     (uint16 = 32768)
+
+    Helper classes
+    --------------
+
+    Default helper classes use network byte order (big-endian):
+
+    +--------+-----------------+----------------+
+    |Size    |Unsigned         |Signed          |
+    +========+=================+================+
+    |8       |:class:`UInt8`   |:class:`Int8`   |
+    +--------+-----------------+----------------+
+    |16      |:class:`UInt16`  |:class:`Int16`  |
+    +--------+-----------------+----------------+
+    |32      |:class:`UInt32`  |:class:`Int32`  |
+    +--------+-----------------+----------------+
+    |64      |:class:`UInt64`  |:class:`Int64`  |
+    +--------+-----------------+----------------+
+
+    Little-endian helper classes:
+
+    +--------+-----------------+----------------+
+    |Size    |Unsigned         |Signed          |
+    +========+=================+================+
+    |8       |:class:`UInt8LE` |:class:`Int8LE` |
+    +--------+-----------------+----------------+
+    |16      |:class:`UInt16LE`|:class:`Int16LE`|
+    +--------+-----------------+----------------+
+    |32      |:class:`UInt32LE`|:class:`Int32LE`|
+    +--------+-----------------+----------------+
+    |64      |:class:`UInt64LE`|:class:`Int64LE`|
+    +--------+-----------------+----------------+
+
+    Big-endian helper classes:
+
+    +--------+-----------------+----------------+
+    |Size    | Unsigned        |Signed          |
+    +========+=================+================+
+    |8       |:class:`UInt8BE` |:class:`Int8BE` |
+    +--------+-----------------+----------------+
+    |16      |:class:`UInt16BE`|:class:`Int16BE`|
+    +--------+-----------------+----------------+
+    |32      |:class:`UInt32BE`|:class:`Int32BE`|
+    +--------+-----------------+----------------+
+    |64      |:class:`UInt64BE`|:class:`Int64BE`|
+    +--------+-----------------+----------------+
 
 '''
 

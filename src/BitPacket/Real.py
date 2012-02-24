@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Oct 13, 2009 12:03
 #
-# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -29,17 +29,13 @@ __doc__ = '''
     ===========
 
     This module provides classes to define float (32-bit) and double
-    (64-bit) bit fields.
-
-    In order to encode and decode real values, the Python's 'struct'
-    module is used. So, the conversion from binary data to real values
-    depends on that module.
+    (64-bit) fields.
 
 
     Floats and doubles
     ------------------
 
-    A float value can be easily created with the BitFieldFloat class:
+    A float value can be easily created with the :class:`Float` class:
 
     >>> value = Float("f", 1.967834)
     >>> print value
@@ -57,20 +53,64 @@ __doc__ = '''
     >>> print value
     (f = 0.0087552)
 
+    Helper classes
+    --------------
+
+    Default helper classes use network byte order (big-endian):
+
+    +-----+---------------+
+    |Size |Class          |
+    +=====+===============+
+    |32   |:class:`Float` |
+    +-----+---------------+
+    |64   |:class:`Double`|
+    +-----+---------------+
+
+    Endianness helper classes:
+
+    +-----+-----------------+-----------------+
+    |Size |Little-Endian    |Big-Endian       |
+    +=====+=================+=================+
+    |32   |:class:`FloatLE` |:class:`FloatBE` |
+    +-----+-----------------+-----------------+
+    |64   |:class:`DoubleLE`|:class:`DoubleBE`|
+    +-----+-----------------+-----------------+
+
 '''
 
 from BitPacket.Value import Value
 
-__STRUCT_FLOAT_FMT__ = "f"
-__STRUCT_DOUBLE_FMT__ = "d"
+__STRUCT_FLOAT_LE_FMT__ = "<f"
+__STRUCT_FLOAT_BE_FMT__ = ">f"
+
+__STRUCT_DOUBLE_LE_FMT__ = "<d"
+__STRUCT_DOUBLE_BE_FMT__ = ">d"
 
 
-class Float(Value):
+########################################################################
+
+class FloatLE(Value):
 
     def __init__(self, name, value = 0.0):
-        Value.__init__(self, name, __STRUCT_FLOAT_FMT__, value)
+        Value.__init__(self, name, __STRUCT_FLOAT_LE_FMT__, value)
 
-class Double(Value):
+class FloatBE(Value):
 
     def __init__(self, name, value = 0.0):
-        Value.__init__(self, name, __STRUCT_DOUBLE_FMT__, value)
+        Value.__init__(self, name, __STRUCT_FLOAT_BE_FMT__, value)
+
+Float = FloatBE
+
+########################################################################
+
+class DoubleLE(Value):
+
+    def __init__(self, name, value = 0.0):
+        Value.__init__(self, name, __STRUCT_DOUBLE_LE_FMT__, value)
+
+class DoubleBE(Value):
+
+    def __init__(self, name, value = 0.0):
+        Value.__init__(self, name, __STRUCT_DOUBLE_BE_FMT__, value)
+
+Double = DoubleBE

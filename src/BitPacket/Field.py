@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Sun Aug 02, 2009 12:28
 #
-# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -29,12 +29,12 @@ __doc__ = '''
 
     **API reference**: :class:`Field`
 
-    The Field class is the abstract root class for all other BitPacket
-    classes. Initially, a field only has a name and no value. Field
-    subclasses must provide field details, such as the size of the
-    field, the implementation of how the field value will look like,
-    that is, how the field should be built, and other field related
-    details.
+    The :mod:`Field` class is the abstract root class for all other
+    BitPacket classes. Initially, a field only has a name and no
+    value. :mod:`Field` subclasses must provide field details, such as
+    the size of the field, the implementation of how the field value
+    will look like, that is, how the field should be built, and other
+    field related details.
 
     Naming fields
     =============
@@ -54,8 +54,9 @@ __doc__ = '''
     ===========================
 
     The main purpose of BitPacket is to provide an easy way to represent
-    packets. In BitPacket, packets can be built from and to an string of
-    bytes, arrays and streams.
+    packets (or, say it another way, data structures). In BitPacket,
+    packets can be built from and to an string of bytes, arrays and
+    streams.
 
     A field subclass, then, needs to provide the following methods::
 
@@ -67,13 +68,13 @@ __doc__ = '''
         def set_value(value):_
 
     This method sets a new value to the current field. The value might
-    be a number, a string, etc. depending on the field contents::
+    be a number, a string, etc. depending on the field's type::
 
         def size():_
 
     This method must return the field's size. Note that some fields
     are bit-oriented, so the method might return values for different
-    units (basically for bytes or bits)::
+    units (basically, bits and bytes)::
 
         def str_value():_
 
@@ -82,11 +83,10 @@ __doc__ = '''
 
         def str_hex_value():_
 
-    This method must return the hexadecimal text string representation
-    for the given field. The hexadecimal values of the string must be
-    obtained from the actual values in memory. For example, for a
-    float value, the hexadecimal representation could be the bytes
-    forming the IEEE-754 representation::
+    This method must return the hexadecimal string representation for
+    the given field. That is, how the field looks like in memory. For
+    example, for a float value, the hexadecimal representation could bbe
+    the bytes forming the IEEE-754 representation::
 
         def str_eng_value():_
 
@@ -99,14 +99,14 @@ __doc__ = '''
         def _encode(stream, context):_
 
     This method will write the field's value into the given stream (byte
-    or bit oriented). The context is the root of the packet that the
-    field is part of::
+    or bit oriented). The context is the root packet that the field is
+    part of::
 
         def _decode(stream, context):_
 
     This method will convert the given stream (byte or bit oriented)
-    into the internal field representation. The context is the root of
-    the packet that the field is part of.
+    into the internal field representation. The context is the root
+    packet that the field is part of.
 
     Calibration curves
     ==================
@@ -122,11 +122,11 @@ __doc__ = '''
 
     This method lets the user to provide a function to compute the
     calibration curve. The function must be unary taking the field's
-    value and computing (using a the desired conversion function) a
-    result.
+    value as it's argument and computing (using a the desired conversion
+    function) a result.
 
-    For the temperature example, the calibration function could be
-    something like::
+    For the temperature example mentioned above, the calibration
+    function could be something like::
 
         def temp_conv(x):
             return (x / 65535.0) * 50.0
@@ -140,10 +140,10 @@ from BitPacket.writers.WriterTextBasic import WriterTextBasic
 class Field(object):
     '''
     Abstract root class for all other BitPacket classes. Initially, a
-    field only has a name and no value. Field subclasses must provide
-    field details, such as the size of the field, the implementation of
-    how the field value will look like, that is, how the field should be
-    built, and other field related details.
+    field only has a name and no value. :mod:`Field` subclasses must
+    provide field details, such as the size of the field, the
+    implementation of how the field value will look like, that is, how
+    the field should be built, and other field related details.
     '''
 
     def __init__(self, name):
@@ -175,7 +175,7 @@ class Field(object):
     def fields(self):
         '''
         Returns a list of the children of this field. An empty list is
-        returned if the field does not have any child.
+        returned if the field does not have any children.
         '''
         return []
 
@@ -265,8 +265,7 @@ class Field(object):
         of this field. Some fields might represent temperatures, angles,
         etc. that need to be converted from its digital form to its
         analog form. This function will return the value after the
-        conversion is done, that is, after applying the calibration
-        curve.
+        conversion is done.
         '''
         return self.__calibration(self.value())
 
@@ -306,16 +305,16 @@ class Field(object):
     def _encode(self, stream, context):
         '''
         Write the field's value into the given stream (byte or bit
-        oriented). The context is the root of the packet that the field
-        is part of.
+        oriented). The context is the root packet that the field is part
+        of.
         '''
         raise NotImplementedError
 
     def _decode(self, stream, context):
         '''
         Converts the given stream (byte or bit oriented) into the
-        internal field representation. The context is the root of the
-        packet that the field is part of.
+        internal field representation. The context is the root packet
+        that the field is part of.
         '''
         raise NotImplementedError
 

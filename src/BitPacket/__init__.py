@@ -4,7 +4,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Jan 13, 2010 18:46
 #
-# Copyright (C) 2010 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -60,8 +60,8 @@ __all__ = [ "Array",
             "MetaData",
             "MetaField",
             "MetaStructure",
-            "Float", "Double",
+            "Float", "FloatLE", "FloatBE",
+            "Double", "DoubleLE", "DoubleBE",
             "String",
             "Structure",
             "Value" ]
-

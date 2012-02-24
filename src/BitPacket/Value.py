@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Oct 13, 2009 12:02
 #
-# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -29,13 +29,19 @@ __doc__ = '''
 
     **API reference**: :class:`Value`
 
-    These classes represent simple bit fields, and fixed and variable
-    structures of bit fields which might be used to construct
-    packets. BitField, BitStructure and BitVariableStructure implement
-    the BitFieldBase abstract class, so all of them can be used
-    together. This means that, for example, we can add any
-    BitFieldBase sub-class into a BitStructure or
-    BitVariableStructure.
+    This is the base class for numeric fields. Internally, it uses
+    Python's struct module to define the numeric value size and the byte
+    order (little-endian or big-endian).
+
+    The following code creates an 32-bit unsigned integer with a
+    little-endian byte ordering.
+
+    >>> v32 = Value("value", "<I", 67436735)
+    >>> print v32
+    (value = 67436735)
+
+    Fortunately, BitPacket already defines most of numeric values that
+    are commonly used.
 
 '''
 
