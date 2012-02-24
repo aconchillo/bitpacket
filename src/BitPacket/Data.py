@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Jan 20, 2010 11:30
 #
-# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -25,9 +25,47 @@
 
 __doc__ = '''
 
-    An structure for raw data.
+    An structure for raw data strings.
 
     **API reference**: :class:`Data`
+
+    A data field lets you store strings of words. By default, the size
+    of a word is 1 byte. :mod:`Data` is a :mod:`Structure` with two
+    fields: *Length* and *Data*. *Length* is a numeric field of any size
+    and specifies how many words the *Data* field contains.
+
+    In the next example we create a data field with six characters and a
+    length field of 1 byte (thus, a maximum of 255 characters can be
+    hold):
+
+    >>> data = Data("data", UInt8, "abcdef");
+    >>> print data
+    (data =
+      (Length = 6)
+      (Data = 0x616263646566))
+
+    We can easily get back the six characters by creating the string
+    again:
+
+    >>> "".join(data["Data"])
+    'abcdef'
+
+
+    Word sizes
+    ----------
+
+    The *Length* field tells us how many words the *Data* field
+    contains. Above, we just saw an example with the default word size
+    of 1. But a 12 character string and a word size of 4, we give us 3
+    words.
+
+    >>> data = Data("data", UInt8, "abcdefghigkl", 4);
+    >>> print data
+    (data =
+      (Length = 3)
+      (Data = 0x616263646566676869676B6C))
+
+    Note that data length needs to be a multiple of the word size.
 
 '''
 
@@ -42,8 +80,9 @@ class Data(Structure):
 
         self.__length = lengthtype("Length")
         self.__data = String("Data",
-                             data,
+                             "",
                              lambda ctx: self.__length.value() * wordsize)
+        self.set_value(data)
 
         Structure.append(self, self.__length)
         Structure.append(self, self.__data)
@@ -54,7 +93,12 @@ class Data(Structure):
     def set_value(self, value):
         length = len(value)
         if (length % self.__wordsize) == 0:
-            self.__length.set_value(length / self.__wordsize)
+            try:
+                self.__length.set_value(length / self.__wordsize)
+            except:
+                raise ValueError("Data length must be lower than length "
+                                 "field maximum size (%d given)" % length)
+
             self.__data.set_value(value)
         else:
             raise ValueError("Data length must be a multiple of %d (%d given)" \
