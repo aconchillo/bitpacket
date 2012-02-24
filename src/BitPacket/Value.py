@@ -62,8 +62,18 @@ from BitPacket.Field import Field
 # !             network (= big-endian)   standard
 
 class Value(Field):
+    '''
+    This is the base class for numeric fields. Internally, it uses
+    Python's struct module to define the numeric value size and the byte
+    order (little-endian or big-endian).
+    '''
 
     def __init__(self, name, format, value):
+        '''
+        Initiliazes the field with the given *name* and *value*. The
+        *format* is a string conforming the Python's struct module
+        format strings.
+        '''
         Field.__init__(self, name)
 
         # This will store the string of bytes
@@ -83,27 +93,59 @@ class Value(Field):
         self.__bytes = read_stream(stream, self.size())
 
     def value(self):
+        '''
+        Returns the numeric value of this field.
+        '''
         value = struct.unpack(self.__format, self.__bytes)
         return value[0]
 
     def set_value(self, value):
+        '''
+        Sets the new numeric *value* to this field. The value must fit
+        in this field, otherwise an exception is raised.
+        '''
         bytes = struct.pack(self.__format, value)
         self.set_bytes(bytes)
 
     def hex_value(self):
+        '''
+        Returns the hexadecimal integer representation of this
+        field. That is, the bytes forming this field in its integer
+        representation. This will vary depending on the field's
+        endiannes and size, so :class:`UInt16LE` will return a different
+        hexadecimal value than :class:`UInt16BE` for the same number.
+        '''
         value = 0
         for c in self.__bytes:
             value = (value << 8) + u_ord(c)
         return value
 
     def size(self):
+        '''
+        Returns the size in bytes of this field.
+        '''
         return self.__size
 
     def str_value(self):
+        '''
+        Returns a human-readable representation of the numeric value of
+        this field.
+        '''
         return str(self.value())
 
     def str_hex_value(self):
+        '''
+        Returns a human-readable representation of the hexadecimal
+        representation of this field. This internally uses
+        *hex_value()*.
+        '''
         return hex_string(self.hex_value(), self.size())
 
     def str_eng_value(self):
+        '''
+        Returns a human-readable representation of the engineering
+        value. This function will first calculate the engineering
+        value (by applying the calibration curve) and will return the
+        string representation of it.
+        '''
         return str(self.eng_value())

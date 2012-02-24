@@ -73,8 +73,21 @@ from BitPacket.Structure import Structure
 from BitPacket.String import String
 
 class Data(Structure):
+    '''
+    This class lets you store strings of words and also provides a field
+    to hold its length. It is a :mod:`Structure` with two fields:
+    *Length* and *Data*. *Length* is a numeric field of a given size and
+    specifies how many words the *Data* field contains. The *Data* field
+    is a :class:`String`.
+    '''
 
     def __init__(self, name, lengthtype, data = "", wordsize = 1):
+        '''
+        Initializes the field with the given *name* and a type for the
+        *Length* field. Optionally, the initial string can be given in
+        *data* and a different word size (defaults to 1) can set with
+        *wordsize*.
+        '''
         Structure.__init__(self, name)
         self.__wordsize = wordsize
 
@@ -82,15 +95,27 @@ class Data(Structure):
         self.__data = String("Data",
                              "",
                              lambda ctx: self.__length.value() * wordsize)
-        self.set_value(data)
 
         Structure.append(self, self.__length)
         Structure.append(self, self.__data)
 
+        self.set_value(data)
+
+
     def value(self):
+        '''
+        Returns the value of the *Data* field as a string.
+        '''
         return self.__data.value()
 
     def set_value(self, value):
+        '''
+        Sets a new string to the *Data* field. The given string length
+        must be mutliple of the word size and must fit in the *Length*
+        field (i.e. 300 characters are too long if the *Length* field is
+        :class:`UInt8`, as only 255 characters fit), otherwise a
+        *ValueError* exception will be raised.
+        '''
         length = len(value)
         if (length % self.__wordsize) == 0:
             try:
