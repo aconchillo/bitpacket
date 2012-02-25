@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Mon Jan 18, 2010 18:20
 #
-# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -24,6 +24,9 @@
 #
 
 __doc__ = '''
+
+    Array field
+    ===========
 
     An structure for fields of the same type.
 

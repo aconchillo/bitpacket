@@ -25,18 +25,22 @@
 
 __doc__ = '''
 
-    An structure for raw data strings.
+    Data field
+    ==========
+
+    An structure to hold a :mod:`String` and its length.
 
     **API reference**: :class:`Data`
 
-    A data field lets you store strings of words. By default, the size
-    of a word is 1 byte. :mod:`Data` is a :mod:`Structure` with two
-    fields: *Length* and *Data*. *Length* is a numeric field of any size
+    A :mod:`Data` field lets you store a string of words and keeps its
+    length in another field. By default, the size of a word is 1
+    byte. :mod:`Data` is a :mod:`Structure` with two fields in this
+    order: *Length* and *Data*. *Length* is a numeric field of any size
     and specifies how many words the *Data* field contains.
 
-    In the next example we create a data field with six characters and a
-    length field of 1 byte (thus, a maximum of 255 characters can be
-    hold):
+    In the next example we create a :mod:`Data` field with six
+    characters and a length field of 1 byte (thus, a maximum of 255
+    characters can be hold):
 
     >>> data = Data("data", UInt8, "abcdef");
     >>> print data

@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Jan 20, 2010 09:18
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -25,7 +25,23 @@
 
 __doc__ = '''
 
+    A field to store a string of characters.
+
     **API reference**: :class:`String`
+
+    A :mod:`String` field lets you store a string of characters of any
+    size. In the next example we create a string field with six
+    characters:
+
+    >>> data = String("data", "this is a string");
+    >>> print data
+    (data = 0x74686973206973206120737472696E67)
+
+    We can easily get back the six characters by creating the string
+    again:
+
+    >>> "".join(data.value())
+    'this is a string'
 
 '''
 

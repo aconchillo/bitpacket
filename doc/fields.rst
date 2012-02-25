@@ -19,13 +19,12 @@ Numeric fields
    .. automodule:: BitPacket.Integer
    .. automodule:: BitPacket.Real
 
-Data fields
------------
+String field
+------------
 
-.. automodule:: BitPacket.Data
 .. automodule:: BitPacket.String
 
-Meta fields
------------
+Meta field
+----------
 
 .. automodule:: BitPacket.MetaField
