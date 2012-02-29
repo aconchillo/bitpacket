@@ -25,7 +25,7 @@ sys.path.append(os.path.abspath(os.path.join('..', 'src')))
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.coverage']
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = [os.path.join('html', '_templates')]
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -38,7 +38,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'BitPacket'
-copyright = u'2011, Aleix Conchillo Flaqué'
+copyright = u'2012, Aleix Conchillo Flaqué'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -96,7 +96,9 @@ html_theme = 'sphinxdoc'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+    'sidebarwidth': 270
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
@@ -120,7 +122,7 @@ html_theme = 'sphinxdoc'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = ['_static']
+#html_static_path = [os.path.join('html', '_static')]
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -131,11 +133,13 @@ html_last_updated_fmt = '%b %d, %Y'
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+html_sidebars = {
+    'index': ['downloadbox.html', 'contactbox.html', 'searchbox.html']
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
-#html_additional_pages = {}
+html_additional_pages = {}
 
 # If false, no module index is generated.
 #html_use_modindex = True
@@ -158,7 +162,7 @@ html_show_sourcelink = False
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'BitPacketdoc'
+htmlhelp_basename = 'pydoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -172,7 +176,7 @@ htmlhelp_basename = 'BitPacketdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'BitPacket.tex', u'BitPacket Documentation',
+  ('index', 'BitPacket.tex', u'BitPacket',
    u'Aleix Conchillo Flaqué', 'manual'),
 ]
 

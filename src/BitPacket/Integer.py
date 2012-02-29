@@ -49,6 +49,7 @@ __doc__ = '''
     >>> print value
     (uint16 = 32768)
 
+
     Helper classes
     --------------
 

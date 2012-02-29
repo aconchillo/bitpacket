@@ -5,11 +5,16 @@ Simple fields
 
    from BitPacket import *
 
+   import array
+
 Bit fields
 ----------
 
 .. automodule:: BitPacket.BitField
 
+   .. automodule:: BitPacket.Boolean
+   .. automodule:: BitPacket.Flag
+   .. automodule:: BitPacket.Mask
 
 Numeric fields
 --------------

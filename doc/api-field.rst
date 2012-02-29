@@ -8,6 +8,10 @@ BitField
    :members:
    :undoc-members:
 
+.. toctree::
+
+   api-bitfield
+
 Container
 ---------
 

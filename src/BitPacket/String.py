@@ -43,6 +43,60 @@ __doc__ = '''
     >>> "".join(data.value())
     'this is a string'
 
+
+    Unpacking strings
+    -----------------
+
+    We might want to use the :mod:`String` class when unpacking a packet
+    (i.e. a data structure). This means that we don't know the size of
+    the string in advance and thus needs to be obtained from another
+    field in the packet. An example will ilustrate this better. Imagine
+    we need to decode this packet:
+
+    >>> data = array.array("B", [0x0B, 0x68, 0x65, 0x6C, 0x6C, 0x6F,
+    ...                          0x20, 0x77, 0x6F, 0x72, 0x6C, 0x64])
+
+    And we know that the packet format looks like this:
+
+    +--------+---------+
+    | length |  string |
+    +========+=========+
+    | 1 byte |  length |
+    +--------+---------+
+
+    As this is a two field packet we will create a :mod:`Structure`:
+
+    >>> packet = Structure("test")
+
+    The first field is the length of the string (next field) in bytes:
+
+    >>> packet.append(UInt8("length"))
+
+    The second field is the string itself:
+
+    >>> packet.append(String("string", "", lambda ctx: ctx["length"]))
+
+    We need to indicate somehow that the length of the string is
+    specified by the *length* field. This is where we use the third
+    constructor parameter *lengthfunc*. *lengthfunc* takes the context
+    as an argument (the context is always the root :mod:`Container` that
+    holds all the fields in the packet being unpacked). So, internally,
+    *BitPacket* will know how many bytes it needs to read for the string
+    field.
+
+    Finally, we set the data to be unpacked and verify its content:
+
+    >>> packet.set_array(data)
+    >>> print packet
+    (test =
+      (length = 11)
+      (string = 0x68656C6C6F20776F726C64))
+    >>> "".join(packet["string"])
+    'hello world'
+
+    *BitPacket* already provides the :mod:`Data` field which contains a
+    length field and a string.
+
 '''
 
 from BitPacket.utils.stream import read_stream, write_stream
@@ -50,6 +104,9 @@ from BitPacket.utils.stream import read_stream, write_stream
 from BitPacket.Field import Field
 
 class String(Field):
+    '''
+
+    '''
 
     def __init__(self, name, data = "", lengthfunc = lambda ctx: len(data)):
         Field.__init__(self, name)
@@ -63,15 +120,29 @@ class String(Field):
         self.__data = read_stream(stream, self.__lengthfunc(contex))
 
     def size(self):
+        '''
+        Returns the size in bytes of the string.
+        '''
         return len(self.__data)
 
     def value(self):
+        '''
+        Returns the string of characters.
+        '''
         return self.__data
 
     def set_value(self, data):
+        '''
+        Sets a new string of characters to the field.
+        '''
         self.__data = data
 
     def str_value(self):
+        '''
+        Returns a text string with the hexadecimal value of each
+        character of the string. A prefix of 0x is added. So, for "hello",
+        "0x68656C6C6F" would be returned.
+        '''
         string = ""
         value = self.value()
         if len(value) > 0:
@@ -79,7 +150,13 @@ class String(Field):
         return string
 
     def str_hex_value(self):
+        '''
+        This is equivalent of calling *str_value ()*.
+        '''
         return self.str_value()
 
     def str_eng_value(self):
+        '''
+        This is equivalent of calling *str_value ()*.
+        '''
         return self.str_value()
