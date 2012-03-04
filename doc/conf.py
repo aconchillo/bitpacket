@@ -176,7 +176,7 @@ htmlhelp_basename = 'pydoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('manual', 'BitPacket-%s.tex' % version, u'BitPacket',
+  ('manual', 'BitPacket-%s.tex' % version, u'BitPacket Manual',
    u'Aleix Conchillo Flaqué', 'manual'),
 ]
 
