@@ -29,12 +29,13 @@ Structures
   .. automodule:: BitPacket.Data
 
 
+  Structure based meta fields
+  ---------------------------
+
+  .. automodule:: BitPacket.MetaArray
+  .. automodule:: BitPacket.MetaData
+
 Meta structures
 ---------------
 
 .. automodule:: BitPacket.MetaStructure
-
-..
- automodule:: BitPacket.MetaArray
-..
- automodule:: BitPacket.MetaData

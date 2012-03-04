@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Dec 11, 2009 15:42
 #
-# Copyright (C) 2009, 2010 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -22,6 +22,15 @@
 # You should have received a copy of the GNU General Public License
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+__doc__ = '''
+
+    MetaData field
+    ==============
+
+    **API reference**: :class:`MetaData`
+
+'''
 
 from BitPacket.Structure import Structure
 from BitPacket.String import String

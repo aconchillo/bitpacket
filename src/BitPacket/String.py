@@ -25,6 +25,9 @@
 
 __doc__ = '''
 
+    String field
+    ============
+
     A field to store a string of characters.
 
     **API reference**: :class:`String`

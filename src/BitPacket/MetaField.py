@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Jan 15, 2010 10:22
 #
-# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -24,6 +24,9 @@
 #
 
 __doc__ = '''
+
+    MetaField field
+    ===============
 
     **API reference**: :class:`MetaField`
 
