@@ -50,11 +50,17 @@ __doc__ = '''
     Unpacking strings
     -----------------
 
-    We might want to use the :mod:`String` class when unpacking a packet
-    (i.e. a data structure). This means that we don't know the size of
-    the string in advance and thus needs to be obtained from another
-    field in the packet. An example will ilustrate this better. Imagine
-    we need to decode this packet:
+    A :mod:`String` is actually also a meta field. Remember that meta
+    fields are used when we don't know the size of the field in
+    advance. When packing a string, that's immediate, as we already know
+    the size of string, thus we can pack the packet without
+    problems. But consider an incoming packet, normally we would expect
+    the size of the string to be specified in another field, as the
+    :mod:`String` field itslef does not encode any information about the
+    size. And this is were meta field come in handy.
+
+    An example will ilustrate this better. Imagine we need to decode
+    this packet:
 
     >>> data = array.array("B", [0x0B, 0x68, 0x65, 0x6C, 0x6C, 0x6F,
     ...                          0x20, 0x77, 0x6F, 0x72, 0x6C, 0x64])
@@ -97,8 +103,8 @@ __doc__ = '''
     >>> "".join(packet["string"])
     'hello world'
 
-    *BitPacket* already provides the :mod:`Data` field which contains a
-    length field and a string.
+    *BitPacket* already provides a helper the :mod:`Data` field which
+    contains a length field and a string.
 
 '''
 
@@ -108,10 +114,28 @@ from BitPacket.Field import Field
 
 class String(Field):
     '''
-
+    A :mod:`String` field lets you store a string of characters of any
+    size. Usually, to unpack a string we need to extract the length of
+    the string from another field, therefore :mod:`String` becomes a
+    meta field.
     '''
 
     def __init__(self, name, data = "", lengthfunc = lambda ctx: len(data)):
+        '''
+        Initialize the string field with a *name* and and initial
+        *data*, if provided. This is enough if we are just
+        packing. However, we need to provide how to obtian the string
+        length if we want to be able to unpack it. Thus, we need to give
+        a function that will received a context as a single argument and
+        that returns the length of the string, in the *lengthfunc*
+        field. The context is a reference to the root :mod:`Container`
+        field that the field belongs to, so it is possible to access all
+        other fields. A possible function could be::
+
+            lambda ctx: ctx["Length"]
+
+        where we get the length of the string from a *Length* field.
+        '''
         Field.__init__(self, name)
         self.__data = data
         self.__lengthfunc = lengthfunc
