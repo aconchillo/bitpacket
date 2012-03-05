@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Sun Aug 02, 2009 19:25
 #
-# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -149,7 +149,7 @@ class BitStructure(Container):
 
     def __init__(self, name):
         '''
-        Initializes the bit structure field with the given *name*. By
+        Initialize the bit structure field with the given *name*. By
         default an structure field does not contain any fields.
         '''
         Container.__init__(self, name)

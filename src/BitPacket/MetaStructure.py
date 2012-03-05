@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Dec 11, 2009 17:07
 #
-# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -197,7 +197,7 @@ class MetaStructure(Structure):
 
     def __init__(self, name, lengthfunc, fieldfunc):
         '''
-        Initializes the meta structure with the given *name* and two
+        Initialize the meta structure with the given *name* and two
         functions, *lengthfunc* and *fieldfunc*. Both functions are
         unary, receiving the current BitPacket context as their
         argument. The former needs to return the number of fields that

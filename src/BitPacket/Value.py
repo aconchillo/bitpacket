@@ -70,7 +70,7 @@ class Value(Field):
 
     def __init__(self, name, format, value):
         '''
-        Initiliazes the field with the given *name* and *value*. The
+        Initialize the field with the given *name* and *value*. The
         *format* is a string conforming the Python's struct module
         format strings.
         '''

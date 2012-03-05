@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Sun Aug 02, 2009 12:34
 #
-# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -72,9 +72,9 @@ class BitField(Field):
 
     def __init__(self, name, size, value = 0):
         '''
-        Initializes the field with the given *name* and *size* (in
-        bits). By default the field's value will be initialized to 0
-        or to *value* if specified.
+        Initialize the field with the given *name* and *size* (in
+        bits). By default the field's value will be initialized to 0 or
+        to *value* if specified.
         '''
         Field.__init__(self, name)
         self.__bits = []

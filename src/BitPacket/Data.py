@@ -87,7 +87,7 @@ class Data(Structure):
 
     def __init__(self, name, lengthtype, data = "", wordsize = 1):
         '''
-        Initializes the field with the given *name* and a type for the
+        Initialize the field with the given *name* and a type for the
         *Length* field. Optionally, the initial string can be given in
         *data* and a different word size (defaults to 1) can set with
         *wordsize*.
