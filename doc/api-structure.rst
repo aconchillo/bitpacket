@@ -16,30 +16,3 @@ Data
    :show-inheritance:
    :members:
    :undoc-members:
-
-MetaArray
----------
-
-.. currentmodule:: BitPacket.MetaArray
-.. autoclass:: MetaArray
-   :show-inheritance:
-   :members:
-   :undoc-members:
-
-MetaData
---------
-
-.. currentmodule:: BitPacket.MetaStructure
-.. autoclass:: MetaStructure
-   :show-inheritance:
-   :members:
-   :undoc-members:
-
-MetaStructure
--------------
-
-.. currentmodule:: BitPacket.MetaStructure
-.. autoclass:: MetaStructure
-   :show-inheritance:
-   :members:
-   :undoc-members:

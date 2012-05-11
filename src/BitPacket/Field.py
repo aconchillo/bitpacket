@@ -96,13 +96,13 @@ __doc__ = '''
     then return the result (after applying any extra desired
     formatting)::
 
-        def _encode(stream, context):_
+        def _encode(stream):_
 
     This method will write the field's value into the given stream (byte
     or bit oriented). The context is the root packet that the field is
     part of::
 
-        def _decode(stream, context):_
+        def _decode(stream):_
 
     This method will convert the given stream (byte or bit oriented)
     into the internal field representation. The context is the root
@@ -153,6 +153,7 @@ class Field(object):
         default.
         '''
         self.__name = name
+        self.__root = self
         self.__parent = None
         self.__calibration = None
 
@@ -164,6 +165,14 @@ class Field(object):
         Returns the name of the field.
         '''
         return self.__name
+
+    def root(self):
+        '''
+        Returns the root of this field. The root is the top level
+        container that this field belongs to, if any. If the field is
+        not part of any other field the root is the field itself.
+        '''
+        return self.__root
 
     def parent(self):
         '''
@@ -223,7 +232,7 @@ class Field(object):
         '''
         Fill the given byte stream with the contents of this field.
         '''
-        self._encode(stream, self)
+        self._encode(stream)
 
     def set_stream(self, stream):
         '''
@@ -232,7 +241,7 @@ class Field(object):
         the stream. This means that the stream cursor will only advance
         as many bytes as the size of this field.
         '''
-        self._decode(stream, self)
+        self._decode(stream)
 
     def calibration_curve(self):
         '''
@@ -302,7 +311,7 @@ class Field(object):
         '''
         raise NotImplementedError
 
-    def _encode(self, stream, context):
+    def _encode(self, stream):
         '''
         Write the field's value into the given stream (byte or bit
         oriented). The context is the root packet that the field is part
@@ -310,7 +319,7 @@ class Field(object):
         '''
         raise NotImplementedError
 
-    def _decode(self, stream, context):
+    def _decode(self, stream):
         '''
         Converts the given stream (byte or bit oriented) into the
         internal field representation. The context is the root packet
@@ -325,6 +334,17 @@ class Field(object):
         field must have already been referenced by its original name.
         '''
         self.__name = name
+
+    def _set_root(self, root):
+        '''
+        Sets the root of this field. The root is the top level container
+        that this field belongs to, or the field itself if the field is
+        not part of another field. This function is intended to be used
+        only by the library internals, so use it with care.
+        '''
+        self.__root = root
+        for f in self.fields():
+            f._set_root(root)
 
     def _set_parent(self, parent):
         '''

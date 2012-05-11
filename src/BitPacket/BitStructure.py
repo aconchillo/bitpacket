@@ -154,16 +154,16 @@ class BitStructure(Container):
         '''
         Container.__init__(self, name)
 
-    def _encode(self, stream, context):
+    def _encode(self, stream):
         bitstream = BitStreamWriter(stream)
         for f in self.fields():
-            f._encode(bitstream, context)
+            f._encode(bitstream)
         bitstream.flush()
 
-    def _decode(self, stream, context):
+    def _decode(self, stream):
         bitstream = BitStreamReader(stream)
         for f in self.fields():
-            f._decode(bitstream, context)
+            f._decode(bitstream)
 
     def size(self):
         '''

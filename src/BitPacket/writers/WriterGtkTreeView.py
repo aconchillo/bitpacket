@@ -125,25 +125,14 @@ class WriterGtkTreeView(Writer):
 # import array
 
 # from BitPacket.Integer import *
-# from BitPacket.MetaData import *
-# from BitPacket.MetaStructure import *
+# from BitPacket.Array import *
 # from BitPacket.writers.WriterTextXML import *
 # from BitPacket.writers.WriterTextTable import *
 
-# class Test(Structure):
-
-#     def __init__(self):
-#         Structure.__init__(self, "test")
-#         self.append(UInt8("counter"))
-#         self.append(MetaStructure("address",
-#                                   lambda ctx: self["counter"],
-#                                   lambda ctx: UInt64("value")))
-
-# s = Structure("a")
-# s.append(UInt8("counter"))
-# s.append(MetaStructure("struct",
-#                        lambda ctx: ctx["counter"],
-#                        lambda ctx: Test()))
+# s = Array("a", UInt8("counter"),
+#           lambda ctx: Array("test",
+#                             UInt8("counter"),
+#                             lambda ctx: UInt64("value")))
 
 # s.set_array(array.array("B", [2,
 #                               1,

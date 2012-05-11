@@ -86,10 +86,10 @@ class Value(Field):
         # Finally set default value
         self.set_value(value)
 
-    def _encode(self, stream, context):
+    def _encode(self, stream):
         write_stream(stream, self.size(), self.__bytes)
 
-    def _decode(self, stream, context):
+    def _decode(self, stream):
         self.__bytes = read_stream(stream, self.size())
 
     def value(self):

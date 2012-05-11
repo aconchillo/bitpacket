@@ -54,7 +54,7 @@ __doc__ = '''
 
 from BitPacket.Field import Field
 
-__FIELD_SEPARATOR__ = "."
+FIELD_SEPARATOR = "."
 
 class Container(Field):
     '''
@@ -87,6 +87,7 @@ class Container(Field):
 
         self.__fields.append(field)
         field._set_parent(self)
+        field._set_root(self.root())
 
     def field(self, name):
         '''
@@ -95,7 +96,7 @@ class Container(Field):
         separators are allowed). If the field does not exist a
         *KeyError* exception is raised.
         '''
-        names = name.split(__FIELD_SEPARATOR__, 1)
+        names = name.split(FIELD_SEPARATOR, 1)
         try:
             field = self.__fields_name[names[0]]
             if len(names) >= 2:
@@ -104,9 +105,11 @@ class Container(Field):
                 else:
                     raise TypeError("%s is not a Container" % names[0])
         except KeyError:
-            raise KeyError("Field '%s' does not exist" % name)
+            raise KeyError("Field '%s' does not exist in '%s'" \
+                               % (name, self.name()))
         except TypeError as err:
-            raise KeyError("Field '%s' does not exist (%s)" % (name, err))
+            raise KeyError("Field '%s' does not exist in '%s' (%s)" \
+                               % (name, self.name(), err))
         return field
 
     def fields(self):
@@ -128,7 +131,7 @@ class Container(Field):
             name = field.name()
             if isinstance(field, Container):
                 for k in list(field.keys()):
-                    keys.append(name + __FIELD_SEPARATOR__ + k)
+                    keys.append(name + FIELD_SEPARATOR + k)
             else:
                 keys.append(name)
         return keys
@@ -143,6 +146,13 @@ class Container(Field):
             size += f.size()
         return size
 
+    def reset(self):
+        '''
+        Remove all the fields from this container.
+        '''
+        self.__fields = []
+        self.__fields_name = {}
+
     def __len__(self):
         '''
         Returns the number of fields in this container.
@@ -155,7 +165,7 @@ class Container(Field):
         same as calling container.field(name).value(). If the field does
         not exists a *KeyError* exception is raised.
         '''
-        names = name.split(__FIELD_SEPARATOR__, 1)
+        names = name.split(FIELD_SEPARATOR, 1)
         try:
             field = self.__fields_name[names[0]]
             if len(names) < 2:
@@ -163,7 +173,8 @@ class Container(Field):
             else:
                 return field[names[1]]
         except KeyError:
-            raise KeyError("Field '%s' does not exist" % name)
+            raise KeyError("Field '%s' does not exist in '%s'" \
+                               % (name, self.name()))
 
     def __setitem__(self, name, value):
         '''
@@ -172,7 +183,7 @@ class Container(Field):
         container.field(name).set_value(value). If the field does not
         exists a *KeyError* exception is raised.
         '''
-        names = name.split(__FIELD_SEPARATOR__, 1)
+        names = name.split(FIELD_SEPARATOR, 1)
         try:
             field = self.__fields_name[names[0]]
             if len(names) < 2:
@@ -180,4 +191,5 @@ class Container(Field):
             else:
                 field[names[1]] = value
         except KeyError:
-            raise KeyError("Field '%s' does not exist" % name)
+            raise KeyError("Field '%s' does not exist in '%s'" \
+                               % (name, slef.name()))

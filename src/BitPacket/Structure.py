@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Dec 11, 2009 11:57
 #
-# Copyright (C) 2009, 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -169,10 +169,10 @@ class Structure(Container):
         '''
         Container.__init__(self, name)
 
-    def _encode(self, stream, context):
+    def _encode(self, stream):
         for f in self.fields():
-            f._encode(stream, context)
+            f._encode(stream)
 
-    def _decode(self, stream, context):
+    def _decode(self, stream):
         for f in self.fields():
-            f._decode(stream, context)
+            f._decode(stream)

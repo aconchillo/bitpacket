@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    MetaField.py
-# @brief   A meta field that acts as a proxy when the real field is created.
+# @brief   A proxy for another field.
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Jan 15, 2010 10:22
 #
@@ -43,31 +43,40 @@ class MetaField(Field):
     @staticmethod
     def _non_proxyable():
         return ["_field", "_fieldfunc", "_create_field",
-                "_encode", "_decode", "write"]
+                "_encode", "_decode", "_set_name", "write"]
 
     def __init__(self, name,  fieldfunc):
         Field.__init__(self, name)
         self._fieldfunc = fieldfunc
         self._field = None
 
-    def _encode(self, stream, context):
+    def type(self):
         if self._field:
-            self._field._encode(stream, context)
+            return type(self._field)
+        else:
+            return type(self._create_field())
+
+    def _encode(self, stream):
+        if self._field:
+            self._field._encode(stream)
         else:
             self._raise_error(self)
 
-    def _decode(self, stream, context):
-        self._create_field(context)
-        self._field._decode(stream, context)
+    def _decode(self, stream):
+        self._field = self._create_field()
+        self._field._decode(stream)
 
-    def _create_field(self, context):
-        if not self._field:
-            # Call name() and parent() before proxy is available.
-            name = self.name()
-            parent = self.parent()
-            self._field = self._fieldfunc(context)
-            self._field._set_name(name)
-            self._field._set_parent(parent)
+    def _create_field(self):
+        # Call name(), root() and parent() before proxy is
+        # available.
+        name = self.name()
+        root = self.root()
+        parent = self.parent()
+        field = self._fieldfunc(root)
+        field._set_name(name)
+        field._set_root(root)
+        field._set_parent(parent)
+        return field
 
     def __len__(self):
         if self._field:

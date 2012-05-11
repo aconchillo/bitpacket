@@ -81,14 +81,14 @@ class BitField(Field):
         self.__size = size
         self.set_value(value)
 
-    def _encode(self, stream, context):
+    def _encode(self, stream):
         if isinstance(stream, BitStreamWriter):
             write_stream(stream, self.size(), self.__bits)
         else:
             raise TypeError("Stream for bit fields should be bit oriented "
                             "(hint: enclose it in a BitStructure)")
 
-    def _decode(self, stream, context):
+    def _decode(self, stream):
         if isinstance(stream, BitStreamReader):
             self.__bits = read_stream(stream, self.size())
         else:

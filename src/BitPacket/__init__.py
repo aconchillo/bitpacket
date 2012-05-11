@@ -32,10 +32,7 @@ from BitPacket.Field import Field
 from BitPacket.Flag import Flag
 from BitPacket.Integer import *
 from BitPacket.Mask import *
-from BitPacket.MetaArray import MetaArray
-from BitPacket.MetaData import MetaData
 from BitPacket.MetaField import MetaField
-from BitPacket.MetaStructure import MetaStructure
 from BitPacket.Real import *
 from BitPacket.String import String
 from BitPacket.Structure import Structure
@@ -56,10 +53,7 @@ __all__ = [ "Array",
             "Int64", "UInt64", "Int64LE", "UInt64LE", "Int64BE", "UInt64BE",
             "Mask", "MaskValue",
             "Mask8", "Mask16", "Mask32", "Mask64",
-            "MetaArray",
-            "MetaData",
             "MetaField",
-            "MetaStructure",
             "Float", "FloatLE", "FloatBE",
             "Double", "DoubleLE", "DoubleBE",
             "String",

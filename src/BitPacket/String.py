@@ -36,7 +36,8 @@ __doc__ = '''
     size. In the next example we create a string field with six
     characters:
 
-    >>> data = String("data", "this is a string");
+    >>> data = String("data")
+    >>> data.set_value("this is a string")
     >>> print data
     (data = 0x74686973206973206120737472696E67)
 
@@ -83,7 +84,7 @@ __doc__ = '''
 
     The second field is the string itself:
 
-    >>> packet.append(String("string", "", lambda ctx: ctx["length"]))
+    >>> packet.append(String("string", lambda ctx: ctx["length"]))
 
     We need to indicate somehow that the length of the string is
     specified by the *length* field. This is where we use the third
@@ -109,6 +110,7 @@ __doc__ = '''
 '''
 
 from BitPacket.utils.stream import read_stream, write_stream
+from BitPacket.utils.callable import param_call
 
 from BitPacket.Field import Field
 
@@ -120,7 +122,7 @@ class String(Field):
     meta field.
     '''
 
-    def __init__(self, name, data = "", lengthfunc = lambda ctx: len(data)):
+    def __init__(self, name, length = 0):
         '''
         Initialize the string field with a *name* and and initial
         *data*, if provided. This is enough if we are just
@@ -137,14 +139,15 @@ class String(Field):
         where we get the length of the string from a *Length* field.
         '''
         Field.__init__(self, name)
-        self.__data = data
-        self.__lengthfunc = lengthfunc
+        self.__data = ""
+        self.__length = length
 
-    def _encode(self, stream, context):
-        write_stream(stream, self.__lengthfunc(context), self.__data)
+    def _encode(self, stream):
+        write_stream(stream, param_call(self.__length, self.root()), self.__data)
 
-    def _decode(self, stream, contex):
-        self.__data = read_stream(stream, self.__lengthfunc(contex))
+
+    def _decode(self, stream):
+        self.__data = read_stream(stream, param_call(self.__length, self.root()))
 
     def size(self):
         '''
@@ -187,3 +190,13 @@ class String(Field):
         This is equivalent of calling *str_value ()*.
         '''
         return self.str_value()
+
+
+# import array
+
+# p = String("data", "", lambda ctx: 7)
+# p.set_array(array.array('B', [97, 98, 99, 100, 101, 102, 103]))
+# print p
+
+# p = String("data", "", lambda ctx: ctx["length"])
+# print p

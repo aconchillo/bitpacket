@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Nov 17, 2010 13:02
 #
-# Copyright (C) 2010, 2011 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011, 2012 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -66,6 +66,7 @@ class MaskValue(Value):
 
             field = masktype(mask[0])
             field._set_parent(self)
+            field._set_root(self.root())
             self.__fields.append(field)
             self.__fields_dict[mask[0]] = field
 
@@ -135,4 +136,3 @@ class Mask64(MaskValue):
 # a.mask(a.FLAG_1 | a.FLAG_2)
 
 # print a
-
