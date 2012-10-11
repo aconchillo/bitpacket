@@ -34,15 +34,6 @@ MetaField
    :members:
    :undoc-members:
 
-String
-------
-
-.. currentmodule:: BitPacket.String
-.. autoclass:: String
-   :show-inheritance:
-   :members:
-   :undoc-members:
-
 Value
 -----
 

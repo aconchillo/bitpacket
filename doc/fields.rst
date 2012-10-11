@@ -28,5 +28,4 @@ Numeric fields
 Meta fields
 -----------
 
-.. automodule:: BitPacket.String
 .. automodule:: BitPacket.MetaField
