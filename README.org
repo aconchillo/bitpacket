@@ -9,6 +9,6 @@ These are the three main features of BitPacket:
 
 - The same data structure can be used for both packing and unpacking a
   byte stream.
-- Works with single bit fields.
+- Data structures can contain single bit fields.
 - Provides and extensible framework to customize data representation
   (e.g. text tables, Gtk widgets).
