@@ -1,14 +1,15 @@
 * Welcome to BitPacket
 
 BitPacket is a Python module that provides a simple objected-oriented
-representation of data structures. The main purpose is to provide an
+representation for data structures. The main purpose is to provide an
 easy and extensible interface for building and parsing these structures
 (e.g. network packets).
 
 These are the three main features of BitPacket:
 
-- The same data structure can be used for both packing and unpacking a
-  byte stream.
-- Data structures can contain single bit fields.
-- Provides and extensible framework to customize data representation
-  (e.g. text tables, Gtk widgets).
+- Byte-oriented with support for bit fields.
+
+- Same BitPacket definition can be used for packing and unpacking data.
+
+- Comes with an extensible framework to customize BitPackets
+  representation (e.g. text tables, Gtk widgets).

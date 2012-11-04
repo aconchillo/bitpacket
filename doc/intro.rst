@@ -10,7 +10,7 @@ distribution of official `GNU software`_ (and other non-GNU software,
 like BitPacket).
 
 You can download the latest BitPacket release from the project's
-website_, or alternatively, you can also clone the source repository_.
+website_, or alternatively, you can also clone the source repository.
 
 ::
 
@@ -26,7 +26,6 @@ Or, if you are behind a firewall, you might use the HTTP version:
 .. _Savannah: https://savannah.nongnu.org/projects/bitpacket
 .. _github: http://github.com/aconchillo/bitpacket/
 .. _GNU software: http://www.gnu.org/gnu/thegnuproject.html
-.. _repository: http://git.savannah.gnu.org/cgit/bitpacket.git
 .. _website: http://www.nongnu.org/bitpacket/
 
 

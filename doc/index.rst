@@ -46,4 +46,4 @@ Or, if you only have HTTP access:
 
 You can also browse it online_ if you prefer.
 
-.. _online: http://git.savannah.gnu.org/cgit/bitpacket.git
+.. _online: http://github.com/aconchillo/bitpacket/
