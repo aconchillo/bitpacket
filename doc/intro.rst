@@ -4,31 +4,39 @@ Introduction
 Download
 --------
 
-BitPacket_ is maintained in Savannah_. Savannah is the central point
-for development, maintenance and distribution of official `GNU
-software`_ (and other non-GNU software, like BitPacket).
+BitPacket_ is maintained in Savannah_ (and mirrored in
+github_). Savannah is the central point for development, maintenance and
+distribution of official `GNU software`_ (and other non-GNU software,
+like BitPacket).
 
 You can download the latest BitPacket release from the project's
-website_, or alternatively, you can also clone the Mercurial_
-BitPacket repository_.
+website_, or alternatively, you can also clone the source repository_.
 
 ::
 
-    hg clone http://hg.savannah.gnu.org/hgweb/bitpacket/
+    git clone git://git.sv.gnu.org/bitpacket.git
 
-.. _Savannah: http://savnnah.gnu.org
+Or, if you are behind a firewall, you might use the HTTP version:
+
+::
+
+    git clone http://git.savannah.gnu.org/r/bitpacket.git
+
+
+.. _Savannah: https://savannah.nongnu.org/projects/bitpacket
+.. _github: http://github.com/aconchillo/bitpacket/
 .. _GNU software: http://www.gnu.org/gnu/thegnuproject.html
-.. _Mercurial: http://mercurial.selenic.com
-.. _repository: http://hg.savannah.gnu.org/hgweb/bitpacket/
+.. _repository: http://git.savannah.gnu.org/cgit/bitpacket.git
 .. _website: http://www.nongnu.org/bitpacket/
 
 
 Build and install
 -----------------
 
-BitPacket is distributed as a setuptools_ module, so the usual commands
-for building and installing setuptools modules can be used. However,
-this means that you need setuptools installed in your system.
+BitPacket is distributed as a Distribute_ (setuptools) module, so the
+usual commands for building and installing setuptools modules can be
+used. However, this means that you need setuptools installed in your
+system.
 
 Once the BitPacket tarball is decompressed, you can build BitPacket as
 a non-root user:
@@ -37,16 +45,14 @@ a non-root user:
 
     python setup.py build
 
-If the built was successful, you can then install it, as root, with
-the following command:
+If the built is successful, you can then install it, as root, with the
+following command:
 
 ::
 
     python setup.py install
 
-If you have obtained an egg file
-
-.. _setuptools: http://packages.python.org/distribute/setuptools.html
+.. _Distribute: http://packages.python.org/distribute/setuptools.html
 
 Usage
 -----
@@ -98,4 +104,3 @@ BitPacket 1.0.0 was born.
 .. _construct: http://construct.wikispaces.com/
 .. _LISA Pathfinder: http://www.esa.int/esaSC/120397_index_0_m.html
 .. _struct: http://docs.python.org/library/struct.html
-

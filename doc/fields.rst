@@ -1,4 +1,4 @@
-Simple fields
+Single fields
 =============
 
 .. testsetup:: *
@@ -24,9 +24,12 @@ Numeric fields
    .. automodule:: BitPacket.Integer
    .. automodule:: BitPacket.Real
 
+String and text fields
+----------------------
+
+.. automodule:: BitPacket.String
 
 Meta fields
 -----------
 
-.. automodule:: BitPacket.String
 .. automodule:: BitPacket.MetaField

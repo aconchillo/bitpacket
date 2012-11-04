@@ -43,6 +43,12 @@ String
    :members:
    :undoc-members:
 
+.. currentmodule:: BitPacket.String
+.. autoclass:: Text
+   :show-inheritance:
+   :members:
+   :undoc-members:
+
 Value
 -----
 
