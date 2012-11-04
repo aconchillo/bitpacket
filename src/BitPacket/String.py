@@ -25,48 +25,52 @@
 
 __doc__ = '''
 
-    String field
-    ============
+    String of characters
+    ====================
 
-    A field to store a string of characters.
+    Fields to store a string of characters.
 
-    **API reference**: :class:`String`
+     **API reference**: :class:`String`
 
     A :mod:`String` field lets you store a string of characters of any
-    size. In the next example we create a string field with six
-    characters:
+    size. The length of the string needs to be specified at creation
+    time.
 
-    >>> data = String("data")
+    The simplest case is a string with a fixed length. In the next
+    example we create a string field with sixteen characters:
+
+    >>> data = String("data", 16)
     >>> data.set_value("this is a string")
     >>> print data
     (data = 0x74686973206973206120737472696E67)
 
-    We can easily get back the six characters by creating the string
-    again:
+    As usual, we can easily get back the original string:
 
     >>> "".join(data.value())
     'this is a string'
 
+    Note that, above, "print data" returns a human-readable string with
+    hexadecimal values and "data.value()" returns the actual string.
+
+    For convenience, there is a :mod:`Text` field that inherits from
+    :mod:`String` and always returns the actual string.
+
+    >>> text = Text("text", 16)
+    >>> text.set_value("this is a string")
+    >>> print text
+    (text = this is a string)
+
+    So, :mod:`Text` is supposedly to be used with only text while
+    :mod:`String` is to be used with any character.
+
 
     Unpacking strings
-    -----------------
+    =================
 
-    A :mod:`String` is actually also a meta field. Remember that meta
-    fields are used when we don't know the size of the field in
-    advance. When packing a string, that's immediate, as we already know
-    the size of string, thus we can pack the packet without
-    problems. But consider an incoming packet, normally we would expect
-    the size of the string to be specified in another field, as the
-    :mod:`String` field itslef does not encode any information about the
-    size. And this is were meta field come in handy.
-
-    An example will ilustrate this better. Imagine we need to decode
-    this packet:
-
-    >>> data = array.array("B", [0x0B, 0x68, 0x65, 0x6C, 0x6C, 0x6F,
-    ...                          0x20, 0x77, 0x6F, 0x72, 0x6C, 0x64])
-
-    And we know that the packet format looks like this:
+    Instead of a fixed length, we can specify a length function that
+    will tell us what length the string should have. In the following
+    structure we create a :mod:`Structure` with a numeric "length" field
+    and a string of unknown size.
 
     +--------+---------+
     | length |  string |
@@ -74,38 +78,47 @@ __doc__ = '''
     | 1 byte |  length |
     +--------+---------+
 
-    As this is a two field packet we will create a :mod:`Structure`:
-
-    >>> packet = Structure("test")
-
-    The first field is the length of the string (next field) in bytes:
-
-    >>> packet.append(UInt8("length"))
-
-    The second field is the string itself:
-
-    >>> packet.append(String("string", lambda ctx: ctx["length"]))
-
-    We need to indicate somehow that the length of the string is
-    specified by the *length* field. This is where we use the third
-    constructor parameter *lengthfunc*. *lengthfunc* takes the context
-    as an argument (the context is always the root :mod:`Container` that
-    holds all the fields in the packet being unpacked). So, internally,
-    *BitPacket* will know how many bytes it needs to read for the string
-    field.
-
-    Finally, we set the data to be unpacked and verify its content:
-
-    >>> packet.set_array(data)
-    >>> print packet
-    (test =
-      (length = 11)
-      (string = 0x68656C6C6F20776F726C64))
-    >>> "".join(packet["string"])
-    'hello world'
-
     *BitPacket* already provides a helper the :mod:`Data` field which
     contains a length field and a string.
+
+    >>> packet = Structure("string")
+    >>> l = UInt8("length")
+    >>> s = String("data", lambda ctx: ctx["length"])
+    >>> packet.append(l)
+    >>> packet.append(s)
+
+    If we print the initial contents of the structure we can see that
+    the length is 0 and that we still have an empty string.
+
+    >>> print packet
+    (string =
+      (length = 0)
+      (data = ))
+
+    We can try to assign a value to our string directly and see what
+    happens:
+
+    >>> try:
+    ...   s.set_value("this is a string")
+    ... except ValueError as err:
+    ...   print "Error: %s" % err
+    Error: Data length must be 0 (16 given)
+
+    An exception is raised indicating that string length should be
+    0. This is because the "length" field has not been assigned a value
+    yet.
+
+    Finally, we can provide to the structure all the necessary
+    information, for example, in an array:
+
+    >>> data = array.array("B", [0x10, 0x74, 0x68, 0x69, 0x73, 0x20,
+    ...                          0x69, 0x73, 0x20, 0x61, 0x20, 0x73,
+    ...                          0x74, 0x72, 0x69, 0x6E, 0x67])
+    >>> packet.set_array(data)
+    >>> print packet
+    (string =
+      (length = 16)
+      (data = 0x74686973206973206120737472696E67))
 
 '''
 
@@ -118,21 +131,19 @@ class String(Field):
     '''
     A :mod:`String` field lets you store a string of characters of any
     size. Usually, to unpack a string we need to extract the length of
-    the string from another field, therefore :mod:`String` becomes a
-    meta field.
+    the string from another field, in which case we need to specify a
+    function that will know where to get the length from. However, it is
+    also possible to specify a fixed length string.
     '''
 
-    def __init__(self, name, length = 0):
+    def __init__(self, name, length):
         '''
-        Initialize the string field with a *name* and and initial
-        *data*, if provided. This is enough if we are just
-        packing. However, we need to provide how to obtian the string
-        length if we want to be able to unpack it. Thus, we need to give
-        a function that will received a context as a single argument and
-        that returns the length of the string, in the *lengthfunc*
-        field. The context is a reference to the root :mod:`Container`
-        field that the field belongs to, so it is possible to access all
-        other fields. A possible function could be::
+        Initialize the string field with a *name* and a
+        *length*. *length* can be a fixed number or a single arument
+        function that returns the length of the string. The single
+        argument is a reference to the top-level root :mod:`Container`
+        field where the string belongs to. A possible function could
+        be::
 
             lambda ctx: ctx["Length"]
 
@@ -144,7 +155,6 @@ class String(Field):
 
     def _encode(self, stream):
         write_stream(stream, param_call(self.__length, self.root()), self.__data)
-
 
     def _decode(self, stream):
         self.__data = read_stream(stream, param_call(self.__length, self.root()))
@@ -165,7 +175,12 @@ class String(Field):
         '''
         Sets a new string of characters to the field.
         '''
-        self.__data = data
+        length = param_call(self.__length, self.root())
+        if len(data) == length:
+            self.__data = data
+        else:
+            raise ValueError("Data length must be %d (%d given)" \
+                                 % (length, len(data)))
 
     def str_value(self):
         '''
@@ -192,11 +207,32 @@ class String(Field):
         return self.str_value()
 
 
-# import array
+class Text(String):
+    '''
+    :mod:`Text` is basically a :mod:`String` but conceived to be used
+    with only text strings. It does not perform any check on the
+    data. It simply returns the internal string (which should be text)
+    instead of generating a text string with the hexadecimal values of
+    the string.
+    '''
 
-# p = String("data", "", lambda ctx: 7)
-# p.set_array(array.array('B', [97, 98, 99, 100, 101, 102, 103]))
-# print p
+    def __init__(self, name, length):
+        String.__init__(self, name, length)
 
-# p = String("data", "", lambda ctx: ctx["length"])
-# print p
+    def str_value(self):
+        '''
+        Returns the text string.
+        '''
+        return self.value()
+
+    def str_hex_value(self):
+        '''
+        This is equivalent of calling *str_value ()*.
+        '''
+        return self.str_value()
+
+    def str_eng_value(self):
+        '''
+        This is equivalent of calling *str_value ()*.
+        '''
+        return self.str_value()

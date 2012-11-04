@@ -34,7 +34,7 @@ from BitPacket.Integer import *
 from BitPacket.Mask import *
 from BitPacket.MetaField import MetaField
 from BitPacket.Real import *
-from BitPacket.String import String
+from BitPacket.String import *
 from BitPacket.Structure import Structure
 from BitPacket.Value import Value
 
@@ -56,6 +56,6 @@ __all__ = [ "Array",
             "MetaField",
             "Float", "FloatLE", "FloatBE",
             "Double", "DoubleLE", "DoubleBE",
-            "String",
+            "String", "Text",
             "Structure",
             "Value" ]

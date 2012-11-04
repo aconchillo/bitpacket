@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # @file    Data.py
-# @brief   An structure for raw data.
+# @brief   An structure that holds a string and its length.
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Jan 20, 2010 11:30
 #
@@ -32,12 +32,12 @@ __doc__ = '''
 
     **API reference**: :class:`Data`
 
-    A :mod:`Data` field lets you store a string of words and keeps its
-    length in another field. By default, the size of a word is 1
-    byte. :mod:`Data` is a :mod:`Structure` with two fields in this
-    order: length and data (internally named *Dara*). The length is a
-    numeric field and specifies how many words the *Data* field
-    contains.
+    A :mod:`Data` field lets you store a string of characters (divided
+    by words) and keeps its length in another field. By default, the
+    size of a word is 1 byte. Basically, :mod:`Data` is a
+    :mod:`Structure` with two fields in this order: length and data
+    (internally named *Data*). The length is a numeric field and
+    specifies how many words the *Data* field contains.
 
     In the next example we create a :mod:`Data` field with six
     characters and a length field of 1 byte (thus, a maximum of 255
@@ -56,13 +56,16 @@ __doc__ = '''
     >>> "".join(data["Data"])
     'abcdef'
 
+    Note that, above, "print data" returns a human-readable string with
+    hexadecimal values and "data.value()" returns the actual string.
+
 
     Word sizes
     ----------
 
     The length field tells us how many words the *Data* field
     contains. Above, we just saw an example with the default word size
-    of 1. But a 12 character string and a word size of 4, we give us 3
+    of 1. But a 12 character string and a word size of 4, gives us 3
     words.
 
     >>> data = Data("data", UInt8("Length"), 4);
@@ -82,6 +85,11 @@ __doc__ = '''
     +========+========+================+
     | 1 byte | 1 byte | Length * WSize |
     +--------+--------+----------------+
+
+    Thus, instead of passing a number to the word size parameter, we
+    pass it a single-argument function. The single-argument, as in all
+    other BitPacket fields, is the top-level root :mod:`Container` field
+    where the *Data* field belongs to.
 
     >>> packet = Structure("packet")
     >>> packet.append(UInt8("WSize"))
@@ -107,11 +115,12 @@ from BitPacket.String import String
 
 class Data(Structure):
     '''
-    This class lets you store strings of words and also provides a field
-    to hold its length. It is a :mod:`Structure` with two fields: length
-    and data (internally created with name *Data*). The length is a
-    numeric field and specifies how many words the *Data* field
-    contains. The *Data* field is a :class:`String`.
+    This class lets you store strings of characters (divided by words)
+    and also provides a field to hold its length. It is a
+    :mod:`Structure` with two fields: length and data (internally
+    created with name *Data*). The length is a numeric field and
+    specifies how many words the *Data* field contains. The *Data* field
+    is a :class:`String`.
     '''
 
     def __init__(self, name, lengthfield, wordsize = 1):
@@ -166,9 +175,9 @@ class Data(Structure):
 # import array
 # from BitPacket.Integer import *
 
-# p = Data("data", UInt8("len"), lambda ctx: 2)
-# p.set_array(array.array('B', [3, 1, 2, 3, 4 , 5 , 6]))
-# p.set_value(array.array('B', [1, 2, 3, 4, 5]).tostring())
+# p = Data("data", UInt8("len"), 2)
+# #p.set_array(array.array('B', [3, 1, 2, 3, 4 , 5 , 6]))
+# p.set_value(array.array('B', [1, 2, 3, 4, 5, 6]).tostring())
 # print p
 
 # p = String("data", "", lambda ctx: ctx["length"])
