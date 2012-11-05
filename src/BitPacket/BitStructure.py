@@ -29,12 +29,12 @@ __doc__ = '''
 
     **API reference**: :class:`BitStructure`
 
-    The BitStructure class must be used, in conjunction with
+    The :mod:`BitStructure` class must be used, in conjunction with
     :mod:`BitField`, to create byte-aligned fields formed, internally,
     by bit fields.
 
     It is really important to understand that BitPacket is byte
-    oriented, therefore, a BitStructure must be byte-aligned.
+    oriented, therefore, a :mod:`BitStructure` must be byte-aligned.
 
     Consider the first byte of an IP header packet:
 
@@ -59,9 +59,9 @@ __doc__ = '''
       (version = 0x0E)
       (hlen = 0x0C))
 
-    Note that the size of a BitStructure is returned in bytes. Remember
-    that the purpose of a BitStructure is to create a byte-aligned value
-    that is built internally with bits:
+    Note that the size of a :mod:`BitStructure` is returned in
+    bytes. Remember that the purpose of a :mod:`BitStructure` is to
+    create a byte-aligned value that is built internally with bits:
 
     >>> ip.size()
     1
