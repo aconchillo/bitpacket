@@ -30,7 +30,7 @@ __doc__ = '''
     **API reference**: :class:`Container`
 
     Packets can be seen as field containers. That is, a packet is formed
-    by a sequence of fields. The :class:`Container` class provides this
+    by a sequence of fields. The :mod:`Container` class provides this
     vision. A :mod:`Container` is also a :mod:`Field` itself. Therefore,
     a :mod:`Container` might also accomodate other Containers.
 
@@ -58,15 +58,15 @@ FIELD_SEPARATOR = "."
 
 class Container(Field):
     '''
-    This is an abstrat class to create containers. A container is just a
-    field that might contain a sequence of fields (that can be
+    This is an abstrat class to create containers. A :mod:`Container` is
+    just a field that might contain a sequence of fields (that can be
     containers as well), thus forming a bigger field.
     '''
 
     def __init__(self, name):
         '''
-        Initialize the container with the given *name*. By default, it
-        does not contain any fields.
+        Initialize the :mod:`Container` with the given *name*. By
+        default, it does not contain any fields.
         '''
         Field.__init__(self, name)
         self.__fields = []
@@ -74,7 +74,7 @@ class Container(Field):
 
     def append(self, field):
         '''
-        Appends a new *field* into the container. A *NameError*
+        Appends a new *field* into the :mod:`Container`. A *NameError*
         exception will be raised if a field with the same name is
         already in the container.
         '''
@@ -114,7 +114,7 @@ class Container(Field):
 
     def fields(self):
         '''
-        Returns the (ordered) list of fields of this container.
+        Returns the (ordered) list of fields of this :mod:`Container`.
         '''
         return self.__fields
 
@@ -139,7 +139,7 @@ class Container(Field):
     def size(self):
         '''
         Returns the size of the field in bytes. That is, the sum of all
-        byte sizes of the fields in this container.
+        byte sizes of the fields in this :mod:`Container`.
         '''
         size = 0
         for f in self.fields():
@@ -148,7 +148,7 @@ class Container(Field):
 
     def reset(self):
         '''
-        Remove all the fields from this container.
+        Remove all the fields from this :mod:`Container`.
         '''
         self.__fields = []
         self.__fields_name = {}

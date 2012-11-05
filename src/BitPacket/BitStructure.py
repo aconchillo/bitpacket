@@ -48,7 +48,7 @@ __doc__ = '''
 
     >>> ip = BitStructure("IP")
 
-    The line above creates an empty structure named 'IP'. Now, we need
+    The line above creates an empty structure named *IP*. Now, we need
     to add fields to it. As BitStructure is a :mod:`Container` subclass
     the :func:`Container.append` function can be used:
 

@@ -29,13 +29,13 @@ __doc__ = '''
 
     **API reference**: :class:`Structure`
 
-    The :class:`Structure` class provides a byte-aligned
-    :mod:`Container` implementation. This means that all the fields
-    added to a :mod:`Structure` should be byte-aligned. This does not
-    mean that a :mod:`BitField` can not be added, but if added, it
-    should be added within a :mod:`BitStructure`. This is because bit
-    and byte processing is done diffrently, and that's why
-    :mod:`BitStructure` was created.
+    The :mod:`Structure` class provides a byte-aligned :mod:`Container`
+    implementation. This means that all the fields added to a
+    :mod:`Structure` should be byte-aligned. This does not mean that a
+    :mod:`BitField` can not be added, but if added, it should be added
+    within a :mod:`BitStructure`. This is because bit and byte
+    processing is done differently, and that's why :mod:`BitStructure`
+    was created.
 
     Consider the first three bytes of the IP header:
 
@@ -64,8 +64,9 @@ __doc__ = '''
     Accessing fields
     ----------------
 
-    Structure fields, as in any other Container, can be obtained like in
-    a dictionary, that is, by its name. Following the last example:
+    :mod:`Structure` fields, as in any other :mod:`Container`, can be
+    obtained like in a dictionary, that is, by its name. Following the
+    last example:
 
     >>> ip["tos"]
     3
@@ -76,9 +77,9 @@ __doc__ = '''
     Packing structures
     -------------------
 
-    As with any BitPacket field, packing a Structure is really
-    simple. Considering the IP header exampe above we can easily create
-    an array of bytes with the contents of the structure:
+    As with any other BitPacket field, packing a :mod:`Structure` is
+    really simple. Considering the IP header exampe above, we can easily
+    create an array of bytes with the contents of the structure:
 
     >>> ip_data = array.array("B")
     >>> ip.array(ip_data)
@@ -122,7 +123,7 @@ __doc__ = '''
     Structures as classes
     ---------------------
 
-    An interesting use of structures is to subclass them to create your
+    An interesting use of structures is to subclass them to create our
     own reusable ones. As an example, we could create the structure
     defined in the previous section as a new class:
 
@@ -158,8 +159,8 @@ from BitPacket.Container import Container
 class Structure(Container):
 
     '''
-    This class provides a byte-aligned Container implementation. All the
-    fields added to it should be byte-aligned.
+    This class provides a byte-aligned :mod:`Container`
+    implementation. All the fields added to it should be byte-aligned.
     '''
 
     def __init__(self, name):

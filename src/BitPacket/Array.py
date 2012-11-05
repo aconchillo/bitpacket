@@ -122,6 +122,21 @@ __doc__ = '''
     Error: Invalid field type for array 'mypacket' (expected <class 'MyStructure'>, got <class 'BitPacket.Integer.UInt8BE'>)
 
 
+    Accessing fields
+    ----------------
+
+    :mod:`Array` fields, as in any other :mod:`Container` can be
+    obtained like in a dictionary, that is, by its name. Following the
+    last example:
+
+    >>> packet["0.id"]
+    54
+
+    Note that the *id* field could be another array instead of a numeric
+    field, thus we could access further by using the dot field separator
+    (.).
+
+
     Complex arrays
     --------------
 
@@ -199,6 +214,12 @@ from BitPacket.Structure import Structure
 from BitPacket.MetaField import MetaField
 
 class Array(Structure):
+    '''
+    An :mod:`Array` is an structure for fields of the same type. It
+    contains a length field to count the number of elements that the
+    array holds. After the length field, all the rest of fields (of the
+    same type) are stored.
+    '''
 
     def __init__(self, name, lengthfield, fieldtype):
         Structure.__init__(self, name)
@@ -224,6 +245,14 @@ class Array(Structure):
             Structure.append(self, new_field)
 
     def append(self, field):
+        '''
+        Appends a new *field* to the array. The given *field* must be of
+        the same type specified when creating the array, otherwise a
+        *TypeError* exception is raised.
+
+        It is important to note that the given *field* name will be
+        changed by its index in the array.
+        '''
         basefield = self.__fieldtype(self.root())
         basefieldtype = type(basefield)
 
@@ -245,10 +274,12 @@ class Array(Structure):
 
     def __setitem__(self, name, value):
         '''
-        Sets the given 'value' to the field identified by 'name'.
+        Sets the given *value* to the field identified by *name*. Note
+        that *name* will contain the array index before the first
+        FIELD_SEPARATOR (if any)nnn .
 
-        If the names[0] does not exists in the array the function
-        will instantiate a new field automatically (only if the index is
+        If names[0] (i.e. the index) does not exists in the array, a new
+        field will be automatically created (only if the index is
         consecutive to the length of the array).
         '''
         names = name.split(FIELD_SEPARATOR, 1)
