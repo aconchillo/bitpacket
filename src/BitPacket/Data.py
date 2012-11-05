@@ -93,7 +93,7 @@ __doc__ = '''
 
     >>> packet = Structure("packet")
     >>> packet.append(UInt8("WSize"))
-    >>> data = Data("data", UInt8("Length"), lambda ctx: ctx["WSize"]);
+    >>> data = Data("data", UInt8("Length"), lambda root: root["WSize"]);
     >>> packet.append(data)
 
     >>> buffer = array.array("B", [2, 3, 40, 55, 22, 45, 34, 89])
@@ -120,23 +120,27 @@ class Data(Structure):
     :mod:`Structure` with two fields: length and data (internally
     created with name *Data*). The length is a numeric field and
     specifies how many words the *Data* field contains. The *Data* field
-    is a :class:`String`.
+    is internally a :class:`String`.
     '''
 
     def __init__(self, name, lengthfield, wordsize = 1):
         '''
         Initialize the field with the given *name* and a
-        *lengthfield*. Optionally, the initial string can be given in
-        *data* and a different word size (defaults to 1) can be set with
-        *wordsize*. *wordsize* can also be a function that takes the
-        root packet as a single argument. This way, it is possible to
-        provide a word size that depends on the value of another field.
+        *lengthfield*. The *lengthfield* must be a numeric field
+        instance. *wordsize* specifies how many bytes a word contains
+        and it can be a numeric value or a unary function that knows
+        where to get the word size, it has a default value of 1. So, the
+        total length in bytes of a :mod:`Data` field is the length field
+        multiplied by the word size. If *wordsize* is a function, it
+        takes the top-level root :mod:`Container` field as a single
+        argument. This way, it is possible to provide a word size that
+        depends on the value of another field.
         '''
         Structure.__init__(self, name)
         self.__wordsize = wordsize
 
-        wsizefunc = lambda ctx: \
-            lengthfield.value() * param_call(wordsize, ctx)
+        wsizefunc = lambda root: \
+            lengthfield.value() * param_call(wordsize, root)
 
         self.__length = lengthfield
         self.__data = String("Data", wsizefunc)
@@ -153,7 +157,7 @@ class Data(Structure):
     def set_value(self, value):
         '''
         Sets a new string to the *Data* field. The given string length
-        must be mutliple of the word size and must fit in the length
+        must be a mutliple of the word size and must fit in the length
         field (i.e. 300 characters are too long if the length field is
         :class:`UInt8`, as only 255 characters fit), otherwise a
         *ValueError* exception will be raised.
@@ -171,26 +175,3 @@ class Data(Structure):
         else:
             raise ValueError("Data length must be a multiple of %d (%d given)" \
                                  % (wordsize, length))
-
-# import array
-# from BitPacket.Integer import *
-
-# p = Data("data", UInt8("len"), 2)
-# #p.set_array(array.array('B', [3, 1, 2, 3, 4 , 5 , 6]))
-# p.set_value(array.array('B', [1, 2, 3, 4, 5, 6]).tostring())
-# print p
-
-# p = String("data", "", lambda ctx: ctx["length"])
-# print p
-
-# def wsize(ctx):
-#     return ctx["WSize"]
-
-# packet = Structure("packet")
-# packet.append(UInt8("WSize"))
-# data = Data("data", UInt8("Length"), wsize);
-# packet.append(data)
-
-# buffer = array.array("B", [2, 3, 40, 55, 22, 45, 34, 87])
-# packet.set_array(buffer)
-# print packet

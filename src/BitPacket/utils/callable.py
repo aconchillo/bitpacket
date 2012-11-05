@@ -24,8 +24,8 @@
 # along with BitPacket.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-def param_call(param, ctx):
+def param_call(param, root):
     if callable(param):
-        return param(ctx)
+        return param(root)
     else:
         return param

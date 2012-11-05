@@ -83,7 +83,7 @@ __doc__ = '''
 
     >>> packet = Structure("string")
     >>> l = UInt8("length")
-    >>> s = String("data", lambda ctx: ctx["length"])
+    >>> s = String("data", lambda root: root["length"])
     >>> packet.append(l)
     >>> packet.append(s)
 
@@ -104,9 +104,9 @@ __doc__ = '''
     ...   print "Error: %s" % err
     Error: Data length must be 0 (16 given)
 
-    An exception is raised indicating that string length should be
-    0. This is because the "length" field has not been assigned a value
-    yet.
+    A *ValueError* exception is raised indicating that string length
+    should be 0. This is because the "length" field has not been
+    assigned a value yet.
 
     Finally, we can provide to the structure all the necessary
     information, for example, in an array:
@@ -145,7 +145,7 @@ class String(Field):
         field where the string belongs to. A possible function could
         be::
 
-            lambda ctx: ctx["Length"]
+            lambda root: root["Length"]
 
         where we get the length of the string from a *Length* field.
         '''

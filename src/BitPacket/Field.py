@@ -99,14 +99,12 @@ __doc__ = '''
         def _encode(stream):_
 
     This method will write the field's value into the given stream (byte
-    or bit oriented). The context is the root packet that the field is
-    part of::
+    or bit oriented)::
 
         def _decode(stream):_
 
     This method will convert the given stream (byte or bit oriented)
-    into the internal field representation. The context is the root
-    packet that the field is part of.
+    into the internal field representation.
 
     Calibration curves
     ==================
@@ -314,16 +312,14 @@ class Field(object):
     def _encode(self, stream):
         '''
         Write the field's value into the given stream (byte or bit
-        oriented). The context is the root packet that the field is part
-        of.
+        oriented).
         '''
         raise NotImplementedError
 
     def _decode(self, stream):
         '''
         Converts the given stream (byte or bit oriented) into the
-        internal field representation. The context is the root packet
-        that the field is part of.
+        internal field representation.
         '''
         raise NotImplementedError
 
