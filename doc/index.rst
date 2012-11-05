@@ -13,6 +13,11 @@ These are the main features of BitPacket:
 - Comes with an extensible framework to customize BitPackets
   representation (e.g. text tables, Gtk widgets).
 
+If you don't like BitPacket, you might want to check construct_, another
+python library to perform the same task in a completely different way.
+
+.. _construct: http://construct.wikispaces.com/
+
 
 Documentation
 -------------
