@@ -12,19 +12,23 @@ setup(name = 'BitPacket',
       requires = [],
       package_dir = {'': 'src'},
       packages = find_packages('src'),
-      description = 'A Python object-oriented representation of packets',
+      description = 'A Python object-oriented representation for data structures',
       long_description =
       '''
       BitPacket is a Python module that provides a simple
-      objected-oriented representation of packets. The main purpose is
-      to provide an easy and extensible interface for building and
-      parsing packets.
+      objected-oriented representation for data structures. The main
+      purpose is to provide an easy and extensible interface for
+      building and parsing these structures (e.g. network packets).
 
       These are the main features of BitPacket:
 
-        * Packets can be packed/unpacked to/from bytes.
-        * Allows meta-fields, that is, fields that depend on other fields.
-        * A packet can have single bit fields.
+        * Byte-oriented with support for bit fields.
+
+        * Same BitPacket definition can be used for packing and
+          unpacking data.
+
+        * Comes with an extensible framework to customize BitPackets
+          representation (e.g. text tables, Gtk widgets).
       ''',
       classifiers = [
         'Development Status :: 5 - Production/Stable',
