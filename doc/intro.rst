@@ -4,10 +4,10 @@ Introduction
 Download
 --------
 
-BitPacket_ is maintained in Savannah_ (and mirrored in
-github_). Savannah is the central point for development, maintenance and
-distribution of official `GNU software`_ (and other non-GNU software,
-like BitPacket).
+BitPacket_ is maintained in Savannah_ (and mirrored in github_ and
+gitorious_). Savannah is the central point for development, maintenance
+and distribution of official `GNU software`_ (and other non-GNU
+software, like BitPacket).
 
 You can download the latest BitPacket release from the project's
 website_, or alternatively, you can also clone the source repository.
@@ -25,6 +25,7 @@ Or, if you are behind a firewall, you might use the HTTP version:
 
 .. _Savannah: https://savannah.nongnu.org/projects/bitpacket
 .. _github: http://github.com/aconchillo/bitpacket/
+.. _gitorious: https://gitorious.org/bitpacket
 .. _GNU software: http://www.gnu.org/gnu/thegnuproject.html
 .. _website: http://www.nongnu.org/bitpacket/
 
@@ -51,7 +52,7 @@ following command:
 
     python setup.py install
 
-.. _Distribute: http://packages.python.org/distribute/setuptools.html
+.. _Distribute: https://pythonhosted.org/setuptools/
 
 Usage
 -----
