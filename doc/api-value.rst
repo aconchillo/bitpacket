@@ -184,36 +184,3 @@ Real
    :show-inheritance:
    :members:
    :undoc-members:
-
-MaskValue
----------
-
-.. currentmodule:: BitPacket.Mask
-.. autoclass:: MaskValue
-   :show-inheritance:
-   :members:
-   :undoc-members:
-
-.. currentmodule:: BitPacket.Mask
-.. autoclass:: Mask8
-   :show-inheritance:
-   :members:
-   :undoc-members:
-
-.. currentmodule:: BitPacket.Mask
-.. autoclass:: Mask16
-   :show-inheritance:
-   :members:
-   :undoc-members:
-
-.. currentmodule:: BitPacket.Mask
-.. autoclass:: Mask32
-   :show-inheritance:
-   :members:
-   :undoc-members:
-
-.. currentmodule:: BitPacket.Mask
-.. autoclass:: Mask64
-   :show-inheritance:
-   :members:
-   :undoc-members:
