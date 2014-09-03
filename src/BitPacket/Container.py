@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Fri Dec 11, 2009 11:57
 #
-# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012, 2013, 2014 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -174,7 +174,7 @@ class Container(Field):
                 return field[names[1]]
         except KeyError:
             raise KeyError("Field '%s' does not exist in '%s'" \
-                               % (name, self.name()))
+                           % (name, self.name()))
 
     def __setitem__(self, name, value):
         '''
