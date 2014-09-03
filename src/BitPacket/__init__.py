@@ -4,7 +4,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Wed Jan 13, 2010 18:46
 #
-# Copyright (C) 2010, 2012 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2012, 2013, 2014 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -51,8 +51,7 @@ __all__ = [ "Array",
             "Int16", "UInt16", "Int16LE", "UInt16LE", "Int16BE", "UInt16BE",
             "Int32", "UInt32", "Int32LE", "UInt32LE", "Int32BE", "UInt32BE",
             "Int64", "UInt64", "Int64LE", "UInt64LE", "Int64BE", "UInt64BE",
-            "Mask", "MaskValue",
-            "Mask8", "Mask16", "Mask32", "Mask64",
+            "Mask",
             "MetaField",
             "Float", "FloatLE", "FloatBE",
             "Double", "DoubleLE", "DoubleBE",
