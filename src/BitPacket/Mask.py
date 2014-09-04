@@ -69,7 +69,6 @@ __doc__ = '''
 
 from BitPacket.BitField import *
 
-from math import log
 from operator import itemgetter
 
 class Mask(BitField):
@@ -119,22 +118,6 @@ class Mask(BitField):
         the new ones will be additionally unmasked.
         '''
         self.set_value(self.value() & ~mask)
-
-    def set_value(self, value):
-        '''
-        Resets the current mask with the given bits in *value*. If *value*
-        doesn't fit in this field mask an exception will be raised.
-
-        '''
-        size = self.size()
-        if value > 0:
-            size = int(log(value, 2) + 1)
-        if size <= self.size():
-            BitField.set_value(self, value)
-        else:
-            raise ValueError("Value bit size is bigger than the mask size "
-                             "(value %d has size %d, mask size is %d)"
-                             % (value, size, self.size ()))
 
     def str_value(self):
         '''

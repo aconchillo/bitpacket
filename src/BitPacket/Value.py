@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Tue Oct 13, 2009 12:02
 #
-# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012, 2013, 2014 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -62,6 +62,7 @@ from BitPacket.Field import Field
 # !             network (= big-endian)   standard
 
 class Value(Field):
+
     '''
     This is the base class for numeric fields. Internally, it uses
     Python's struct module to define the numeric value size and the byte

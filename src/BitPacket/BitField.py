@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Sun Aug 02, 2009 12:34
 #
-# Copyright (C) 2009, 2010, 2011, 2012 Aleix Conchillo Flaque
+# Copyright (C) 2009, 2010, 2011, 2012, 2013, 2014 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -61,6 +61,8 @@ from BitPacket.utils.string import hex_string
 
 from BitPacket.Field import Field
 
+from math import log
+
 class BitField(Field):
     '''
     This class represents bit fields to be used by :class:`BitStructure`
@@ -107,7 +109,19 @@ class BitField(Field):
         '''
         Sets a new unsigned integer *value* to the field.
         '''
-        self.__bits = int_to_bin(value, self.size())
+        if value < 0:
+            raise ValueError("Negative values not allowed in BitFields "
+                             "(field: '%s')" % self.name())
+
+        size = self.size()
+        if value > 0:
+            size = int(log(value, 2) + 1)
+        if size <= self.size():
+            self.__bits = int_to_bin(value, self.size())
+        else:
+            raise ValueError("Value is bigger than the field size "
+                             "(value %d has bit size %d, '%s' bit size is %d)"
+                             % (value, size, self.name(), self.size ()))
 
     def size(self):
         '''
