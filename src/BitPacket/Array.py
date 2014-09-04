@@ -5,7 +5,7 @@
 # @author  Aleix Conchillo Flaque <aconchillo@gmail.com>
 # @date    Mon Jan 18, 2010 18:20
 #
-# Copyright (C) 2010, 2011, 2012 Aleix Conchillo Flaque
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 Aleix Conchillo Flaque
 #
 # This file is part of BitPacket.
 #
@@ -214,6 +214,7 @@ from BitPacket.Structure import Structure
 from BitPacket.MetaField import MetaField
 
 class Array(Structure):
+
     '''
     An :mod:`Array` is an structure for fields of the same type. It
     contains a length field to count the number of elements that the
@@ -222,6 +223,13 @@ class Array(Structure):
     '''
 
     def __init__(self, name, lengthfield, fieldtype):
+        '''
+        Initialize the array with the given *name*, a *lengthfield* for the
+        counter field and *fieldtype* for a single argument function
+        that will return a new array member. The single argument is a
+        reference to the top-level root :mod:`Container` field where the
+        array belongs to.
+        '''
         Structure.__init__(self, name)
 
         self.__length = lengthfield
